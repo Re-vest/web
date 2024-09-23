@@ -1,6 +1,10 @@
 import {Header} from "../components/Header";
 import data from '../assets/contribua.svg'
 import { Feedback } from "../components/Feedback";
+import { Footer } from "../components/Footer";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
+import { AtSign } from "lucide-react";
 
 export function Home() {
   return (
@@ -22,7 +26,7 @@ export function Home() {
           conecta quem precisa com quem quer ajudar, promovendo a reutilização
           de roupas e oferecendo conforto a todos.
         </span>
-        <div className="absolute w-full h-full bg-gradient-to-br from-black to-transparent z-20"></div>
+        <div className="absolute w-full h-full bg-gradient-to-br from-black to-transparent z-20" />
       </div>
 
       <div className="flex justify-center items-center mb-24 -mt-28">
@@ -77,10 +81,26 @@ export function Home() {
         </div>
       </div>
 
-      <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24">
+      <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24 pb-80">
         <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
         <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
       </div>
+
+      <div className="flex justify-center -mt-[72px] z-30">
+
+      <div className="w-[70%] h-36 bg-white flex justify-between items-center gap-14 px-14 py-12 rounded-3xl shadow-2xl">
+      <span className="font-bold text-3xl text-nowrap">Fique por dentro! </span>
+      <Input icon={<AtSign width={24} />} placeholder="example@example.com" />
+      <Button text="Salvar" />
+      </div>
+      </div>
+
+      <div className="z-20 -mt-[72px]">
+      <Footer />
+
+      </div>
+
+
     </>
   );
 }
