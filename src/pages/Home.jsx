@@ -81,7 +81,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24 pb-80">
+      <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24 pb-52">
         <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
         <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
       </div>

@@ -10,7 +10,7 @@ export function Header() {
         <li><a href="">Contact</a></li>
       </ul>
 
-      <Button text="Entrar" />
+      <Button text="Salvar" />
     </header>
   )
 }
