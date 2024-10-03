@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { EventModal } from './EventModal';
+import { Plus } from 'lucide-react';
 
-const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
 
-export const ContinuousCalendar = ({ fullHeight = false, onClick }) => {
+export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen,setDate }) => {
   const today = new Date();
   const dayRefs = useRef([]);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -58,6 +60,9 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick }) => {
   };
 
   const handleDayClick = (day, month, year) => {
+    const date = new Date(year, month, day) 
+    setDate(`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2, '0')}-${String(parseInt(date.getDate(), 10)).padStart(2, '0')}`)
+    setIsModalOpen(true)
     if (!onClick) { return; }
     if (month < 0) {
       onClick(day, 11, year - 1);
@@ -102,13 +107,13 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick }) => {
           data-month={month}
           data-day={day}
           onClick={() => handleDayClick(day, month, year)}
-          className={`relative z-10 m-[-0.5px] aspect-square w-full grow cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-cyan-400 sm:-m-px sm:size-20 sm:rounded-2xl sm:border-2 lg:size-36 lg:rounded-3xl 2xl:size-40`}
+          className={`relative z-10 m-[-0.5px] aspect-square w-full grow cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-cyan-400 sm:-m-px sm:size-20 sm:rounded-2xl sm:border-2 lg:size-28 lg:rounded-3xl 2xl:size-40 text-center flex flex-col items-start justify-between px-2 py-2`}
         >
-          <span className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 sm:text-sm lg:left-2 lg:top-2 lg:size-8 lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
+          <span className={`top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 sm:text-sm left-2 lg:top-2 lg:size-8 lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
             {day}
           </span>
           {isNewMonth && (
-            <span className="absolute bottom-0.5 left-0 w-full truncate px-1.5 text-sm font-semibold text-slate-300 sm:bottom-0 sm:text-lg lg:bottom-2.5 lg:left-3.5 lg:-mb-1 lg:w-fit lg:px-0 lg:text-xl 2xl:mb-[-4px] 2xl:text-2xl">
+            <span className="w-full truncate px-1.5 text-sm font-semibold text-slate-300 lg:-mb-1 lg:px-0 lg:text-lg 2xl:mb-[-4px] 2xl:text-2xl right-0 text-end">
               {monthNames[month]}
             </span>
           )}
@@ -150,16 +155,19 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick }) => {
   }, []);
 
   return (
-    <div className={`rounded-2xl bg-white pb-10 text-slate-800 ${fullHeight ? '' : 'calendar-container max-h-[80vh] overflow-y-scroll'}`}>
+    <>
+    <div className={`rounded-2xl bg-white pb-10 text-slate-800 ${fullHeight ? '' : 'calendar-container h-full overflow-y-scroll'}`}>
       <div className="sticky -top-px z-50 w-full bg-white px-5 pt-7 sm:px-10 sm:pt-10">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-2 sm:gap-3">
             <Select name="" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
             <button onClick={handleTodayClick} type="button" className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:rounded-xl lg:px-5 lg:py-2.5">
-              Today
+              Hoje
             </button>
-            <button type="button" className="whitespace-nowrap rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 sm:rounded-xl lg:px-5 lg:py-2.5">
-              + Add Event
+            <button type="button" className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 sm:rounded-xl lg:px-5 lg:py-2.5"
+            onClick={() => setIsModalOpen(true)}
+            >
+              <Plus size={15} /> Criar evento
             </button>
           </div>
           <div className="flex w-fit items-center justify-between">
@@ -194,6 +202,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick }) => {
         {generateCalendar}
       </div>
     </div>
+    </>
   );
 };
 
