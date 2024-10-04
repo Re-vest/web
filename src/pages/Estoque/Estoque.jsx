@@ -18,7 +18,7 @@
         },
         {
           id: "01232556",
-          descricao: "Blusa xadrez de manga comprida",
+          descricao: "Camisa xadrez de manga comprida",
           status: "OCULTO",
           quantidade: 1,
           preco: 7.0,
@@ -27,7 +27,7 @@
         },
         {
           id: "01232557",
-          descricao: "Blusa xadrez de manga comprida",
+          descricao: "Calça xadrez de manga comprida",
           status: "INDISPONÍVEL",
           quantidade: 1,
           preco: 7.0,
@@ -35,6 +35,13 @@
           selecionado: false,
         },
       ]);
+
+      const [searchTerm, setSearchTerm] = useState("")
+
+      const productFiltred = produtos.filter(product => {
+        return product.descricao.toLocaleLowerCase().includes(searchTerm.toLowerCase()) || 
+        product.id.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+      })
 
       const selecionaProduto = (id) => {
         setProdutos((prevProdutos) =>
@@ -56,11 +63,11 @@
           <div className="header">
             <h2>Controle de Estoque</h2>
           </div>
-            <Acoes />
+            <Acoes products={produtos} setProdutos={setProdutos} setSearchTerm={setSearchTerm} />
           <table className="inventory-table">
             <Header selecionaTodos={selecionaTodos} />
             <tbody>
-              {produtos.map((product) => (
+              {productFiltred.map((product) => (
                 <LinhaProduto
                   key={product.id}
                   product={product}
