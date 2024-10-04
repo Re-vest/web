@@ -22,7 +22,7 @@ const options = [
 const makeAnimation = MakeAnimation()
 
 const Filter = () => (
-  <div style={{zIndex:999}}><Select options={options} isMulti
+  <div style={{maxHeight:'0px',maxWidth:'570px',fontSize:'14px'}}><Select className='z-[999]' options={options} isMulti
   components={makeAnimation}placeholder="Selecionar"
  />
 </div>
