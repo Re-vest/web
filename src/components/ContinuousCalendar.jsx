@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { EventModal } from './EventModal';
 import { Plus } from 'lucide-react';
+import { Event } from './Event';
 
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
 
-export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen,setDate }) => {
+export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen, setDate, events }) => {
   const today = new Date();
   const dayRefs = useRef([]);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -36,7 +36,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
         });
       } else {
         const offset = window.scrollY + elementRect.top - (window.innerHeight / offsetFactor) + (elementRect.height / 2);
-  
+
         window.scrollTo({
           top: offset,
           behavior: 'smooth',
@@ -60,8 +60,8 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
   };
 
   const handleDayClick = (day, month, year) => {
-    const date = new Date(year, month, day) 
-    setDate(`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2, '0')}-${String(parseInt(date.getDate(), 10)).padStart(2, '0')}`)
+    const date = new Date(year, month, day)
+    setDate(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(parseInt(date.getDate(), 10)).padStart(2, '0')}`)
     setIsModalOpen(true)
     if (!onClick) { return; }
     if (month < 0) {
@@ -96,9 +96,23 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
 
     const calendarDays = daysOfYear();
 
+    console.log(events)
+
     const calendar = calendarDays.map(({ month, day }, index) => {
       const isNewMonth = index === 0 || calendarDays[index - 1].month !== month;
       const isToday = today.getMonth() === month && today.getDate() === day && today.getFullYear() === year;
+
+      const eventsForDay = events.filter(event => {
+        const eventStart = event.startAt;
+        const eventEnd = event.endAt;
+
+        const currentDate = new Date(year, month, day);
+        // console.log(eventEnd)
+        // console.log(currentDate)
+        // console.log(currentDate >= eventStart && currentDate <= eventEnd)
+        return currentDate >= eventStart && currentDate <= eventEnd;
+      });
+
 
       return (
         <div
@@ -109,9 +123,29 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
           onClick={() => handleDayClick(day, month, year)}
           className={`relative z-10 m-[-0.5px] aspect-square w-full grow cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-cyan-400 sm:-m-px sm:size-20 sm:rounded-2xl sm:border-2 lg:size-28 lg:rounded-3xl 2xl:size-40 text-center flex flex-col items-start justify-between px-2 py-2`}
         >
-          <span className={`top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 sm:text-sm left-2 lg:top-2 lg:size-8 lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
-            {day}
-          </span>
+          {
+            eventsForDay.length < 3 ? (
+              <span className={`w-full h-fit flex flex-col items-start rounded-full text-xs lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
+                {day}
+                <div className='w-full flex flex-col gap-1'>
+                  {eventsForDay.map(event => <Event key={event.id} color={event.color} title={event.title} />)}
+                </div>
+              </span>
+
+            ) : (
+
+              <span className={`w-full h-fit flex justify-between rounded-full text-xs lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
+                {day}
+                <div className='grid grid-flow-col grid-rows-3 gap-1'>
+                  {eventsForDay.map(event => <Event key={event.id} color={event.color} />)}
+                </div>
+              </span>
+
+            )
+          }
+
+
+
           {isNewMonth && (
             <span className="w-full truncate px-1.5 text-sm font-semibold text-slate-300 lg:-mb-1 lg:px-0 lg:text-lg 2xl:mb-[-4px] 2xl:text-2xl right-0 text-end">
               {monthNames[month]}
@@ -122,7 +156,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
     });
 
     return calendar;
-  }, [year]);
+  }, [year, events]);
 
   useEffect(() => {
     const root = document.querySelector('.calendar-container') || document;
@@ -156,52 +190,52 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
 
   return (
     <>
-    <div className={`rounded-2xl bg-white pb-10 text-slate-800 ${fullHeight ? '' : 'calendar-container h-full overflow-y-scroll'}`}>
-      <div className="sticky -top-px z-50 w-full bg-white px-5 pt-7 sm:px-10 sm:pt-10">
-        <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
-            <Select name="" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
-            <button onClick={handleTodayClick} type="button" className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:rounded-xl lg:px-5 lg:py-2.5">
-              Hoje
-            </button>
-            <button type="button" className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 sm:rounded-xl lg:px-5 lg:py-2.5"
-            onClick={() => setIsModalOpen(true)}
-            >
-              <Plus size={15} /> Criar evento
-            </button>
-          </div>
-          <div className="flex w-fit items-center justify-between">
-            <button
-              onClick={handlePrevYear}
-              className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
-            >
-              <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
-              </svg>
-            </button>
-            <h1 className="min-w-16 text-center text-lg font-semibold sm:min-w-20 sm:text-xl">{year}</h1>
-            <button
-              onClick={handleNextYear}
-              className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
-            >
-              <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div className="grid w-full grid-cols-7 justify-between text-slate-500">
-          {daysOfWeek.map((day, index) => (
-            <div key={index} className="w-full border-b border-slate-200 py-2 text-center font-semibold">
-              {day}
+      <div className={`rounded-2xl bg-white pb-10 text-slate-800 ${fullHeight ? '' : 'calendar-container h-full overflow-y-scroll'}`}>
+        <div className="sticky -top-px z-50 w-full bg-white px-5 pt-7 sm:px-10 sm:pt-10">
+          <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              <Select name="" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
+              <button onClick={handleTodayClick} type="button" className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:rounded-xl lg:px-5 lg:py-2.5">
+                Hoje
+              </button>
+              <button type="button" className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 sm:rounded-xl lg:px-5 lg:py-2.5"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <Plus size={15} /> Criar evento
+              </button>
             </div>
-          ))}
+            <div className="flex w-fit items-center justify-between">
+              <button
+                onClick={handlePrevYear}
+                className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
+              >
+                <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
+                </svg>
+              </button>
+              <h1 className="min-w-16 text-center text-lg font-semibold sm:min-w-20 sm:text-xl">{year}</h1>
+              <button
+                onClick={handleNextYear}
+                className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
+              >
+                <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div className="grid w-full grid-cols-7 justify-between text-slate-500">
+            {daysOfWeek.map((day, index) => (
+              <div key={index} className="w-full border-b border-slate-200 py-2 text-center font-semibold">
+                {day}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-7 px-5 pt-4 sm:px-10 sm:pt-6">
+          {generateCalendar}
         </div>
       </div>
-      <div className="grid w-full grid-cols-7 px-5 pt-4 sm:px-10 sm:pt-6">
-        {generateCalendar}
-      </div>
-    </div>
     </>
   );
 };
