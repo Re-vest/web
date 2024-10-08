@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import '../../styles/Modal.css'
 
 
-function Modal() {
+function Modal({ product }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -41,9 +41,6 @@ function Modal() {
           <ul className="modal-options">
             <li className="modal-item">
               <span className="icon"><Pencil size={18}/></span> Editar
-            </li>
-            <li className="modal-item">
-              <span className="icon"><RefreshCcw size={18}/></span> Alterar status
             </li>
             <li className="modal-item">
               <span className="icon"><Trash2 size={18}/></span> Excluir item
