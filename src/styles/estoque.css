@@ -20,6 +20,7 @@
 
 .acoes {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -74,16 +75,19 @@
 .status.ativo {
   background-color: #dafbe1;
   color: #228b22;
+  font-weight: bold;
 }
 
 .status.oculto {
   background-color: #fde9c7;
   color: #ff9900;
+  font-weight: bold;
 }
 
 .status.indisponível {
   background-color: #fbe1e1;
   color: #d9534f;
+  font-weight: bold;
 }
 
 .acoes-btn {

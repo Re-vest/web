@@ -37,6 +37,7 @@
       ]);
 
       const [searchTerm, setSearchTerm] = useState("")
+      
 
       const productFiltred = produtos.filter(product => {
         return product.descricao.toLocaleLowerCase().includes(searchTerm.toLowerCase()) || 

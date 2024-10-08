@@ -25,7 +25,7 @@ export const LinhaProduto = ({ product, selecionaProduto }) => {
         <td>R$ {product.preco.toFixed(2)}</td>
         <td>{product.categoria}</td>
         <td>
-      <Modal />
+      <Modal product={product} />
         </td>
       </tr>
 
