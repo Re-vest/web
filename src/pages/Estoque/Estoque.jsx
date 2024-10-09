@@ -1,9 +1,9 @@
-// src/pages/Estoque.js
 import React, { useEffect, useState } from "react";
 import "../../styles/estoque.css";
 import { Header } from "../../components/Estoque/Header";
 import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
 import { Acoes } from "../../components/Estoque/Acoes";
+import { Navbar } from "../../components/Navbar";
 
 export const Estoque = () => {
   const [produtos, setProdutos] = useState([
@@ -43,7 +43,6 @@ export const Estoque = () => {
       categoria: "Acessórios",
       selecionado: false,
     },
-    // Adicione mais produtos conforme necessário
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -89,21 +88,38 @@ export const Estoque = () => {
     },
   ];
 
+  const applyFilters = () => {
+    return produtos.filter((produto) => {
+      const matchesSearchTerm =
+        produto.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        produto.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesStatus =
+        selectedFilters.status.length === 0 ||
+        selectedFilters.status.includes(produto.status);
+
+      const matchesQuantidade =
+        selectedFilters.quantidade.length === 0 ||
+        (selectedFilters.quantidade.includes("ate_5_itens") && produto.quantidade <= 5) ||
+        (selectedFilters.quantidade.includes("mais_de_5_itens") && produto.quantidade > 5);
+
+      const matchesTipo =
+        selectedFilters.tipo.length === 0 ||
+        selectedFilters.tipo.includes(produto.categoria.toLowerCase());
+
+      const matchesValor =
+        selectedFilters.valor.length === 0 ||
+        (selectedFilters.valor.includes("ate_5_reais") && produto.preco <= 5) ||
+        (selectedFilters.valor.includes("entre_6_e_20_reais") && produto.preco > 5 && produto.preco <= 20) ||
+        (selectedFilters.valor.includes("mais_de_21_reais") && produto.preco > 21);
+
+      return matchesSearchTerm && matchesStatus && matchesQuantidade && matchesTipo && matchesValor;
+    });
+  };
+
   useEffect(() => {
-    setFiltredOptions(
-      produtos.filter((product) => {
-        const matchesSearchTerm =
-          product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.id.toLowerCase().includes(searchTerm.toLowerCase());
-
-        return matchesSearchTerm;
-      })
-    );
-  }, [searchTerm]);
-
-  let filteredOptions = [];
-
-  // Função para atualizar os filtros
+    setFiltredOptions(applyFilters());
+  }, [searchTerm, selectedFilters, produtos]);
 
   const handleFilterChange = (event) => {
     const options = event;
@@ -111,62 +127,20 @@ export const Estoque = () => {
     for (let i = 0; i < options.length; i++) {
       selectedValues.push(options[i].value);
     }
-    console.log(selectedValues);
-    filteredOptions = filterOptions
-      .map((group) => ({
-        ...group,
-        options: group.options.filter((option) =>
-          selectedValues.includes(option.value)
-        ),
-      }))
-      .filter((group) => group.options.length > 0);
 
-    const filteredStatusValues = filteredOptions.flatMap((group) =>
-      group.options
-        .filter((option) => selectedValues.includes(option.value))
-        .map((option) => option.value)
-    );
+    // Atualizar filtros selecionados
+    setSelectedFilters((prev) => ({
+      ...prev,
+      status: selectedValues, // Atualizar o status ou outros filtros conforme necessário
+    }));
 
-    setFiltredOptions(
-      produtos.filter((produto) => {
-        const matchesStatus =
-          filteredStatusValues.length === 0 ||
-          filteredStatusValues.includes(produto.status);
-
-        const matchesQuantidade =
-          filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_itens") &&
-            produto.quantidade <= 5) ||
-          (filteredStatusValues.includes("mais_de_5_itens") &&
-            produto.quantidade > 5);
-
-        const matchesTipo =
-          filteredStatusValues.length === 0 ||
-          filteredStatusValues.includes(produto.categoria.toLowerCase());
-
-        console.log("Teste" + matchesTipo);
-
-        const matchesValor =
-          filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_reais") &&
-            produto.preco <= 5) ||
-          (filteredStatusValues.includes("entre_6_e_20_reais") &&
-            produto.preco > 5 &&
-            produto.preco <= 20) ||
-          (filteredStatusValues.includes("mais_de_21_reais") &&
-            produto.preco > 21);
-        return (
-          filteredStatusValues.includes(produto.status) ||
-          matchesStatus ||
-          matchesQuantidade ||
-          matchesTipo ||
-          matchesValor
-        );
-      })
-    );
+    // Atualizar as opções filtradas
+    setFiltredOptions(applyFilters());
   };
 
   return (
+    <div className="w-full h-full flex">
+      <Navbar />
     <div className="inventory-container">
       <div className="header">
         <h2>Controle de Estoque</h2>
@@ -204,6 +178,7 @@ export const Estoque = () => {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
