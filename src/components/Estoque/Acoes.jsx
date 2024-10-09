@@ -4,7 +4,7 @@ import { Plus, Search } from "lucide-react";
 import { Button } from "../Button";
 import Filter from "./Filter";
 
-export const Acoes = ({ products, setSearchTerm }) => {
+export const Acoes = ({ products, setSearchTerm, options, handleFilterChange }) => {
 
   return (
     <div className="header">
@@ -16,7 +16,7 @@ export const Acoes = ({ products, setSearchTerm }) => {
         />
       </div>
       <div className="acoes">
-        <Filter />
+        <Filter options={options} handleFilterChange={handleFilterChange}/>
         <Button text={"Adicionar Produto"} icon={<Plus size={24} />} />
       </div>
     </div>
