@@ -12,7 +12,7 @@ export const Estoque = () => {
       descricao: "Blusa xadrez de manga comprida",
       status: "Disponível",
       quantidade: 4,
-      preco: 7.0,
+      preco: 4.0,
       categoria: "Roupas",
       selecionado: false,
     },
@@ -34,11 +34,20 @@ export const Estoque = () => {
       categoria: "Roupas",
       selecionado: false,
     },
+    {
+      id: "01232587",
+      descricao: "Cueca",
+      status: "Vendido",
+      quantidade: 3,
+      preco: 25.0,
+      categoria: "Acessórios",
+      selecionado: false,
+    },
     // Adicione mais produtos conforme necessário
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [filtredOptions, setFiltredOptions] = useState([])
+  const [filtredOptions, setFiltredOptions] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     status: [],
     quantidade: [],
@@ -64,10 +73,10 @@ export const Estoque = () => {
       ],
     },
     {
-      label: "Tipo",
+      label: "Categoria",
       options: [
         { label: "Roupas", value: "roupas" },
-        { label: "Acessórios", value: "acessorios" },
+        { label: "Acessórios", value: "acessórios" },
       ],
     },
     {
@@ -81,19 +90,18 @@ export const Estoque = () => {
   ];
 
   useEffect(() => {
-    setFiltredOptions(produtos.filter((product) => {
-      const matchesSearchTerm =
-        product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.id.toLowerCase().includes(searchTerm.toLowerCase());
-  
-      
-  
-      return matchesSearchTerm 
-    }))
+    setFiltredOptions(
+      produtos.filter((product) => {
+        const matchesSearchTerm =
+          product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-  }, [searchTerm])
+        return matchesSearchTerm;
+      })
+    );
+  }, [searchTerm]);
 
-  let filteredOptions = []
+  let filteredOptions = [];
 
   // Função para atualizar os filtros
 
@@ -101,38 +109,61 @@ export const Estoque = () => {
     const options = event;
     const selectedValues = [];
     for (let i = 0; i < options.length; i++) {
-        selectedValues.push(options[i].value);
+      selectedValues.push(options[i].value);
     }
-    console.log(selectedValues)
-    filteredOptions = filterOptions.map(group => ({
-      ...group,
-      options: group.options.filter(option => selectedValues.includes(option.value)),
-    })).filter(group => group.options.length > 0)
+    console.log(selectedValues);
+    filteredOptions = filterOptions
+      .map((group) => ({
+        ...group,
+        options: group.options.filter((option) =>
+          selectedValues.includes(option.value)
+        ),
+      }))
+      .filter((group) => group.options.length > 0);
 
-    const filteredStatusValues = filteredOptions[0].options.map(option => option.value)
-    console.log(filteredStatusValues)
+    const filteredStatusValues = filteredOptions.flatMap((group) =>
+      group.options
+        .filter((option) => selectedValues.includes(option.value))
+        .map((option) => option.value)
+    );
 
-    
-    setFiltredOptions(produtos.filter(produto => {
-      const matchesStatus =
+    setFiltredOptions(
+      produtos.filter((produto) => {
+        const matchesStatus =
           filteredStatusValues.length === 0 ||
           filteredStatusValues.includes(produto.status);
-    
+
         const matchesQuantidade =
           filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_itens") && produto.quantidade <= 5) ||
-          (filteredStatusValues.includes("mais_de_5_itens") && produto.quantidade > 5);
-    
+          (filteredStatusValues.includes("ate_5_itens") &&
+            produto.quantidade <= 5) ||
+          (filteredStatusValues.includes("mais_de_5_itens") &&
+            produto.quantidade > 5);
+
         const matchesTipo =
-          filteredStatusValues.length === 0 || filteredStatusValues.includes(produto.categoria);
-    
+          filteredStatusValues.length === 0 ||
+          filteredStatusValues.includes(produto.categoria.toLowerCase());
+
+        console.log("Teste" + matchesTipo);
+
         const matchesValor =
           filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_reais") && produto.preco <= 5) ||
-          (filteredStatusValues.includes("entre_6_e_20_reais") && produto.preco > 5 && produto.preco <= 20) ||
-          (filteredStatusValues.includes("mais_de_21_reais") && produto.preco > 21);
-      return filteredStatusValues.includes(produto.status) || matchesStatus || matchesQuantidade || matchesTipo || matchesValor;
-    }))
+          (filteredStatusValues.includes("ate_5_reais") &&
+            produto.preco <= 5) ||
+          (filteredStatusValues.includes("entre_6_e_20_reais") &&
+            produto.preco > 5 &&
+            produto.preco <= 20) ||
+          (filteredStatusValues.includes("mais_de_21_reais") &&
+            produto.preco > 21);
+        return (
+          filteredStatusValues.includes(produto.status) ||
+          matchesStatus ||
+          matchesQuantidade ||
+          matchesTipo ||
+          matchesValor
+        );
+      })
+    );
   };
 
   return (
@@ -150,23 +181,25 @@ export const Estoque = () => {
 
       {/* Tabela de produtos */}
       <table className="inventory-table">
-        <Header 
-          selecionaTodos={(e) => 
-            setProdutos((prev) => 
-              prev.map(p => ({ ...p, selecionado: e.target.checked }))
+        <Header
+          selecionaTodos={(e) =>
+            setProdutos((prev) =>
+              prev.map((p) => ({ ...p, selecionado: e.target.checked }))
             )
-          } 
+          }
         />
         <tbody>
           {filtredOptions.map((product) => (
-            <LinhaProduto 
-              key={product.id} 
-              product={product} 
-              selecionaProduto={(id) => 
-                setProdutos(prev => 
-                  prev.map(p => p.id === id ? { ...p, selecionado: !p.selecionado } : p)
+            <LinhaProduto
+              key={product.id}
+              product={product}
+              selecionaProduto={(id) =>
+                setProdutos((prev) =>
+                  prev.map((p) =>
+                    p.id === id ? { ...p, selecionado: !p.selecionado } : p
+                  )
                 )
-              } 
+              }
             />
           ))}
         </tbody>
