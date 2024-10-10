@@ -4,6 +4,7 @@ import "../../styles/estoque.css";
 import { Header } from "../../components/Estoque/Header";
 import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
 import { Acoes } from "../../components/Estoque/Acoes";
+import { Navbar } from "../../components/Navbar";
 
 export const Estoque = () => {
   const [produtos, setProdutos] = useState([
@@ -51,7 +52,7 @@ export const Estoque = () => {
   const [selectedFilters, setSelectedFilters] = useState({
     status: [],
     quantidade: [],
-    tipo: [],
+    categoria: [],
     valor: [],
   });
 
@@ -96,14 +97,41 @@ export const Estoque = () => {
           product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-        return matchesSearchTerm;
+        const matchesStatus =
+          selectedFilters.status.length === 0 ||
+          selectedFilters.status.includes(product.status);
+
+        const matchesQuantidade =
+          selectedFilters.quantidade.length === 0 ||
+          (selectedFilters.quantidade.includes("ate_5_itens") &&
+            product.quantidade <= 5) ||
+          (selectedFilters.quantidade.includes("mais_de_5_itens") &&
+            product.quantidade > 5);
+
+        const matchesCategoria =
+          selectedFilters.categoria.length === 0 ||
+          selectedFilters.categoria.includes(product.categoria.toLowerCase());
+
+        const matchesValor =
+          selectedFilters.valor.length === 0 ||
+          (selectedFilters.valor.includes("ate_5_reais") &&
+            product.preco <= 5) ||
+          (selectedFilters.valor.includes("entre_6_e_20_reais") &&
+            product.preco > 5 &&
+            product.preco <= 20) ||
+          (selectedFilters.valor.includes("mais_de_21_reais") &&
+            product.preco > 21);
+
+        return (
+          matchesSearchTerm &&
+          matchesStatus &&
+          matchesQuantidade &&
+          matchesCategoria &&
+          matchesValor
+        );
       })
     );
-  }, [searchTerm]);
-
-  let filteredOptions = [];
-
-  // Função para atualizar os filtros
+  }, [searchTerm, selectedFilters, produtos]);
 
   const handleFilterChange = (event) => {
     const options = event;
@@ -111,99 +139,60 @@ export const Estoque = () => {
     for (let i = 0; i < options.length; i++) {
       selectedValues.push(options[i].value);
     }
-    console.log(selectedValues);
-    filteredOptions = filterOptions
-      .map((group) => ({
-        ...group,
-        options: group.options.filter((option) =>
-          selectedValues.includes(option.value)
-        ),
-      }))
-      .filter((group) => group.options.length > 0);
 
-    const filteredStatusValues = filteredOptions.flatMap((group) =>
-      group.options
-        .filter((option) => selectedValues.includes(option.value))
-        .map((option) => option.value)
-    );
+    const newSelectedFilters = { ...selectedFilters };
 
-    setFiltredOptions(
-      produtos.filter((produto) => {
-        const matchesStatus =
-          filteredStatusValues.length === 0 ||
-          filteredStatusValues.includes(produto.status);
+    // Atualizar filtros selecionados de acordo com o grupo de opções
+    filterOptions.forEach((group) => {
+      newSelectedFilters[group.label.toLowerCase()] = selectedValues.filter(
+        (value) => group.options.some((option) => option.value === value)
+      );
+    });
 
-        const matchesQuantidade =
-          filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_itens") &&
-            produto.quantidade <= 5) ||
-          (filteredStatusValues.includes("mais_de_5_itens") &&
-            produto.quantidade > 5);
-
-        const matchesTipo =
-          filteredStatusValues.length === 0 ||
-          filteredStatusValues.includes(produto.categoria.toLowerCase());
-
-        console.log("Teste" + matchesTipo);
-
-        const matchesValor =
-          filteredStatusValues.length === 0 ||
-          (filteredStatusValues.includes("ate_5_reais") &&
-            produto.preco <= 5) ||
-          (filteredStatusValues.includes("entre_6_e_20_reais") &&
-            produto.preco > 5 &&
-            produto.preco <= 20) ||
-          (filteredStatusValues.includes("mais_de_21_reais") &&
-            produto.preco > 21);
-        return (
-          filteredStatusValues.includes(produto.status) ||
-          matchesStatus ||
-          matchesQuantidade ||
-          matchesTipo ||
-          matchesValor
-        );
-      })
-    );
+    setSelectedFilters(newSelectedFilters);
   };
 
   return (
-    <div className="inventory-container">
-      <div className="header">
-        <h2>Controle de Estoque</h2>
-      </div>
-      <Acoes
-        products={produtos}
-        setProdutos={setProdutos}
-        setSearchTerm={setSearchTerm}
-        options={filterOptions}
-        handleFilterChange={handleFilterChange}
-      />
-
-      {/* Tabela de produtos */}
-      <table className="inventory-table">
-        <Header
-          selecionaTodos={(e) =>
-            setProdutos((prev) =>
-              prev.map((p) => ({ ...p, selecionado: e.target.checked }))
-            )
-          }
+    <div className="w-full h-full flex">
+      <Navbar />
+      <div className="inventory-container">
+        <div className="header">
+          <h2>Controle de Estoque</h2>
+        </div>
+        <Acoes
+          products={produtos}
+          setProdutos={setProdutos}
+          setSearchTerm={setSearchTerm}
+          options={filterOptions}
+          handleFilterChange={handleFilterChange}
         />
-        <tbody>
-          {filtredOptions.map((product) => (
-            <LinhaProduto
-              key={product.id}
-              product={product}
-              selecionaProduto={(id) =>
-                setProdutos((prev) =>
-                  prev.map((p) =>
-                    p.id === id ? { ...p, selecionado: !p.selecionado } : p
+
+        {/* Tabela de produtos */}
+        <table className="inventory-table">
+          <Header
+            selecionaTodos={(e) =>
+              setProdutos((prev) =>
+                prev.map((p) => ({ ...p, selecionado: e.target.checked }))
+              )
+            }
+          />
+          <tbody>
+            {filtredOptions.map((product) => (
+              <LinhaProduto
+                key={product.id}
+                product={product}
+                selecionaProduto={(id) =>
+                  setProdutos((prev) =>
+                    prev.map((p) =>
+                      p.id === id ? { ...p, selecionado: !p.selecionado } : p
+                    )
                   )
-                )
-              }
-            />
-          ))}
-        </tbody>
-      </table>
+                }
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
