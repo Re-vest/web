@@ -1,7 +1,7 @@
-export function Event({ color, title }) {
+export function Event({ event, handleClickEvent }) {
   return(
-    <div style={{ backgroundColor: color }} data-title={title} className="z-[999] w-full min-w-5 min-h-5 truncate border-[1px] rounded-lg hover:brightness-110 text-sm">
-      {title}
+    <div style={{ backgroundColor: event.color }} onClick={() => handleClickEvent(event)} data-title={event.title} className="absolute w-full min-w-5 min-h-5 truncate border-[1px] rounded-lg hover:brightness-110 text-sm">
+      {event.title}
     </div>
   )
 }

@@ -6,7 +6,7 @@ const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
 
-export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen, setDate, events }) => {
+export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen, setDate, events, handleClickEvent }) => {
   const today = new Date();
   const dayRefs = useRef([]);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -125,10 +125,13 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
         >
           {
             eventsForDay.length < 3 ? (
-              <span className={`w-full h-fit flex flex-col items-start rounded-full text-xs lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
+              <span className={`w-full h-fit flex flex-col items-start text-xs lg:text-base ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
+                <p className={`${isToday ? 'bg-blue-500 font-semibold text-white' : ''} px-2 rounded-full`}>
                 {day}
-                <div className='w-full flex flex-col gap-1'>
-                  {eventsForDay.map(event => <Event key={event.id} color={event.color} title={event.title} />)}
+
+                </p>
+                <div className='w-full flex flex-col gap-1 relative'>
+                  {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} />)}
                 </div>
               </span>
 
@@ -138,7 +141,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
                 {day}
                 <div className='grid grid-flow-col grid-rows-3 gap-1'>
                   {eventsForDay.map(event => <Event key={event.id} color={event.color} />)}
-                </div>
+                </div> 
               </span>
 
             )
@@ -191,7 +194,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
   return (
     <>
       <div className={`rounded-2xl bg-white pb-10 text-slate-800 ${fullHeight ? '' : 'calendar-container h-full overflow-y-scroll'}`}>
-        <div className="sticky -top-px z-50 w-full bg-white px-5 pt-7 sm:px-10 sm:pt-10">
+        <div className="sticky -top-px z-50 w-full bg-white px-5 sm:px-10">
           <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
             <div className="flex flex-wrap gap-2 sm:gap-3">
               <Select name="" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
