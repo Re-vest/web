@@ -6,6 +6,8 @@ Modal.setAppElement("#root");
 
 const CadastroProdutoModal = ({ isOpen, onClose }) => {
   const [images, setImages] = useState([]);
+  const [estadoProduto, setEstadoProduto] = useState("");
+  const [preco, setPreco] = useState("");
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -20,6 +22,17 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
     event.preventDefault();
     console.log("Produto cadastrado");
     onClose();
+  };
+
+  const handleCheckboxChange = (value) => {
+    setEstadoProduto(value); // Atualiza o estado do produto com o valor do checkbox selecionado
+  };
+
+  const handlePrecoChange = (event) => {
+    const { value } = event.target;
+    // Remove caracteres não numéricos, exceto a vírgula
+    const formattedValue = value.replace(/[^0-9,]/g, "");
+    setPreco(formattedValue);
   };
 
   return (
@@ -37,15 +50,26 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
             <label>Tipo:</label>
             <select>
               <option value="">Selecione</option>
-              {/* Opções do tipo */}
+              <option value="roupas-calcados">Calçados</option>
+              <option value="roupas-camisas">Camisas</option>
+              <option value="roupas-calcas">Calças</option>
+              <option value="roupas-blusas">Blusas</option>
+              <option value="roupas-vestidos">Vestidos</option>
+              <option value="roupas-shorts">Shorts</option>
+              <option value="roupas-outros">Outros (Roupas)</option>
+              <option value="acessorios-bolsas">Bolsas</option>
+              <option value="acessorios-cintos">Cintos</option>
+              <option value="acessorios-relogios">Relógios</option>
+              <option value="acessorios-oculos-de-sol">Óculos de Sol</option>
+              <option value="acessorios-outros">Outros (Acessórios)</option>
             </select>
           </div>
 
           <div className="select-categoria">
             <label>Categoria:</label>
             <select>
-              <option value="">Selecione</option>
-              {/* Opções do tipo */}
+              <option value="roupas">Roupas</option>
+              <option value="acessorios">Acessorios</option>
             </select>
           </div>
         </div>
@@ -64,13 +88,28 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
           <label>Estado do produto:</label>
           <div className="checkbox-group">
             <label>
-              <input type="checkbox" /> Novo
+              <input
+                type="checkbox"
+                checked={estadoProduto === "novo"}
+                onChange={() => handleCheckboxChange("novo")}
+              />
+              Novo
             </label>
             <label>
-              <input type="checkbox" /> Seminovo
+              <input
+                type="checkbox"
+                checked={estadoProduto === "seminovo"}
+                onChange={() => handleCheckboxChange("seminovo")}
+              />
+              Seminovo
             </label>
             <label>
-              <input type="checkbox" /> Usado
+              <input
+                type="checkbox"
+                checked={estadoProduto === "usado"}
+                onChange={() => handleCheckboxChange("usado")}
+              />
+              Usado
             </label>
           </div>
         </div>
@@ -86,19 +125,36 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div className="form-group">
-          <label>Preço:</label>
-          <input type="text" />
+        <div className="atributos">
+          <div className="input-preco">
+            <label>Preço:</label>
+            <input
+              type="text"
+              value={preco}
+              onChange={handlePrecoChange}
+              placeholder="0,00"
+              style={{
+                textAlign: "left", // Para alinhar o texto à esquerda
+                appearance: "none", // Remove o estilo padrão do input
+                outline: "none", // Remove o contorno
+                border: "none", // Remove a borda, se desejar
+              }}
+            />
+          </div>
 
-          <label>Estampa:</label>
-          <input type="text" />
+          <div className="input-estampa">
+            <label>Estampa:</label>
+            <input type="text" />
+          </div>
         </div>
 
-        <div className="form-group">
+        <div className="group-status">
           <label>Status:</label>
           <select>
             <option value="ativo">Ativo</option>
             <option value="inativo">Inativo</option>
+            <option value="oculto">Oculto</option>
+            <option value="vendido">Vendido</option>
           </select>
         </div>
 

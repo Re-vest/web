@@ -28,32 +28,20 @@
 
 .form-group label {
   margin-right: 10px;
-  width: 200px; /* Aumentei a largura da label */
-  white-space: nowrap; /* Impede quebra de linha dentro da label */
+  width: 200px;
+  white-space: nowrap;
 }
 
 .form-group select,
 .form-group input,
 .form-group textarea {
-  width: calc(
-    100% - 210px
-  ); /* Ajusta o input para compensar a largura da label */
+  width: calc(100% - 210px); /* Ajusta o input para compensar a largura da label */
   border-radius: 5px;
   padding: 5px;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
 
-.form-group textarea {
-  resize: none;
-  width: 2000px;
-}
-
-.form-group input {
-  width: 2000px;
-}
-
-/* Ajuste para checkboxes */
 .checkbox-options {
   display: flex;
   gap: 20px;
@@ -72,7 +60,13 @@ input[type="checkbox"] {
   margin-right: 5px;
 }
 
-/* Estilo para a pré-visualização de imagens */
+.checkbox-group {
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+
+}
+
 .image-preview {
   display: flex;
   gap: 10px;
@@ -101,7 +95,6 @@ input[type="checkbox"] {
   border-radius: 50%;
 }
 
-/* Ações do formulário */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -109,6 +102,7 @@ input[type="checkbox"] {
 }
 
 button {
+  width: 20%;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -136,11 +130,7 @@ button[type="button"] {
   gap: 10px;
 }
 
-.select-tipo select {
-  width: 300px;
-  border-radius: 5px;
-}
-
+.select-tipo select,
 .select-categoria select {
   width: 300px;
   border-radius: 5px;
@@ -175,41 +165,76 @@ button[type="button"] {
   width: 100%;
 }
 
-.checkbox-options {
-  width: 100%;
-}
-
-.checkbox-options label {
-  text-wrap: nowrap;
-}
-
-.checkbox-group {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
 .caracteristicas {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 30px;
 }
 
 .input-cor,
 .input-tamanho {
   display: flex;
   gap: 10px;
-  border-radius: 5px;
 }
 
-.input-tamanho{
-    width: 100%;
-    justify-content: end;
+.input-tamanho input {
+  width: 280.7px;
+}
+
+.input-cor input {
+  width: 280.7px;
+  display: flex;
+  justify-content: end;
 }
 
 .input-cor,
-.input-tamanho ,input{
+.input-tamanho,
+input {
   width: 100%;
   border-radius: 5px;
   gap: 10px;
 }
+
+.atributos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.input-preco,
+.input-estampa {
+  display: flex;
+  gap: 10px;
+}
+
+.input-estampa {
+  width: 100%;
+  justify-content: end;
+}
+
+.input-preco,
+.input-estampa,
+input {
+  width: 100%;
+  border-radius: 5px;
+  gap: 10px;
+}
+
+.group-status {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.group-status select {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.form-group input { 
+  width: 2000px; 
+}
+
+
