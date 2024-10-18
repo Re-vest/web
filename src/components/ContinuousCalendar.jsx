@@ -131,7 +131,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
 
                 </p>
                 <div className='w-full flex flex-col gap-1 relative'>
-                  {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} />)}
+                  {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} title={event.title} />)}
                 </div>
               </span>
 
@@ -140,7 +140,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
               <span className={`w-full h-fit flex justify-between rounded-full text-xs lg:text-base ${isToday ? 'bg-blue-500 font-semibold text-white' : ''} ${month < 0 ? 'text-slate-400' : 'text-slate-800'}`}>
                 {day}
                 <div className='grid grid-flow-col grid-rows-3 gap-1'>
-                  {eventsForDay.map(event => <Event key={event.id} color={event.color} />)}
+                {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} />)}
                 </div> 
               </span>
 

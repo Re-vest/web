@@ -7,7 +7,7 @@ export function CalendarPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [date, setDate] = useState('');
-
+3
   const [events, setEvents] = useState([
     {
       id: Math.random(),
@@ -30,7 +30,7 @@ export function CalendarPage() {
     <div className="h-full w-full flex">
       <Navbar />
 
-      {isModalOpen ? <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} /> : <></>}
+      {isModalOpen ? <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} events={events} /> : <></>}
     
       <div className="w-full flex justify-between pt-10 pl-10">
 
