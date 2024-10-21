@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import "../styles/ModalProduto.css"; // Importação do CSS
 import PickList from "./picklist";
 import { Input } from "./Input";
-import {Button} from "./Button"
+import { Button } from "./Button";
 
 Modal.setAppElement("#root");
 
@@ -45,6 +45,7 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
       contentLabel="Cadastrar Produto"
       className="modal"
       overlayClassName="modal-overlay"
+      shouldCloseOnOverlayClick={false}
     >
       <h2>Controle de Estoque › Adicionar Produto</h2>
       <form className="formulario" onSubmit={handleSubmit}>
@@ -59,15 +60,42 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
         <div className="select-options">
           <div className="select-tipo">
             <label>Tipo:</label>
-            <PickList />
+            <PickList
+              options={[
+                { label: "Calçados", value: "roupas-calcados" },
+                { label: "Camisas", value: "roupas-camisas" },
+                { label: "Calças", value: "roupas-calcas" },
+                { label: "Blusas", value: "roupas-blusas" },
+                { label: "Vestidos", value: "roupas-vestidos" },
+                { label: "Shorts", value: "roupas-shorts" },
+                { label: "Outros (Roupas)", value: "roupas-outros" },
+                { label: "Bolsas", value: "acessorios-bolsas" },
+                { label: "Cintos", value: "acessorios-cintos" },
+                { label: "Relógios", value: "acessorios-relogios" },
+                { label: "Óculos de Sol", value: "acessorios-oculos-de-sol" },
+                { label: "Outros (Acessórios)", value: "acessorios-outros" },
+              ]}
+            />
           </div>
           <div className="select-categoria">
             <label>Categoria:</label>
-            <PickList />
+            <PickList
+              options={[
+                { label: "Roupas", value: "roupas" },
+                { label: "Acessórios", value: "acessorios" },
+              ]}
+            />
           </div>
           <div className="select-status">
-          <label>Status</label>
-          <PickList />
+            <label>Status</label>
+            <PickList
+              options={[
+                { label: "Disponível", value: "disponivel" },
+                { label: "Indisponível", value: "indisponivel" },
+                { label: "Oculto", value: "oculto" },
+                { label: "Vendido", value: "vendido" },
+              ]}
+            />
           </div>
         </div>
 
@@ -103,27 +131,33 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
         <div className="caracteristicas">
           <div className="input-cor">
             <label>Cor:</label>
-            <Input/>
+            <Input />
           </div>
           <div className="input-tamanho">
             <label>Tamanho:</label>
-            <Input/>
+            <Input />
           </div>
         </div>
         <div className="atributos">
           <div className="input-preco">
             <label>Preço:</label>
-            <Input/>
+            <Input
+              type="number"
+              value={preco}
+              onChange={handlePrecoChange}
+              placeholder="0,00"
+              maxLength={0}
+            />
           </div>
 
           <div className="input-estampa">
             <label>Estampa:</label>
-            <Input/>
+            <Input />
           </div>
         </div>
         <div className="form-group">
           <label>Anexar Imagem:</label>
-          <input type="file" onChange={handleImageUpload} multiple />
+          <input  type="file" onChange={handleImageUpload} multiple />
         </div>
         <div className="image-preview">
           {images.map((image, index) => (
@@ -140,12 +174,8 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
           ))}
         </div>
         <div className="form-actions">
-          <Button text={"Cancelar"} secondary style={{textAlign:"center"}}/>
-          <Button text={"Salvar"}/>
-          {/* <button type="button" onClick={onClose}>
-            Cancelar
-          </button>
-          <button type="submit">Cadastrar</button> */}
+          <Button text={"Cancelar"} secondary style={{ textAlign: "center" }} />
+          <Button text={"Salvar"} onClick={{}}/>
         </div>
       </form>
     </Modal>

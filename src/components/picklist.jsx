@@ -1,14 +1,11 @@
 import React from 'react'
 import Select from 'react-select'
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
+const options = []
 
-const PickList = () => (
-  <Select options={options} />
+
+const PickList = ({options}) => (
+  <Select placeholder="Selecionar" options={options} />
 )
 
 export default PickList;
