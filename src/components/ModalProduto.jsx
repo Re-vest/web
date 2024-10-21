@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import "../styles/ModalProduto.css"; // Importação do CSS
+import PickList from "./picklist";
+import { Input } from "./Input";
+import {Button} from "./Button"
 
 Modal.setAppElement("#root");
 
@@ -45,48 +48,32 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
     >
       <h2>Controle de Estoque › Adicionar Produto</h2>
       <form className="formulario" onSubmit={handleSubmit}>
+        <div className="input-nome">
+          <label>Nome:</label>
+          <Input placeholder={""} />
+        </div>
+        <div className="textarea-descricao">
+          <label>Descrição:</label>
+          <Input placeholder={""} />
+        </div>
         <div className="select-options">
           <div className="select-tipo">
             <label>Tipo:</label>
-            <select>
-              <option value="">Selecione</option>
-              <option value="roupas-calcados">Calçados</option>
-              <option value="roupas-camisas">Camisas</option>
-              <option value="roupas-calcas">Calças</option>
-              <option value="roupas-blusas">Blusas</option>
-              <option value="roupas-vestidos">Vestidos</option>
-              <option value="roupas-shorts">Shorts</option>
-              <option value="roupas-outros">Outros (Roupas)</option>
-              <option value="acessorios-bolsas">Bolsas</option>
-              <option value="acessorios-cintos">Cintos</option>
-              <option value="acessorios-relogios">Relógios</option>
-              <option value="acessorios-oculos-de-sol">Óculos de Sol</option>
-              <option value="acessorios-outros">Outros (Acessórios)</option>
-            </select>
+            <PickList />
           </div>
-
           <div className="select-categoria">
             <label>Categoria:</label>
-            <select>
-              <option value="roupas">Roupas</option>
-              <option value="acessorios">Acessorios</option>
-            </select>
+            <PickList />
+          </div>
+          <div className="select-status">
+          <label>Status</label>
+          <PickList />
           </div>
         </div>
 
-        <div className="input-nome">
-          <label>Nome:</label>
-          <input type="text" />
-        </div>
-
-        <div className="textarea-descricao">
-          <label>Descrição:</label>
-          <textarea />
-        </div>
-
-        <div className="checkbox-options">
+        <div className="checkbox-group">
           <label>Estado do produto:</label>
-          <div className="checkbox-group">
+          <div className="checkbox-options">
             <label>
               <input
                 type="checkbox"
@@ -113,56 +100,31 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
             </label>
           </div>
         </div>
-
         <div className="caracteristicas">
           <div className="input-cor">
             <label>Cor:</label>
-            <input type="text" />
+            <Input/>
           </div>
           <div className="input-tamanho">
             <label>Tamanho:</label>
-            <input type="text" />
+            <Input/>
           </div>
         </div>
-
         <div className="atributos">
           <div className="input-preco">
             <label>Preço:</label>
-            <input
-              type="text"
-              value={preco}
-              onChange={handlePrecoChange}
-              placeholder="0,00"
-              style={{
-                textAlign: "left", // Para alinhar o texto à esquerda
-                appearance: "none", // Remove o estilo padrão do input
-                outline: "none", // Remove o contorno
-                border: "none", // Remove a borda, se desejar
-              }}
-            />
+            <Input/>
           </div>
 
           <div className="input-estampa">
             <label>Estampa:</label>
-            <input type="text" />
+            <Input/>
           </div>
         </div>
-
-        <div className="group-status">
-          <label>Status:</label>
-          <select>
-            <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
-            <option value="oculto">Oculto</option>
-            <option value="vendido">Vendido</option>
-          </select>
-        </div>
-
         <div className="form-group">
           <label>Anexar Imagem:</label>
           <input type="file" onChange={handleImageUpload} multiple />
         </div>
-
         <div className="image-preview">
           {images.map((image, index) => (
             <div key={index} className="image-container">
@@ -177,12 +139,13 @@ const CadastroProdutoModal = ({ isOpen, onClose }) => {
             </div>
           ))}
         </div>
-
         <div className="form-actions">
-          <button type="button" onClick={onClose}>
+          <Button text={"Cancelar"} secondary style={{textAlign:"center"}}/>
+          <Button text={"Salvar"}/>
+          {/* <button type="button" onClick={onClose}>
             Cancelar
           </button>
-          <button type="submit">Cadastrar</button>
+          <button type="submit">Cadastrar</button> */}
         </div>
       </form>
     </Modal>
