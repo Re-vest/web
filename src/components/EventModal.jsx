@@ -4,7 +4,6 @@ import { Button } from "./Button";
 import { useState } from "react";
 
 export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
-  console.log(event)
   function formatDateToString(date) {
     return`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
   }
@@ -17,8 +16,8 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   
-  const [startEvent, setStartEvent] = useState(event.startAt ? formatDateToString(event.startAt) : formatDateToString(formatStringToDate(date)));
-  const [endEvent, setEndEvent] = useState(event.endAt ? formatDateToString(event.endAt) : formatDateToString(formatStringToDate(date)));
+  const [startEvent, setStartEvent] = useState(event.startAt ? formatDateToString(event.startAt) : date);
+  const [endEvent, setEndEvent] = useState(event.endAt ? formatDateToString(event.endAt) : date);
   const [title, setTitle] = useState(event.title ? event.title : '');
   const [color, setColor] = useState(event.color ? event.color : '');
   const [description, setDescription] = useState(event.description ? event.description : '');
@@ -51,8 +50,6 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         color
       }
 
-      console.log(updateEvent)
-
       const eventsUpdated = events.map(eventProps => {
         if (eventProps === event) {
           return updateEvent
@@ -67,12 +64,6 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
   
   async function exit() {
-    await setTitle('')
-    await setDescription('')
-    await setStartEvent('')
-    await setEndEvent('')
-    event = await {}
-    console.log(title)
     await setIsModalOpen(false)
   }
 

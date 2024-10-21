@@ -63,6 +63,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
     const date = new Date(year, month, day)
     setDate(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(parseInt(date.getDate(), 10)).padStart(2, '0')}`)
     // setIsModalOpen(true)
+    handleClickEvent({})
     if (!onClick) { return; }
     if (month < 0) {
       onClick(day, 11, year - 1);
@@ -96,8 +97,6 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
 
     const calendarDays = daysOfYear();
 
-    console.log(events)
-
     const calendar = calendarDays.map(({ month, day }, index) => {
       const isNewMonth = index === 0 || calendarDays[index - 1].month !== month;
       const isToday = today.getMonth() === month && today.getDate() === day && today.getFullYear() === year;
@@ -107,9 +106,6 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
         const eventEnd = event.endAt;
 
         const currentDate = new Date(year, month, day);
-        // console.log(eventEnd)
-        // console.log(currentDate)
-        // console.log(currentDate >= eventStart && currentDate <= eventEnd)
         return currentDate >= eventStart && currentDate <= eventEnd;
       });
 
@@ -120,7 +116,9 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
           ref={(el) => { dayRefs.current[index] = el; }}
           data-month={month}
           data-day={day}
-          onClick={() => handleDayClick(day, month, year)}
+          onClick={(e) => {
+            handleDayClick(day, month, year)
+          }}
           className={`relative z-10 m-[-0.5px] aspect-square w-full grow cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-cyan-400 sm:-m-px sm:size-20 sm:rounded-2xl sm:border-2 lg:size-28 lg:rounded-3xl 2xl:size-40 text-center flex flex-col items-start justify-between px-2 py-2`}
         >
           {

@@ -41,7 +41,6 @@ export function CalendarPage() {
       <Navbar />
 
       {isModalOpen &&  <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} events={events} />}
-      {(isModalOpen && !eventOnModal.id) && <EventModal setIsModalOpen={setIsModalOpen} event={exampleEvent} date={date} setEvents={setEvents} events={events} />}
     
       <div className="w-full flex justify-between pt-10 pl-10">
 
@@ -57,7 +56,7 @@ export function CalendarPage() {
               )
             })}
           </div>
-        <ContinuousCalendar handleClickEvent={handleClickEvent} setIsModalOpen={setIsModalOpen} setDate={setDate} events={events} />
+        <ContinuousCalendar  handleClickEvent={handleClickEvent} setIsModalOpen={setIsModalOpen} setDate={setDate} events={events} />
 
 
         </div>
