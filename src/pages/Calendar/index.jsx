@@ -19,6 +19,16 @@ export function CalendarPage() {
     }
   ]);
 
+  const exampleEvent = {
+    id: null,
+      title: '',
+      startAt: new Date(),
+      endAt: new Date(),
+      description: '',
+      color: '#000'
+  }
+  
+
   const [eventOnModal, setEventOnModal] = useState({})
 
   function handleClickEvent(event) {
@@ -30,7 +40,8 @@ export function CalendarPage() {
     <div className="h-full w-full flex">
       <Navbar />
 
-      {isModalOpen ? <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} events={events} /> : <></>}
+      {isModalOpen &&  <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} events={events} />}
+      {(isModalOpen && !eventOnModal.id) && <EventModal setIsModalOpen={setIsModalOpen} event={exampleEvent} date={date} setEvents={setEvents} events={events} />}
     
       <div className="w-full flex justify-between pt-10 pl-10">
 

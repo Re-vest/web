@@ -62,7 +62,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
   const handleDayClick = (day, month, year) => {
     const date = new Date(year, month, day)
     setDate(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(parseInt(date.getDate(), 10)).padStart(2, '0')}`)
-    setIsModalOpen(true)
+    // setIsModalOpen(true)
     if (!onClick) { return; }
     if (month < 0) {
       onClick(day, 11, year - 1);
@@ -202,7 +202,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
                 Hoje
               </button>
               <button type="button" className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 sm:rounded-xl lg:px-5 lg:py-2.5"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => handleClickEvent({})}
               >
                 <Plus size={15} /> Criar evento
               </button>

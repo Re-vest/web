@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { useState } from "react";
 
 export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
+  console.log(event)
   function formatDateToString(date) {
     return`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
   }
@@ -18,9 +19,9 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   
   const [startEvent, setStartEvent] = useState(event.startAt ? formatDateToString(event.startAt) : formatDateToString(formatStringToDate(date)));
   const [endEvent, setEndEvent] = useState(event.endAt ? formatDateToString(event.endAt) : formatDateToString(formatStringToDate(date)));
-  const [title, setTitle] = useState(event.title);
-  const [color, setColor] = useState(event.color);
-  const [description, setDescription] = useState(event.description);
+  const [title, setTitle] = useState(event.title ? event.title : '');
+  const [color, setColor] = useState(event.color ? event.color : '');
+  const [description, setDescription] = useState(event.description ? event.description : '');
   
   function handleChangeEvent() {
     if(!event.id) {
@@ -49,9 +50,11 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         description,
         color
       }
+
+      console.log(updateEvent)
+
       const eventsUpdated = events.map(eventProps => {
         if (eventProps === event) {
-          console.log('CAIUU no if')
           return updateEvent
         }
         else return eventProps
@@ -63,13 +66,14 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
     exit()
   }
   
-  function exit() {
-    setTitle('')
-    setDescription('')
-    setStartEvent('')
-    setEndEvent('')
+  async function exit() {
+    await setTitle('')
+    await setDescription('')
+    await setStartEvent('')
+    await setEndEvent('')
+    event = await {}
     console.log(title)
-    setIsModalOpen(false)
+    await setIsModalOpen(false)
   }
 
   function deleteEvent() {
@@ -100,12 +104,12 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
           <div className="w-full flex justify-center gap-10">
           <div className="flex flex-col gap-3">
             <label htmlFor="">Inicio do evento</label>
-            <input type="date" name='startAt' value={startEvent} onChange={e => setStartEvent(new Date(e.target.value))} />
+            <input type="date" name='startAt' value={startEvent} onChange={e => setStartEvent(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-3">
             <label htmlFor="">Fim do evento</label>
-            <input type="date" name="endAt" value={endEvent} onChange={e => setEndEvent(new Date(e.target.value))} />
+            <input type="date" name="endAt" value={endEvent} onChange={e => setEndEvent(e.target.value)} />
 
           </div>
 
