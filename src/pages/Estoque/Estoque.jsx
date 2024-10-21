@@ -5,8 +5,10 @@ import { Header } from "../../components/Estoque/Header";
 import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
 import { Acoes } from "../../components/Estoque/Acoes";
 import { Navbar } from "../../components/Navbar";
+import CadastroProdutoModal from "../../components/ModalProduto";
 
 export const Estoque = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const [produtos, setProdutos] = useState([
     {
       id: "01232555",
@@ -142,8 +144,8 @@ export const Estoque = () => {
       preco: 250.0,
       categoria: "Acessórios",
       selecionado: false,
-    }
-    
+    },
+
     // Adicione mais produtos conforme necessário
   ]);
 
@@ -265,6 +267,7 @@ export const Estoque = () => {
           setSearchTerm={setSearchTerm}
           options={filterOptions}
           handleFilterChange={handleFilterChange}
+          onClick={() => setModalOpen(true)}
         />
 
         {/* Tabela de produtos */}
@@ -292,6 +295,10 @@ export const Estoque = () => {
             ))}
           </tbody>
         </table>
+        <CadastroProdutoModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
       </div>
     </div>
   );

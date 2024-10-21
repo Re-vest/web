@@ -1,7 +1,6 @@
 .modal {
   width: 900px;
   height: auto;
-  margin: auto;
   background-color: #ffffff;
   padding: 32px;
   border-radius: 8px;
@@ -27,12 +26,6 @@
   flex-direction: column;
 }
 
-.input-nome,
-.textarea-descricao {
-  width: 100%;
-  border-radius: 5px;
-}
-
 .select-options {
   display: flex;
   width: 100%;
@@ -47,12 +40,6 @@
   width: 100%;
   flex-direction: column;
   gap: 5px;
-}
-
-.select-tipo select,
-.select-categoria select .select-status select {
-  width: 100%;
-  border-radius: 5px;
 }
 
 .checkbox-group {
@@ -111,21 +98,18 @@
 }
 
 .form-group select,
-.form-group input,
-.form-group textarea {
+.form-group input {
   width: calc(
     100% - 210px
-  ); /* Ajusta o input para compensar a largura da label */
+  ); 
   border-radius: 5px;
   padding: 5px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
 }
 
 .image-preview {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .image-container {
@@ -133,8 +117,8 @@
 }
 
 .preview-img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
 }
 
@@ -156,27 +140,10 @@
   gap: 10px;
 }
 
-button {
-  width: 20%;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button[type="submit"] {
-  background-color: #555;
-  color: white;
-}
-
-button[type="button"] {
-  background-color: #ddd;
-}
-
 .formulario {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .group-status {
@@ -185,11 +152,12 @@ button[type="button"] {
   width: 100%;
 }
 
-.group-status select {
-  width: 100%;
-  border-radius: 5px;
-}
-
 .form-group input {
   width: 2000px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

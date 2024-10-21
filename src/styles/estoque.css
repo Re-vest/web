@@ -44,7 +44,6 @@
   position: sticky; /* Fixa o cabeçalho da tabela */
   top: 0; /* Faz o cabeçalho ficar fixo no topo */
   background-color: #f1f1f1; /* Estilo de fundo do cabeçalho */
-  z-index: 1; /* Garante que o cabeçalho fique sobre o conteúdo */
   padding: 10px;
   text-align: center;
 }

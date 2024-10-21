@@ -9,7 +9,6 @@ const makeAnimation = MakeAnimation();
 const Filter = ({options, handleFilterChange}) => (
   <div style={{ maxWidth: "570px", fontSize: "14px" }}>
     <Select
-      className="z-[999]"
       options={options}
       onChange={(e) => handleFilterChange(e)}
       isMulti

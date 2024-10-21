@@ -1,11 +1,11 @@
-export function Input({ icon, placeholder, onChange }) {
+export function Input({ icon, placeholder, onChange, type="text", maxLength}) {
   return (
     <div className="h-fit w-full bg-[#F3F4F6] flex items-center gap-3 px-3 py-2 rounded-lg">
       <div className="text-[#7C7C8A]">
 
       {icon}
       </div>
-      <input onChange={e => onChange(e.target.value)} placeholder={placeholder} type="text" className="w-full bg-transparent outline-none border-none " />
+      <input min={maxLength} onChange={e => onChange(e.target.value)} placeholder={placeholder} type={type} className="w-full bg-transparent outline-none border-none " />
     </div>
   )
 }
