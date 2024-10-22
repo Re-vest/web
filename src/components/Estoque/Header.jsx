@@ -5,9 +5,6 @@ export const Header = ({ selecionaTodos }) => {
   return (
     <thead>
       <tr>
-        <th>
-          <input type="checkbox" onChange={selecionaTodos} />
-        </th>
         <th>Código ID</th>
         <th>Descrição</th>
         <th>
