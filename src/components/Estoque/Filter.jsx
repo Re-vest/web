@@ -2,11 +2,9 @@ import React from "react";
 import Select from "react-select";
 import MakeAnimation from "react-select/animated";
 
-
-
 const makeAnimation = MakeAnimation();
 
-const Filter = ({options, handleFilterChange}) => (
+const Filter = ({ options, handleFilterChange }) => (
   <div style={{ maxWidth: "570px", fontSize: "14px" }}>
     <Select
       options={options}

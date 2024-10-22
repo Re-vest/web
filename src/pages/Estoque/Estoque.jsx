@@ -16,8 +16,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 4,
       preco: 4.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232556",
@@ -25,8 +24,7 @@ export const Estoque = () => {
       status: "Oculto",
       quantidade: 6,
       preco: 18.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232557",
@@ -34,8 +32,7 @@ export const Estoque = () => {
       status: "Indisponível",
       quantidade: 3,
       preco: 25.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232587",
@@ -43,8 +40,7 @@ export const Estoque = () => {
       status: "Vendido",
       quantidade: 3,
       preco: 25.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232588",
@@ -52,8 +48,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 10,
       preco: 150.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232589",
@@ -61,8 +56,7 @@ export const Estoque = () => {
       status: "Vendido",
       quantidade: 0,
       preco: 200.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232590",
@@ -70,8 +64,7 @@ export const Estoque = () => {
       status: "Oculto",
       quantidade: 8,
       preco: 50.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232591",
@@ -79,8 +72,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 15,
       preco: 80.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232592",
@@ -88,8 +80,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 12,
       preco: 120.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232593",
@@ -97,8 +88,7 @@ export const Estoque = () => {
       status: "Indisponível",
       quantidade: 20,
       preco: 15.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232594",
@@ -106,8 +96,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 5,
       preco: 200.0,
-      categoria: "Calçados",
-      selecionado: false,
+      categoria: "Calçados"
     },
     {
       id: "01232595",
@@ -115,8 +104,7 @@ export const Estoque = () => {
       status: "Oculto",
       quantidade: 7,
       preco: 150.0,
-      categoria: "Calçados",
-      selecionado: false,
+      categoria: "Calçados"
     },
     {
       id: "01232596",
@@ -124,8 +112,7 @@ export const Estoque = () => {
       status: "Indisponível",
       quantidade: 2,
       preco: 100.0,
-      categoria: "Roupas",
-      selecionado: false,
+      categoria: "Roupas"
     },
     {
       id: "01232597",
@@ -133,8 +120,7 @@ export const Estoque = () => {
       status: "Disponível",
       quantidade: 9,
       preco: 30.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
     {
       id: "01232598",
@@ -142,11 +128,8 @@ export const Estoque = () => {
       status: "Vendido",
       quantidade: 0,
       preco: 250.0,
-      categoria: "Acessórios",
-      selecionado: false,
+      categoria: "Acessórios"
     },
-
-    // Adicione mais produtos conforme necessário
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -244,7 +227,6 @@ export const Estoque = () => {
 
     const newSelectedFilters = { ...selectedFilters };
 
-    // Atualizar filtros selecionados de acordo com o grupo de opções
     filterOptions.forEach((group) => {
       newSelectedFilters[group.label.toLowerCase()] = selectedValues.filter(
         (value) => group.options.some((option) => option.value === value)
@@ -270,33 +252,17 @@ export const Estoque = () => {
           onClick={() => setModalOpen(true)}
         />
 
-        {/* Tabela de produtos */}
         <table className="inventory-table">
-          <Header
-            selecionaTodos={(e) =>
-              setProdutos((prev) =>
-                prev.map((p) => ({ ...p, selecionado: e.target.checked }))
-              )
-            }
-          />
+          <Header />
           <tbody>
             {filtredOptions.map((product) => (
-              <LinhaProduto
-                key={product.id}
-                product={product}
-                selecionaProduto={(id) =>
-                  setProdutos((prev) =>
-                    prev.map((p) =>
-                      p.id === id ? { ...p, selecionado: !p.selecionado } : p
-                    )
-                  )
-                }
-              />
+              <LinhaProduto key={product.id} product={product} />
             ))}
           </tbody>
         </table>
         <CadastroProdutoModal
           isOpen={modalOpen}
+          setProdutos={setProdutos}
           onClose={() => setModalOpen(false)}
         />
       </div>

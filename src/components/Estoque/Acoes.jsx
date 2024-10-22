@@ -17,7 +17,7 @@ export const Acoes = ({
         <Input
           placeholder="Pesquisa..."
           icon={<Search w-full />}
-          onChange={setSearchTerm} // Capturando a pesquisa
+          onChange={setSearchTerm} 
         />
       </div>
       <div className="acoes">

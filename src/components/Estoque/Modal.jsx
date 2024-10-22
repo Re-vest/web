@@ -1,7 +1,6 @@
-import { Pencil, RefreshCcw, Trash2 } from 'lucide-react';
-import { useState, useRef } from 'react';
-import '../../styles/Modal.css'
-
+import { Pencil, Trash2 } from "lucide-react";
+import { useState, useRef } from "react";
+import "../../styles/Modal.css";
 
 function Modal({ product }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,11 +9,10 @@ function Modal({ product }) {
 
   const toggleModal = () => {
     if (!isOpen) {
-      // Obter as coordenadas do botão
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setModalPosition({
-        top: buttonRect.top + window.scrollY + 20, // Alinhar o modal verticalmente ao botão
-        left: buttonRect.right + window.scrollX - 170, // Posição à direita do botão com 10px de espaço
+        top: buttonRect.top + window.scrollY + 20,
+        left: buttonRect.right + window.scrollX - 170,
       });
     }
     setIsOpen(!isOpen);
@@ -30,7 +28,7 @@ function Modal({ product }) {
         <div
           className="modal-content"
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: `${modalPosition.top}px`,
             left: `${modalPosition.left}px`,
           }}
@@ -40,10 +38,16 @@ function Modal({ product }) {
           </button>
           <ul className="modal-options">
             <li className="modal-item">
-              <span className="icon"><Pencil size={18}/></span> Editar
+              <span className="icon">
+                <Pencil size={18} />
+              </span>{" "}
+              Editar
             </li>
             <li className="modal-item">
-              <span className="icon"><Trash2 size={18}/></span> Excluir item
+              <span className="icon">
+                <Trash2 size={18} />
+              </span>
+              Excluir item
             </li>
           </ul>
         </div>

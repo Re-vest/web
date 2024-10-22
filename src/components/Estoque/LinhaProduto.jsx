@@ -1,19 +1,10 @@
 import React, { useState, useRef } from "react";
 import Modal from "./Modal";
 
-
-export const LinhaProduto = ({ product, selecionaProduto }) => {
-
+export const LinhaProduto = ({ product }) => {
   return (
     <>
       <tr>
-        <td>
-          <input
-            type="checkbox"
-            checked={product.selecionado}
-            onChange={() => selecionaProduto(product.id)}
-          />
-        </td>
         <td>{product.id}</td>
         <td>{product.descricao}</td>
         <td>
@@ -25,11 +16,9 @@ export const LinhaProduto = ({ product, selecionaProduto }) => {
         <td>R$ {product.preco.toFixed(2)}</td>
         <td>{product.categoria}</td>
         <td>
-      <Modal product={product} />
+          <Modal product={product} />
         </td>
       </tr>
-
-      {/* ModalAcoes Component */}
     </>
   );
 };
