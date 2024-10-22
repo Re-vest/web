@@ -9,127 +9,134 @@ import CadastroProdutoModal from "../../components/ModalProduto";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([
     {
       id: "01232555",
+      nome: "Macacão Baby",
       descricao: "Blusa xadrez de manga comprida",
+      tipo: "camisas",
+      categoria: "Roupas",
       status: "Disponível",
-      quantidade: 4,
+      estadoProduto: "Novo",
+      cor: "Vermelho",
+      tamanho:"3",
       preco: 4.0,
-      categoria: "Roupas"
+      estampa:"Lisa",
+      images: ""
     },
-    {
-      id: "01232556",
-      descricao: "Camisa xadrez de manga comprida",
-      status: "Oculto",
-      quantidade: 6,
-      preco: 18.0,
-      categoria: "Roupas"
-    },
-    {
-      id: "01232557",
-      descricao: "Calça xadrez de manga comprida",
-      status: "Indisponível",
-      quantidade: 3,
-      preco: 25.0,
-      categoria: "Roupas"
-    },
-    {
-      id: "01232587",
-      descricao: "Cueca",
-      status: "Vendido",
-      quantidade: 3,
-      preco: 25.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232588",
-      descricao: "Jaqueta de couro",
-      status: "Disponível",
-      quantidade: 10,
-      preco: 150.0,
-      categoria: "Roupas"
-    },
-    {
-      id: "01232589",
-      descricao: "Relógio de pulso",
-      status: "Vendido",
-      quantidade: 0,
-      preco: 200.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232590",
-      descricao: "Boné de aba reta",
-      status: "Oculto",
-      quantidade: 8,
-      preco: 50.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232591",
-      descricao: "Vestido floral",
-      status: "Disponível",
-      quantidade: 15,
-      preco: 80.0,
-      categoria: "Roupas"
-    },
-    {
-      id: "01232592",
-      descricao: "Óculos de sol",
-      status: "Disponível",
-      quantidade: 12,
-      preco: 120.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232593",
-      descricao: "Meia esportiva",
-      status: "Indisponível",
-      quantidade: 20,
-      preco: 15.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232594",
-      descricao: "Sapato social",
-      status: "Disponível",
-      quantidade: 5,
-      preco: 200.0,
-      categoria: "Calçados"
-    },
-    {
-      id: "01232595",
-      descricao: "Tênis casual",
-      status: "Oculto",
-      quantidade: 7,
-      preco: 150.0,
-      categoria: "Calçados"
-    },
-    {
-      id: "01232596",
-      descricao: "Jaqueta jeans",
-      status: "Indisponível",
-      quantidade: 2,
-      preco: 100.0,
-      categoria: "Roupas"
-    },
-    {
-      id: "01232597",
-      descricao: "Chapéu de palha",
-      status: "Disponível",
-      quantidade: 9,
-      preco: 30.0,
-      categoria: "Acessórios"
-    },
-    {
-      id: "01232598",
-      descricao: "Bolsa de couro",
-      status: "Vendido",
-      quantidade: 0,
-      preco: 250.0,
-      categoria: "Acessórios"
-    },
+    // {
+    //   id: "01232556",
+    //   descricao: "Camisa xadrez de manga comprida",
+    //   status: "Oculto",
+    //   quantidade: 6,
+    //   preco: 18.0,
+    //   categoria: "Roupas",
+    // },
+    // {
+    //   id: "01232557",
+    //   descricao: "Calça xadrez de manga comprida",
+    //   status: "Indisponível",
+    //   quantidade: 3,
+    //   preco: 25.0,
+    //   categoria: "Roupas",
+    // },
+    // {
+    //   id: "01232587",
+    //   descricao: "Cueca",
+    //   status: "Vendido",
+    //   quantidade: 3,
+    //   preco: 25.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232588",
+    //   descricao: "Jaqueta de couro",
+    //   status: "Disponível",
+    //   quantidade: 10,
+    //   preco: 150.0,
+    //   categoria: "Roupas",
+    // },
+    // {
+    //   id: "01232589",
+    //   descricao: "Relógio de pulso",
+    //   status: "Vendido",
+    //   quantidade: 0,
+    //   preco: 200.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232590",
+    //   descricao: "Boné de aba reta",
+    //   status: "Oculto",
+    //   quantidade: 8,
+    //   preco: 50.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232591",
+    //   descricao: "Vestido floral",
+    //   status: "Disponível",
+    //   quantidade: 15,
+    //   preco: 80.0,
+    //   categoria: "Roupas",
+    // },
+    // {
+    //   id: "01232592",
+    //   descricao: "Óculos de sol",
+    //   status: "Disponível",
+    //   quantidade: 12,
+    //   preco: 120.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232593",
+    //   descricao: "Meia esportiva",
+    //   status: "Indisponível",
+    //   quantidade: 20,
+    //   preco: 15.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232594",
+    //   descricao: "Sapato social",
+    //   status: "Disponível",
+    //   quantidade: 5,
+    //   preco: 200.0,
+    //   categoria: "Calçados",
+    // },
+    // {
+    //   id: "01232595",
+    //   descricao: "Tênis casual",
+    //   status: "Oculto",
+    //   quantidade: 7,
+    //   preco: 150.0,
+    //   categoria: "Calçados",
+    // },
+    // {
+    //   id: "01232596",
+    //   descricao: "Jaqueta jeans",
+    //   status: "Indisponível",
+    //   quantidade: 2,
+    //   preco: 100.0,
+    //   categoria: "Roupas",
+    // },
+    // {
+    //   id: "01232597",
+    //   descricao: "Chapéu de palha",
+    //   status: "Disponível",
+    //   quantidade: 9,
+    //   preco: 30.0,
+    //   categoria: "Acessórios",
+    // },
+    // {
+    //   id: "01232598",
+    //   descricao: "Bolsa de couro",
+    //   status: "Vendido",
+    //   quantidade: 0,
+    //   preco: 250.0,
+    //   categoria: "Acessórios",
+    // },
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -256,15 +263,27 @@ export const Estoque = () => {
           <Header />
           <tbody>
             {filtredOptions.map((product) => (
-              <LinhaProduto key={product.id} product={product} />
+              <LinhaProduto
+                key={product.id}
+                product={product}
+                editar={setEditar}
+                modalEditar={setModalOpen}
+              />
             ))}
           </tbody>
         </table>
-        <CadastroProdutoModal
-          isOpen={modalOpen}
-          setProdutos={setProdutos}
-          onClose={() => setModalOpen(false)}
-        />
+
+        {modalOpen && (
+
+          <CadastroProdutoModal
+            editar={editar}
+            isOpen={modalOpen}
+            setProdutos={setProdutos}
+            onClose={() => setModalOpen(false)}
+          />
+        )
+
+        }
       </div>
     </div>
   );

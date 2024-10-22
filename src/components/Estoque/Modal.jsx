@@ -2,7 +2,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
 import "../../styles/Modal.css";
 
-function Modal({ product }) {
+function Modal({ product, editar, modalEditar }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -15,6 +15,19 @@ function Modal({ product }) {
         left: buttonRect.right + window.scrollX - 170,
       });
     }
+    setIsOpen(!isOpen);
+  };
+
+  const editarProduto = () => {
+    if (!isOpen) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setModalPosition({
+        top: buttonRect.top + window.scrollY + 20,
+        left: buttonRect.right + window.scrollX - 170,
+      });
+    }
+    editar(product);
+    modalEditar(true);
     setIsOpen(!isOpen);
   };
 
@@ -37,7 +50,7 @@ function Modal({ product }) {
             X
           </button>
           <ul className="modal-options">
-            <li className="modal-item">
+            <li onClick={editarProduto} className="modal-item">
               <span className="icon">
                 <Pencil size={18} />
               </span>{" "}
