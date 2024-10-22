@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import Modal from "./Modal";
 
-export const LinhaProduto = ({ product }) => {
+export const LinhaProduto = ({ product, editar, modalEditar }) => {
   return (
     <>
       <tr>
@@ -16,7 +16,7 @@ export const LinhaProduto = ({ product }) => {
         <td>R$ {product.preco.toFixed(2)}</td>
         <td>{product.categoria}</td>
         <td>
-          <Modal product={product} />
+          <Modal product={product} editar={editar} modalEditar={modalEditar}/>
         </td>
       </tr>
     </>

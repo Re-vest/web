@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "../styles/ModalProduto.css";
 import PickList from "./picklist";
@@ -7,18 +7,18 @@ import { Button } from "./Button";
 
 Modal.setAppElement("#root");
 
-const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [status, setStatus] = useState("");
-  const [cor, setCor] = useState("");
-  const [tamanho, setTamanho] = useState("");
-  const [estampa, setEstampa] = useState("");
+const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
+  const [nome, setNome] = useState(editar.nome);
+  const [descricao, setDescricao] = useState(editar.descricao);
+  const [tipo, setTipo] = useState(editar.tipo);
+  const [categoria, setCategoria] = useState(editar.categoria);
+  const [status, setStatus] = useState(editar.status);
+  const [cor, setCor] = useState(editar.cor);
+  const [tamanho, setTamanho] = useState(editar.tamanho);
+  const [estampa, setEstampa] = useState(editar.estampa);
   const [images, setImages] = useState([]);
-  const [estadoProduto, setEstadoProduto] = useState("");
-  const [preco, setPreco] = useState("");
+  const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
+  const [preco, setPreco] = useState(editar.preco);
 
   //Testar isso depois
   //onsole.log(preco)
@@ -50,8 +50,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
   };
 
   function saveProduto() {
-    console.log(2)
-    console.log(preco)
     let Produto = {
       id: "2021515",
       nome: nome,
@@ -83,41 +81,43 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
       <form className="formulario" onSubmit={handleSubmit}>
         <div className="input-nome">
           <label>Nome:</label>
-          <Input placeholder={""} onChange={setNome} />
+          <Input value={nome} placeholder={""} onChange={setNome} />
         </div>
         <div className="textarea-descricao">
           <label>Descrição:</label>
-          <Input placeholder={""} onChange={setDescricao} />
+          <Input value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className="select-options">
           <div className="select-tipo">
             <label>Tipo:</label>
             <PickList
               options={[
-                { label: "Roupas", value: "roupas" },
-                { label: "Acessórios", value: "acessorios" },
+                { label: "Calçados", value: "calçados" },
+                { label: "Camisas", value: "camisas" },
+                { label: "Calças", value: "calças" },
+                { label: "Blusas", value: "blusas" },
+                { label: "Vestidos", value: "vestidos" },
+                { label: "Shorts", value: "shorts" },
+                { label: "Outros (Roupas)", value: "outros-roupas" },
+                { label: "Bolsas", value: "bolsas" },
+                { label: "Cintos", value: "cintos" },
+                { label: "Relógios", value: "relogios" },
+                { label: "Óculos de Sol", value: "oculos-de-sol" },
+                { label: "Outros (Acessórios)", value: "outros-acessorios" },
               ]}
               onChange={setTipo}
+              value={tipo}
             />
           </div>
           <div className="select-categoria">
             <label>Categoria:</label>
             <PickList
               options={[
-                { label: "Calçados", value: "Roupas" },
-                { label: "Camisas", value: "Roupas" },
-                { label: "Calças", value: "Roupas" },
-                { label: "Blusas", value: "Roupas" }, 
-                { label: "Vestidos", value: "Roupas" },
-                { label: "Shorts", value: "Roupas" },
-                { label: "Outros (Roupas)", value: "Roupas" },
-                { label: "Bolsas", value: "Acessórios" },
-                { label: "Cintos", value: "Acessórios" },
-                { label: "Relógios", value: "Acessórios" },
-                { label: "Óculos de Sol", value: "Acessórios" },
-                { label: "Outros (Acessórios)", value: "Acessórios" },
+                { label: "Roupas", value: "roupas" },
+                { label: "Acessórios", value: "acessorios" },
               ]}
               onChange={setCategoria}
+              value={categoria}
             />
           </div>
           <div className="select-status">
@@ -130,6 +130,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
                 { label: "Vendido", value: "Vendido" },
               ]}
               onChange={setStatus}
+              value={status}
             />
           </div>
         </div>
@@ -140,24 +141,24 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "novo"}
-                onChange={() => handleCheckboxChange("novo")}
+                checked={estadoProduto === "Novo" || editar.estado === 'Novo'}
+                onChange={() => handleCheckboxChange("Novo")}
               />
               Novo
             </label>
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "seminovo"}
-                onChange={() => handleCheckboxChange("seminovo")}
+                checked={estadoProduto === "Seminovo" || editar.estado === 'Seminovo'}
+                onChange={() => handleCheckboxChange("Seminovo")}
               />
               Seminovo
             </label>
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "usado"}
-                onChange={() => handleCheckboxChange("usado")}
+                checked={estadoProduto === "Usado" || editar.estado === 'Usado'}
+                onChange={() => handleCheckboxChange("Usado")}
               />
               Usado
             </label>
@@ -166,11 +167,11 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
         <div className="caracteristicas">
           <div className="input-cor">
             <label>Cor:</label>
-            <Input onChange={setCor} />
+            <Input value={cor} onChange={setCor} />
           </div>
           <div className="input-tamanho">
             <label>Tamanho:</label>
-            <Input onChange={setTamanho} />
+            <Input value={tamanho} onChange={setTamanho} />
           </div>
         </div>
         <div className="atributos">
@@ -188,12 +189,17 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos }) => {
 
           <div className="input-estampa">
             <label>Estampa:</label>
-            <Input onChange={setEstampa} />
+            <Input value={estampa} onChange={setEstampa} />
           </div>
         </div>
         <div className="form-group">
           <label>Anexar Imagem:</label>
-          <input type="file" onChange={handleImageUpload} multiple />
+          <input
+            type="file"
+            onChange={handleImageUpload}
+            value={images}
+            multiple
+          />
         </div>
         <div className="image-preview">
           {images.map((image, index) => (
