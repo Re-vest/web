@@ -197,9 +197,6 @@ export const Voluntarios = () => {
       const buscarVoluntario = 
         volunteer.id.toLowerCase().includes(termo) ||
         volunteer.voluntario.toLowerCase().includes(termo) 
-        // ||
-        // volunteer.status.toLowerCase().includes(termo) ||
-        // volunteer.permissao.toLowerCase().includes(termo);
 
 
       const statusSelecionado = selectedFilters.status.length === 0 || //status
