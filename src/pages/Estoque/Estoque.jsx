@@ -15,15 +15,15 @@ export const Estoque = () => {
       id: "01232555",
       nome: "Macacão Baby",
       descricao: "Blusa xadrez de manga comprida",
-      tipo: "camisas",
+      tipo: "Camisas",
       categoria: "Roupas",
       status: "Disponível",
       estadoProduto: "Novo",
       cor: "Vermelho",
-      tamanho:"3",
+      tamanho: "3",
       preco: 4.0,
-      estampa:"Lisa",
-      images: ""
+      estampa: "Lisa",
+      images: "",
     },
     // {
     //   id: "01232556",
@@ -264,8 +264,14 @@ export const Estoque = () => {
           <tbody>
             {filtredOptions.map((product) => (
               <LinhaProduto
-                key={product.id}
                 product={product}
+                key={product.id}
+                id={product.id}
+                nome={product.nome}
+                descricao={product.descricao}
+                preco={product.preco}
+                categoria={product.categoria}
+                status={product.status}
                 editar={setEditar}
                 modalEditar={setModalOpen}
               />
@@ -274,16 +280,14 @@ export const Estoque = () => {
         </table>
 
         {modalOpen && (
-
           <CadastroProdutoModal
+            id={id}
             editar={editar}
             isOpen={modalOpen}
             setProdutos={setProdutos}
             onClose={() => setModalOpen(false)}
           />
-        )
-
-        }
+        )}
       </div>
     </div>
   );

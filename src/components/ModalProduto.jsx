@@ -65,8 +65,11 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
       preco: Number(preco),
     };
     setProdutos((produtos) => [...produtos, Produto]);
-    console.log(Produto);
+
+    
+    // console.log(Produto);
   }
+  
 
   return (
     <Modal
@@ -113,7 +116,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
             <label>Categoria:</label>
             <PickList
               options={[
-                { label: "Roupas", value: "roupas" },
+                { label: "Roupas", value: "Roupas" },
                 { label: "Acessórios", value: "acessorios" },
               ]}
               onChange={setCategoria}
