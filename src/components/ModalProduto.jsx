@@ -7,7 +7,7 @@ import { Button } from "./Button";
 
 Modal.setAppElement("#root");
 
-const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
+const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
   const [tipo, setTipo] = useState(editar.tipo);
@@ -19,6 +19,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
   const [images, setImages] = useState([]);
   const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
   const [preco, setPreco] = useState(editar.preco);
+  
 
   //Testar isso depois
   //onsole.log(preco)
@@ -32,12 +33,66 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    saveProduto();
-    // console.log("Produto cadastrado");
-    onClose();
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   saveProduto();
+  //   // console.log("Produto cadastrado");
+  //   onClose();
+  // };
+
+  function handleSubmit() {
+    if(!editar.id) {
+      const newProduct = {
+        id: Math.random(),
+        nome,
+        descricao,
+        tipo,
+        categoria,
+        status,
+        estadoProduto,
+        cor,
+        tamanho,
+        preco,
+        estampa,
+        images
+      }
+  
+      // newEvents.startAt.setHours(0)
+      // newEvents.endAt.setHours(0)
+      // newEvents.startAt.setDate(newEvents.startAt.getDate() + 1)
+      // newEvents.endAt.setDate(newEvents.endAt.getDate() + 1)
+      setProdutos(prev => [...prev, newProduct])
+      
+      
+    } else {
+      const updateProduct = {
+        id: editar.id,
+        nome,
+        descricao,
+        tipo,
+        categoria,
+        status,
+        estadoProduto,
+        cor,
+        tamanho,
+        preco,
+        estampa,
+        images
+      }
+
+      const productsUpdated = produtos.map(eventProps => {
+        if (eventProps === editar) {
+          return updateProduct
+        }
+        else return eventProps
+      })
+
+      setEvents(productsUpdated)
+    }
+
+    exit()
+  }
+
 
   const handleCheckboxChange = (value) => {
     setEstadoProduto(value);
@@ -49,26 +104,26 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
     setPreco(formattedValue);
   };
 
-  function saveProduto() {
-    let Produto = {
-      id: "2021515",
-      nome: nome,
-      descricao: descricao,
-      tipo: tipo,
-      categoria: categoria,
-      status: status,
-      cor: cor,
-      tamanho: tamanho,
-      estampa: estampa,
-      images: images,
-      estadoProduto: estadoProduto,
-      preco: Number(preco),
-    };
-    setProdutos((produtos) => [...produtos, Produto]);
+  // function saveProduto() {
+  //   let Produto = {
+  //     id: "2021515",
+  //     nome: nome,
+  //     descricao: descricao,
+  //     tipo: tipo,
+  //     categoria: categoria,
+  //     status: status,
+  //     cor: cor,
+  //     tamanho: tamanho,
+  //     estampa: estampa,
+  //     images: images,
+  //     estadoProduto: estadoProduto,
+  //     preco: Number(preco),
+  //   };
+  //   setProdutos((produtos) => [...produtos, Produto]);
 
     
-    // console.log(Produto);
-  }
+  //   // console.log(Produto);
+  // }
   
 
   return (

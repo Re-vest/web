@@ -281,7 +281,8 @@ export const Estoque = () => {
 
         {modalOpen && (
           <CadastroProdutoModal
-            id={id}
+            
+            produtos={produtos}
             editar={editar}
             isOpen={modalOpen}
             setProdutos={setProdutos}
