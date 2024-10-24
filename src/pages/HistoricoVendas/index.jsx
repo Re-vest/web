@@ -86,10 +86,6 @@ export const HistoricoVendas = () => {
 
   const [busca, setBusca] = useState(""); //busca dos registros pelo input
 
-  const atualizandoFiltros = (e) => {
-    setBusca(e.target.value);
-  };
-
   // Filtra
   const VendasFiltradas = 
   
@@ -110,9 +106,7 @@ export const HistoricoVendas = () => {
           <h2>Histórico de Vendas</h2>
         </div>
         <FerramentasHeader
-          venda={vendas}
-          setVendas={setVendas}
-          atualizandoFiltros={atualizandoFiltros}
+          setBusca={setBusca}
         />
 
         <table className="w-full border-collapse max-h-96">

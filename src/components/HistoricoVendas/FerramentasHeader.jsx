@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "../Input";
 import { Search } from "lucide-react";
 
-export const FerramentasHeader = ({ atualizandoFiltros }) => {
+export const FerramentasHeader = ({ setBusca }) => {
 
   return (
     <div className="header">
@@ -10,7 +10,7 @@ export const FerramentasHeader = ({ atualizandoFiltros }) => {
         <Input 
           placeholder="Pesquisa..."
           icon={<Search w-full/>}
-          onChange={atualizandoFiltros}
+          onChange={setBusca}
         />
       </div>
       <div className="acoes"> 
