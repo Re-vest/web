@@ -2,7 +2,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
 import "../../styles/Modal.css";
 
-function Modal({ product, editar, modalEditar }) {
+function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -31,6 +31,11 @@ function Modal({ product, editar, modalEditar }) {
     setIsOpen(!isOpen);
   };
 
+  function deleteProduto() {
+    setProdutos(produtos.filter((pr) => pr.id !== product.id));
+    setIsOpen(false);
+  }
+
   return (
     <div className="App">
       <button ref={buttonRef} onClick={toggleModal} className="open-modal-btn">
@@ -56,7 +61,7 @@ function Modal({ product, editar, modalEditar }) {
               </span>{" "}
               Editar
             </li>
-            <li className="modal-item">
+            <li onClick={deleteProduto} className="modal-item">
               <span className="icon">
                 <Trash2 size={18} />
               </span>

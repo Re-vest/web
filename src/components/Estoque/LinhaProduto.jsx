@@ -11,6 +11,8 @@ export const LinhaProduto = ({
   categoria = '',
   editar,
   modalEditar,
+  setProdutos,
+  produtos
 }) => {
   return (
     <>
@@ -23,10 +25,10 @@ export const LinhaProduto = ({
             {status}
           </span>
         </td>
-        <td>R$ {preco.toFixed(2)}</td>
+        <td>R$ {preco}</td>
         <td>{categoria}</td>
         <td>
-          <Modal product={product} editar={editar} modalEditar={modalEditar} />
+          <Modal product={product} editar={editar} modalEditar={modalEditar} setProdutos={setProdutos} produtos={produtos}/>
         </td>
       </tr>
     </>

@@ -33,17 +33,15 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setImages(images.filter((_, i) => i !== index));
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   saveProduto();
-  //   // console.log("Produto cadastrado");
-  //   onClose();
-  // };
-
-  function handleSubmit() {
+  function handleSubmit(event) {
+    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !estampa) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+    event.preventDefault()
     if(!editar.id) {
       const newProduct = {
-        id: Math.random(),
+        id: String(Math.random()),
         nome,
         descricao,
         tipo,
@@ -87,10 +85,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         else return eventProps
       })
 
-      setEvents(productsUpdated)
+      setProdutos(productsUpdated)
     }
 
-    exit()
+    onClose();
   }
 
 
@@ -103,28 +101,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     const formattedValue = value.replace(/[^0-9,.]/g, "");
     setPreco(formattedValue);
   };
-
-  // function saveProduto() {
-  //   let Produto = {
-  //     id: "2021515",
-  //     nome: nome,
-  //     descricao: descricao,
-  //     tipo: tipo,
-  //     categoria: categoria,
-  //     status: status,
-  //     cor: cor,
-  //     tamanho: tamanho,
-  //     estampa: estampa,
-  //     images: images,
-  //     estadoProduto: estadoProduto,
-  //     preco: Number(preco),
-  //   };
-  //   setProdutos((produtos) => [...produtos, Produto]);
-
-    
-  //   // console.log(Produto);
-  // }
-  
 
   return (
     <Modal
@@ -266,6 +242,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
                 src={URL.createObjectURL(image)}
                 alt={`Preview ${index}`}
                 className="preview-img"
+                value={images}
               />
               <button type="button" onClick={() => removeImage(index)}>
                 X
@@ -274,7 +251,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           ))}
         </div>
         <div className="form-actions">
-          <Button text={"Cancelar"} secondary style={{ textAlign: "center" }} />
+          <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />
           <Button text={"Salvar"} onClick={handleSubmit} />
         </div>
       </form>
