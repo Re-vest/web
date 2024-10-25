@@ -2,10 +2,9 @@ import React from 'react'
 import Select from 'react-select'
 
 const PickList = ({options, onChange, value}) => {
-  console.log(value)
   return (
   
-  <Select  placeholder="Selecionar" options={options} onChange={e => onChange(e.value)}/>
+  <Select value={{ label: value, value: value }} placeholder="Selecionar" options={options} onChange={e => onChange(e.label)}/>
 )}
 
 export default PickList;

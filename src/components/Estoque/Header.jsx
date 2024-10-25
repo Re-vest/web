@@ -6,6 +6,7 @@ export const Header = ({ selecionaTodos }) => {
     <thead>
       <tr>
         <th>Código ID</th>
+        <th>Nome</th>
         <th>Descrição</th>
         <th>
           <div
@@ -17,21 +18,7 @@ export const Header = ({ selecionaTodos }) => {
               justifyContent: "center",
             }}
           >
-            Status <ArrowDownUp size={18} />
-          </div>
-        </th>
-        <th>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              gap: "5px",
-              justifyContent: "center",
-            }}
-          >
-            Quantidade
-            <ArrowDownUp size={18} />
+            Status
           </div>
         </th>
         <th>

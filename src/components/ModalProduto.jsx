@@ -7,7 +7,7 @@ import { Button } from "./Button";
 
 Modal.setAppElement("#root");
 
-const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
+const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
   const [tipo, setTipo] = useState(editar.tipo);
@@ -19,6 +19,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
   const [images, setImages] = useState([]);
   const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
   const [preco, setPreco] = useState(editar.preco);
+  
 
   //Testar isso depois
   //onsole.log(preco)
@@ -32,12 +33,64 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    saveProduto();
-    // console.log("Produto cadastrado");
+  function handleSubmit(event) {
+    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !estampa) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+    event.preventDefault()
+    if(!editar.id) {
+      const newProduct = {
+        id: String(Math.random()),
+        nome,
+        descricao,
+        tipo,
+        categoria,
+        status,
+        estadoProduto,
+        cor,
+        tamanho,
+        preco,
+        estampa,
+        images
+      }
+  
+      // newEvents.startAt.setHours(0)
+      // newEvents.endAt.setHours(0)
+      // newEvents.startAt.setDate(newEvents.startAt.getDate() + 1)
+      // newEvents.endAt.setDate(newEvents.endAt.getDate() + 1)
+      setProdutos(prev => [...prev, newProduct])
+      
+      
+    } else {
+      const updateProduct = {
+        id: editar.id,
+        nome,
+        descricao,
+        tipo,
+        categoria,
+        status,
+        estadoProduto,
+        cor,
+        tamanho,
+        preco,
+        estampa,
+        images
+      }
+
+      const productsUpdated = produtos.map(eventProps => {
+        if (eventProps === editar) {
+          return updateProduct
+        }
+        else return eventProps
+      })
+
+      setProdutos(productsUpdated)
+    }
+
     onClose();
-  };
+  }
+
 
   const handleCheckboxChange = (value) => {
     setEstadoProduto(value);
@@ -48,25 +101,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
     const formattedValue = value.replace(/[^0-9,.]/g, "");
     setPreco(formattedValue);
   };
-
-  function saveProduto() {
-    let Produto = {
-      id: "2021515",
-      nome: nome,
-      descricao: descricao,
-      tipo: tipo,
-      categoria: categoria,
-      status: status,
-      cor: cor,
-      tamanho: tamanho,
-      estampa: estampa,
-      images: images,
-      estadoProduto: estadoProduto,
-      preco: Number(preco),
-    };
-    setProdutos((produtos) => [...produtos, Produto]);
-    console.log(Produto);
-  }
 
   return (
     <Modal
@@ -113,7 +147,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
             <label>Categoria:</label>
             <PickList
               options={[
-                { label: "Roupas", value: "roupas" },
+                { label: "Roupas", value: "Roupas" },
                 { label: "Acessórios", value: "acessorios" },
               ]}
               onChange={setCategoria}
@@ -208,6 +242,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
                 src={URL.createObjectURL(image)}
                 alt={`Preview ${index}`}
                 className="preview-img"
+                value={images}
               />
               <button type="button" onClick={() => removeImage(index)}>
                 X
@@ -216,7 +251,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar }) => {
           ))}
         </div>
         <div className="form-actions">
-          <Button text={"Cancelar"} secondary style={{ textAlign: "center" }} />
+          <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />
           <Button text={"Salvar"} onClick={handleSubmit} />
         </div>
       </form>
