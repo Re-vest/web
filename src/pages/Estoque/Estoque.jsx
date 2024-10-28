@@ -11,20 +11,20 @@ export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([
-    {
-      id: "01232555",
-      nome: "Macacão Baby",
-      descricao: "Blusa xadrez de manga comprida",
-      tipo: "Camisas",
-      categoria: "Roupas",
-      status: "Disponível",
-      estadoProduto: "Novo",
-      cor: "Vermelho",
-      tamanho: "3",
-      preco: 4.0,
-      estampa: "Lisa",
-      images: "",
-    },
+    // {
+    //   id: "01232555",
+    //   nome: "Macacão Baby",
+    //   descricao: "Blusa xadrez de manga comprida",
+    //   tipo: "Camisas",
+    //   categoria: "Roupas",
+    //   status: "Disponível",
+    //   estadoProduto: "Novo",
+    //   cor: "Vermelho",
+    //   tamanho: "3",
+    //   preco: 4.0,
+    //   estampa: "Lisa",
+    //   images: "",
+    // },
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");

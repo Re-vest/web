@@ -7,6 +7,20 @@ import { Button } from "./Button";
 
 Modal.setAppElement("#root");
 
+function formatPrice(value) {
+  // Remove todos os caracteres que não são números
+  let newValue = value.replace(/\D/g, "");
+
+  // Adiciona a vírgula para os centavos e ponto para milhares
+  newValue = new Intl.NumberFormat('pt-BR', {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(parseFloat(newValue) / 100);
+
+  return newValue;
+}
+
 const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
@@ -18,11 +32,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   const [estampa, setEstampa] = useState(editar.estampa);
   const [images, setImages] = useState([]);
   const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
-  const [preco, setPreco] = useState(editar.preco);
-  
-
-  //Testar isso depois
-  //onsole.log(preco)
+  const [preco, setPreco] = useState(formatPrice(editar.preco || "0"));
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -34,12 +44,16 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   };
 
   function handleSubmit(event) {
+    event.preventDefault(); // Evitar o recarregamento da página
+  
+    // Verifica se todos os campos obrigatórios estão preenchidos
     if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !estampa) {
       alert("Por favor, preencha todos os campos obrigatórios.");
-      return;
+      return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
-    event.preventDefault()
-    if(!editar.id) {
+  
+    // Lógica de criação ou atualização do produto
+    if (!editar.id) {
       const newProduct = {
         id: String(Math.random()),
         nome,
@@ -53,15 +67,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         preco,
         estampa,
         images
-      }
+      };
   
-      // newEvents.startAt.setHours(0)
-      // newEvents.endAt.setHours(0)
-      // newEvents.startAt.setDate(newEvents.startAt.getDate() + 1)
-      // newEvents.endAt.setDate(newEvents.endAt.getDate() + 1)
-      setProdutos(prev => [...prev, newProduct])
-      
-      
+      setProdutos(prev => [...prev, newProduct]);
     } else {
       const updateProduct = {
         id: editar.id,
@@ -76,29 +84,27 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         preco,
         estampa,
         images
-      }
-
+      };
+  
       const productsUpdated = produtos.map(eventProps => {
         if (eventProps === editar) {
-          return updateProduct
-        }
-        else return eventProps
-      })
-
-      setProdutos(productsUpdated)
+          return updateProduct;
+        } else return eventProps;
+      });
+  
+      setProdutos(productsUpdated);
     }
-
-    onClose();
+  
+    onClose(); // Fecha o modal após salvar
   }
-
-
+  
   const handleCheckboxChange = (value) => {
     setEstadoProduto(value);
   };
 
   const handlePrecoChange = (event) => {
     const value = event;
-    const formattedValue = value.replace(/[^0-9,.]/g, "");
+    const formattedValue = formatPrice(value);
     setPreco(formattedValue);
   };
 
@@ -155,7 +161,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             />
           </div>
           <div className="select-status">
-            <label>Status</label>
+            <label>Status:</label>
             <PickList
               options={[
                 { label: "Disponível", value: "Disponível" },
@@ -212,11 +218,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <div className="input-preco">
             <label>Preço:</label>
             <Input
-              type="number"
               value={preco}
               onChange={handlePrecoChange}
               placeholder="0,00"
-              maxLength={0}
+              maxLength={6}
               required
             />
           </div>
@@ -231,7 +236,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <input
             type="file"
             onChange={handleImageUpload}
-            value={images}
             multiple
           />
         </div>
@@ -242,7 +246,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
                 src={URL.createObjectURL(image)}
                 alt={`Preview ${index}`}
                 className="preview-img"
-                value={images}
               />
               <button type="button" onClick={() => removeImage(index)}>
                 X
