@@ -1,6 +1,6 @@
 // src/pages/Estoque.js
 import React, { useEffect, useState } from "react";
-import "../../styles/estoque.css";
+import estoque from "../../styles/estoque.module.css";
 import { Header } from "../../components/Estoque/Header";
 import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
 import { Acoes } from "../../components/Estoque/Acoes";
@@ -118,8 +118,8 @@ export const Estoque = () => {
   return (
     <div className="w-full h-full flex">
       <Navbar />
-      <div className="inventory-container">
-        <div className="header">
+      <div className={estoque["inventory-container"]}>
+        <div className={estoque["header"]}>
           <h2>Controle de Estoque</h2>
         </div>
         <Acoes
@@ -131,7 +131,7 @@ export const Estoque = () => {
           onClick={() => setModalOpen(true)}
         />
 
-        <table className="inventory-table">
+        <table className={estoque["inventory-table"]}>
           <Header />
           <tbody>
             {filtredOptions.map((product) => (

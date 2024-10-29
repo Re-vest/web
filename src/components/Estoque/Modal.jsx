@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
-import "../../styles/Modal.css";
+import modal from "../../styles/Modal.module.css";
 
 function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,32 +37,32 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
   }
 
   return (
-    <div className="App">
-      <button ref={buttonRef} onClick={toggleModal} className="open-modal-btn">
+    <div className={modal["App"]}>
+      <button ref={buttonRef} onClick={toggleModal} className={modal["open-modal-btn"]}>
         ...
       </button>
 
       {isOpen && (
         <div
-          className="modal-content"
+          className={modal["modal-content"]}
           style={{
             position: "absolute",
             top: `${modalPosition.top}px`,
             left: `${modalPosition.left}px`,
           }}
         >
-          <button className="close-btn" onClick={toggleModal}>
+          <button className={modal["close-btn"]} onClick={toggleModal}>
             X
           </button>
-          <ul className="modal-options">
-            <li onClick={editarProduto} className="modal-item">
-              <span className="icon">
+          <ul className={modal["modal-options"]}>
+            <li onClick={editarProduto} className={modal["modal-item"]}>
+              <span className={modal["icon"]}>
                 <Pencil size={18} />
               </span>{" "}
               Editar
             </li>
-            <li onClick={deleteProduto} className="modal-item">
-              <span className="icon">
+            <li onClick={deleteProduto} className={modal["modal-item"]}>
+              <span className={modal["icon"]}>
                 <Trash2 size={18} />
               </span>
               Excluir item
