@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import "../styles/ModalProduto.css";
+import modalProduto from "../styles/ModalProduto.module.css"
 import PickList from "./picklist";
 import { Input } from "./Input";
 import { Button } from "./Button";
 
 Modal.setAppElement("#root");
+
+function formatPrice(value) {
+  // Remove todos os caracteres que não são números
+  let newValue = value.replace(/\D/g, "");
+
+  // Adiciona a vírgula para os centavos e ponto para milhares
+  newValue = new Intl.NumberFormat('pt-BR', {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(parseFloat(newValue) / 100);
+
+  return newValue;
+}
 
 const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
@@ -18,11 +32,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   const [estampa, setEstampa] = useState(editar.estampa);
   const [images, setImages] = useState([]);
   const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
-  const [preco, setPreco] = useState(editar.preco);
-  
-
-  //Testar isso depois
-  //onsole.log(preco)
+  const [preco, setPreco] = useState(formatPrice(editar.preco || "0"));
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -34,12 +44,16 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   };
 
   function handleSubmit(event) {
+    event.preventDefault(); // Evitar o recarregamento da página
+  
+    // Verifica se todos os campos obrigatórios estão preenchidos
     if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !estampa) {
       alert("Por favor, preencha todos os campos obrigatórios.");
-      return;
+      return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
-    event.preventDefault()
-    if(!editar.id) {
+  
+    // Lógica de criação ou atualização do produto
+    if (!editar.id) {
       const newProduct = {
         id: String(Math.random()),
         nome,
@@ -53,15 +67,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         preco,
         estampa,
         images
-      }
+      };
   
-      // newEvents.dataInicio.setHours(0)
-      // newEvents.dataFim.setHours(0)
-      // newEvents.dataInicio.setDate(newEvents.dataInicio.getDate() + 1)
-      // newEvents.dataFim.setDate(newEvents.dataFim.getDate() + 1)
-      setProdutos(prev => [...prev, newProduct])
-      
-      
+      setProdutos(prev => [...prev, newProduct]);
     } else {
       const updateProduct = {
         id: editar.id,
@@ -76,29 +84,27 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         preco,
         estampa,
         images
-      }
-
+      };
+  
       const productsUpdated = produtos.map(eventProps => {
         if (eventProps === editar) {
-          return updateProduct
-        }
-        else return eventProps
-      })
-
-      setProdutos(productsUpdated)
+          return updateProduct;
+        } else return eventProps;
+      });
+  
+      setProdutos(productsUpdated);
     }
-
-    onClose();
+  
+    onClose(); // Fecha o modal após salvar
   }
-
-
+  
   const handleCheckboxChange = (value) => {
     setEstadoProduto(value);
   };
 
   const handlePrecoChange = (event) => {
     const value = event;
-    const formattedValue = value.replace(/[^0-9,.]/g, "");
+    const formattedValue = formatPrice(value);
     setPreco(formattedValue);
   };
 
@@ -107,22 +113,22 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Cadastrar Produto"
-      className="modal"
-      overlayClassName="modal-overlay"
+      className={modalProduto["modal"]}
+      overlayClassName={modalProduto['modal-overlay']}
       shouldCloseOnOverlayClick={false}
     >
       <h2>Controle de Estoque › Adicionar Produto</h2>
-      <form className="formulario" onSubmit={handleSubmit}>
-        <div className="input-nome">
+      <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
+        <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
           <Input value={nome} placeholder={""} onChange={setNome} />
         </div>
-        <div className="textarea-descricao">
+        <div className={modalProduto["textarea-descricao"]}>
           <label>Descrição:</label>
           <Input value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
-        <div className="select-options">
-          <div className="select-tipo">
+        <div className={modalProduto["select-options"]}>
+          <div className={modalProduto["select-tipo"]}>
             <label>Tipo:</label>
             <PickList
               options={[
@@ -143,7 +149,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               value={tipo}
             />
           </div>
-          <div className="select-categoria">
+          <div className={modalProduto["select-categoria"]}>
             <label>Categoria:</label>
             <PickList
               options={[
@@ -154,8 +160,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               value={categoria}
             />
           </div>
-          <div className="select-status">
-            <label>Status</label>
+          <div className={modalProduto["select-status"]}>
+            <label>Status:</label>
             <PickList
               options={[
                 { label: "Disponível", value: "Disponível" },
@@ -169,9 +175,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           </div>
         </div>
 
-        <div className="checkbox-group">
+        <div className={modalProduto["checkbox-group"]}>
           <label>Estado do produto:</label>
-          <div className="checkbox-options">
+          <div className={modalProduto["checkbox-options"]}>
             <label>
               <input
                 type="checkbox"
@@ -198,51 +204,48 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             </label>
           </div>
         </div>
-        <div className="caracteristicas">
-          <div className="input-cor">
+        <div className={modalProduto["caracteristicas"]}>
+          <div className={modalProduto["input-cor"]}>
             <label>Cor:</label>
             <Input value={cor} onChange={setCor} />
           </div>
-          <div className="input-tamanho">
+          <div className={modalProduto["input-tamanho"]}>
             <label>Tamanho:</label>
             <Input value={tamanho} onChange={setTamanho} />
           </div>
         </div>
-        <div className="atributos">
-          <div className="input-preco">
+        <div className={modalProduto["atributos"]}>
+          <div className={modalProduto["input-preco"]}>
             <label>Preço:</label>
             <Input
-              type="number"
               value={preco}
               onChange={handlePrecoChange}
               placeholder="0,00"
-              maxLength={0}
+              maxLength={6}
               required
             />
           </div>
 
-          <div className="input-estampa">
+          <div className={modalProduto["input-estampa"]}>
             <label>Estampa:</label>
             <Input value={estampa} onChange={setEstampa} />
           </div>
         </div>
-        <div className="form-group">
+        <div className={modalProduto["form-group"]}>
           <label>Anexar Imagem:</label>
           <input
             type="file"
             onChange={handleImageUpload}
-            value={images}
             multiple
           />
         </div>
-        <div className="image-preview">
+        <div className={modalProduto["image-preview"]}>
           {images.map((image, index) => (
-            <div key={index} className="image-container">
+            <div key={index} className={modalProduto["image-container"]}>
               <img
                 src={URL.createObjectURL(image)}
                 alt={`Preview ${index}`}
-                className="preview-img"
-                value={images}
+                className={modalProduto["preview-img"]}
               />
               <button type="button" onClick={() => removeImage(index)}>
                 X
@@ -250,7 +253,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             </div>
           ))}
         </div>
-        <div className="form-actions">
+        <div className={modalProduto["form-actions"]}>
           <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />
           <Button text={"Salvar"} onClick={handleSubmit} />
         </div>
