@@ -7,7 +7,7 @@ import Instagram from '../assets/instagram.svg'
 
 export function Footer() {
   return (
-    <footer className="h-[464px] bg-blue-950 flex flex-col items-center justify-between py-24 px-48 text-white">
+    <footer id='contato' className="h-[464px] bg-blue-950 flex flex-col items-center justify-between py-24 px-48 text-white">
       <div className='w-full flex justify-between'>
       <div className='flex gap-8 items-center'>
         <img src={endereco} alt="asd" />

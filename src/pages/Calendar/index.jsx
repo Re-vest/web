@@ -58,7 +58,7 @@ export function CalendarPage() {
 
       {isModalOpen &&  <EventModal setIsModalOpen={setIsModalOpen} event={eventOnModal} date={date} setEvents={setEvents} events={events} />}
     
-      <div className="w-full flex justify-between pt-10 pl-10">
+      <div className="w-full flex justify-between pt-10 pl-10 ml-10">
 
           <div className="w-60 flex flex-col gap-5 overflow-y-scroll">
             <h2 className="font-semibold text-2xl">Gerenciar Eventos</h2>
