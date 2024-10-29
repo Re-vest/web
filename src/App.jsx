@@ -8,7 +8,7 @@ import Modal from "./components/Estoque/Modal.jsx";
 function App() {
   return (
     <>
-      <Estoque />
+      <CalendarPage />
     </>
   );
 }

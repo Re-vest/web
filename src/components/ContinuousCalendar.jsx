@@ -102,8 +102,8 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
       const isToday = today.getMonth() === month && today.getDate() === day && today.getFullYear() === year;
 
       const eventsForDay = events.filter(event => {
-        const eventStart = event.startAt;
-        const eventEnd = event.endAt;
+        const eventStart = event.dataInicio;
+        const eventEnd = event.dataFim;
 
         const currentDate = new Date(year, month, day);
         return currentDate >= eventStart && currentDate <= eventEnd;
@@ -129,7 +129,7 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
 
                 </p>
                 <div className='w-full flex flex-col gap-1 relative'>
-                  {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} title={event.title} />)}
+                  {eventsForDay.map(event => <Event handleClickEvent={handleClickEvent} key={event.id} event={event} titulo={event.titulo} />)}
                 </div>
               </span>
 
@@ -208,19 +208,19 @@ export const ContinuousCalendar = ({ fullHeight = false, onClick, setIsModalOpen
             <div className="flex w-fit items-center justify-between">
               <button
                 onClick={handlePrevYear}
-                className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
+                className="rounded-full border border-slate-300 p-1 transition-cors hover:bg-slate-100 sm:p-2"
               >
                 <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
+                  <path stroke="currentcor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
                 </svg>
               </button>
               <h1 className="min-w-16 text-center text-lg font-semibold sm:min-w-20 sm:text-xl">{year}</h1>
               <button
                 onClick={handleNextYear}
-                className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
+                className="rounded-full border border-slate-300 p-1 transition-cors hover:bg-slate-100 sm:p-2"
               >
                 <svg className="size-5 text-slate-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
+                  <path stroke="currentcor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
                 </svg>
               </button>
             </div>
@@ -263,7 +263,7 @@ export const Select = ({ name, value, label, options = [], onChange, className }
       ))}
     </select>
     <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-1 sm:pr-2">
-      <svg className="size-5 text-slate-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <svg className="size-5 text-slate-600" viewBox="0 0 20 20" fill="currentcor" aria-hidden="true">
         <path fillRule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clipRule="evenodd" />
       </svg>
     </span>
