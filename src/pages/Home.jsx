@@ -49,7 +49,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="h-[552px] bg-bazar bg-cover text-white">
+      <div className="h-[552px] bg-bazar bg-cover text-white" id="about">
         <div className="h-full w-1/2 bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] left-0 border-yellow-600 border-r-2 border-b-2 border-t-2 rounded-tr-full rounded-br-full"></div>
           <div className="w-1/2 flex flex-col gap-2">
