@@ -55,10 +55,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         images
       }
   
-      // newEvents.startAt.setHours(0)
-      // newEvents.endAt.setHours(0)
-      // newEvents.startAt.setDate(newEvents.startAt.getDate() + 1)
-      // newEvents.endAt.setDate(newEvents.endAt.getDate() + 1)
+      // newEvents.dataInicio.setHours(0)
+      // newEvents.dataFim.setHours(0)
+      // newEvents.dataInicio.setDate(newEvents.dataInicio.getDate() + 1)
+      // newEvents.dataFim.setDate(newEvents.dataFim.getDate() + 1)
       setProdutos(prev => [...prev, newProduct])
       
       
