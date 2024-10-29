@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Modal from "./Modal";
+import estoque from "../../styles/estoque.module.css";
 
 export const LinhaProduto = ({
   product,
@@ -21,7 +22,7 @@ export const LinhaProduto = ({
         <td>{nome}</td>
         <td>{descricao}</td>
         <td>
-          <span className={`status ${product.status.toLowerCase()}`}>
+          <span className={estoque[`status ${product.status.toLowerCase()}`]}>
             {status}
           </span>
         </td>
