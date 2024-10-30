@@ -11,7 +11,7 @@ export function Dashboard() {
   useEffect(() => {
     if(!sessionStorage.TOKEN) {
       sessionStorage.clear()
-      navigate('/')
+      navigate('/login')
     }
   })
   return (

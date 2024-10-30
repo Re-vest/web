@@ -67,7 +67,7 @@ export const Estoque = () => {
 
   useEffect(() => {
     if(!sessionStorage.TOKEN) {
-      navigate('/')
+      navigate('/login')
     } else {
 
       setFiltredOptions(

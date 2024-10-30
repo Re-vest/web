@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
     function handleExit () {
       sessionStorage.clear()
-      navigate('/')
+      navigate('/login')
     }
 
     return (

@@ -15,7 +15,7 @@ export function CalendarPage() {
 
   useEffect(() => {
     if(!sessionStorage.TOKEN) {
-      navigate('/')
+      navigate('/login')
     } else {
       api.get("/eventos", {}).then((response) => {
         setEvents(

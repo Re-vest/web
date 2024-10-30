@@ -103,7 +103,7 @@ export const HistoricoVendas = () => {
 
   useEffect(() => {
     if(!sessionStorage.TOKEN) {
-      navigate('/')
+      navigate('/login')
     }
   })
 
