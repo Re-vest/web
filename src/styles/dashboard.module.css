@@ -1,5 +1,6 @@
 .container {
   margin: 0 5%;
+  padding: 3rem 2rem;
   display: flex;
 }
 .header {
