@@ -3,10 +3,19 @@ import { Navbar } from "../../components/Navbar";
 import { Grafico } from "../../components/Dashboard/Grafico";
 import { Atividade } from "../../components/Dashboard/Atividade";
 import dash from "../../styles/dashboard.module.css";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    if(!sessionStorage.TOKEN) {
+      sessionStorage.clear()
+      navigate('/')
+    }
+  })
   return (
-    <div className={dash["h-full w-full flex"]}>
+    <div>
       <Navbar />
       <div className={dash["container"]}>
         <div className={dash["esquerdo"]}>
