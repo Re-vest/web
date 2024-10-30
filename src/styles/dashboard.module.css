@@ -1,0 +1,125 @@
+.container {
+  margin: 0 5%;
+  display: flex;
+}
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: gray;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.evento-info {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.evento-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.evento-datas {
+  display: flex;
+  gap: 30px;
+}
+
+.evento-datas div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.grafico {
+  width: 100%;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+  gap: 20px;
+}
+
+.esquerdo {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 15px;
+}
+
+.esquerdo h1{
+  font-weight: bold;
+  font-size: 26px;
+  gap: 15px;
+}
+
+
+
+.bem-vindo {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}
+
+
+.direito h1 {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.direito {
+  display: flex;
+  width: 30%;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.vendas {
+  display: flex;
+  width: 100%;
+  height: 130px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.vendas h2, .categoria h2, .monitoramento h2 {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.categoria{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 170px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.monitoramento{
+  display: flex;
+  width: 100%;
+  height: 200px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.monitoramento p {
+  margin-left: 10px;
+}
+
