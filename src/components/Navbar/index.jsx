@@ -1,6 +1,15 @@
   import { AlignEndHorizontal, Calendar, CircleDollarSign, LogOut, Shirt, UsersRound } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
   export function Navbar() {
+
+    const navigate = useNavigate()
+
+    function handleExit () {
+      sessionStorage.clear()
+      navigate('/')
+    }
+
     return (
       <div className="h-full w-14 bg-gradient-to-b from-[#0D35FE] to-[#5CC3FF] py-6 flex flex-col items-center fixed space-y-8 justify-center" id="Navbar">
         <a href="/dashboard" className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">
@@ -26,7 +35,7 @@
           <CircleDollarSign size={24} />
         </a>
 
-        <a href="/" className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">
+        <a onClick={handleExit} className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">
           <LogOut size={24} />
         </a>
       </div>
