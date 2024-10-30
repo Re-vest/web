@@ -7,6 +7,7 @@ import { Navbar } from "../../components/Navbar";
 import { FerramentasHeader } from "../../components/HistoricoVendas/FerramentasHeader";
 import { HeaderTable } from "../../components/HistoricoVendas/HeaderTable";
 import { RegistroVenda } from "../../components/HistoricoVendas/RegistroVenda";
+import { useNavigate } from "react-router-dom";
 
 export const HistoricoVendas = () => {
   const [vendas, setVendas] = useState([
@@ -97,6 +98,14 @@ export const HistoricoVendas = () => {
           venda.quantidade.toString().includes(busca) ||
           venda.preco.toFixed(2).includes(busca)
   );
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(!sessionStorage.TOKEN) {
+      navigate('/')
+    }
+  })
 
   return (
     <div className="h-full w-full flex">
