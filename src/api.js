@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_BACK_END,
   headers: {
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMwMTU4ODYyLCJleHAiOjE3MzM3NTg4NjJ9.59vsrzrOewBX4Yax9_-xX7po9mrj54Q90rgr7Kr4aZLyKcBQVd0F7XgMpKFNRFOmHAyfR6Jr2uLenXMofykEcw'
+    'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMwMzExNzU5LCJleHAiOjE3MzM5MTE3NTl9.Vka8Uojwf07FNuFEm6ohPPVI4b_2QE5qBOolnswLMl9w0EoK0WsgtxvYGOP62a00ScbypZeFsT7UH-xTy4WBDg`
   }
 })
 
