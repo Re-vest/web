@@ -7,6 +7,7 @@ import { Acoes } from "../../components/Estoque/Acoes";
 import { Navbar } from "../../components/Navbar";
 import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
+import api from '../../api'
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -69,6 +70,16 @@ export const Estoque = () => {
     if(!sessionStorage.TOKEN) {
       navigate('/login')
     } else {
+
+      try {
+        api.get("/produtos").then(response => {
+          setProdutos(response.data)
+        })
+      } catch(e) {
+        console.log(e)
+      }
+
+      console.log(produtos)
 
       setFiltredOptions(
         produtos.filter((product) => {
