@@ -31,6 +31,8 @@
   .acoes input {
     padding: 5px;
     font-size: 14px;
+    opacity: 0.5; /* Reduz a opacidade para dar a sensação de desfocado */
+    pointer-events: none; /* Desativa interações */
   }
   
   .filter-btn,
@@ -45,31 +47,33 @@
   }
   
   .volunteer-list thead th {
-    position: sticky; /* Fixa o cabeçalho da tabela */
-    top: 0; /* Faz o cabeçalho ficar fixo no topo */
-    background-color: #f1f1f1; /* Estilo de fundo do cabeçalho */
-    z-index: 1; /* Garante que o cabeçalho fique sobre o conteúdo */
+    background-color: #f1f1f1; 
+    z-index: 1; 
     padding: 10px;
     text-align: center;
   }
   
   .volunteer-list {
     width: 68%;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
+
+    max-height: 400px;
+    overflow-y: auto;
+
     /* max-height: 400px; */
-    /* min-height: auto; */
+    /* height: auto; */
     /* background-color: #d9534f; */
     /* margin-right: 2%; */
   }
   
-  .nomeVoluntario{
+  /* .nomeVoluntario{
     text-align: start;
-  }
+  } */
   
   .volunteer-list th,
   .volunteer-list td {
     padding: 10px;
-    text-align: center;
+    /* text-align: center; */
     border-bottom: 1px solid #ddd;
   }
   
@@ -183,8 +187,7 @@
     justify-content: center;
     flex-direction: column;
     width: 500px;
-    padding: 40px;
-    border: #000000 solid 2px;
+    padding: 30px;
     border-radius: 15px;
 
   }

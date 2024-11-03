@@ -8,84 +8,125 @@ import { Voluntario } from "../../components/Voluntarios/LinhaVoluntario";
 import { FerramentasHeader } from "../../components/Voluntarios/FerramentasHeader";
 import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
 
-import { CadastroVoluntario } from "../../components/Voluntarios/cadastrarVoluntario";
+import CadastroVoluntario from "../../components/Voluntarios/ModalDeCadastro";
 
-// import { Package,Trash2, ShoppingBag, UserPlus, UserMinus, DollarSign, RefreshCcw, FileText  } from "lucide-react";
+import ErrorBoundary from "../../components/ErrorBoundary" // pra depurar erro
 
 export const Voluntarios = () => {
-  const [voluntarios, setvoluntarios] = useState([
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editar, setEditar] = useState("");
+  const [voluntarios, setVoluntarios] = useState([
     {
-      id: "0122",
-      voluntario: "Gustavo de Oliveira Antunes",
+      id: "23785",
+      nome: "Gustavo de Oliveira Antunes",
+      email: "gustavo@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "ATIVO",
       permissao: "ADMIN",
       selecionado: false,
     },
     {
-      id: "0123",
-      voluntario: "Patrick de Lima Rodrigues",
+      id: "16487",
+      nome: "Patrick de Lima Rodrigues",
+      email: "patrick@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "ATIVO",
       permissao: "ADMIN",
       selecionado: false,
     },
     {
-      id: "0124",
-      voluntario: "Rafaela de Souza Scarabe",
+      id: "29478",
+      nome: "Rafaela de Souza Scarabe",
+      email: "rafaela@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "INATIVO",
       permissao: "ADMIN",
       selecionado: false,
     },
     {
-      id: "0125",
-      voluntario: "Samuel de Oliveira Batista",
+      id: "20636",
+      nome: "Samuel de Oliveira Batista",
+      email: "samuel@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "ATIVO",
       permissao: "VOLUNTÁRIO",
       selecionado: false,
     },
     {
-      id: "0126",
-      voluntario: "Vitor Santos Tigre",
+      id: "72068",
+      nome: "Vitor Santos Tigre",
+      email: "vitorTigre@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "ATIVO",
       permissao: "VOLUNTÁRIO",
       selecionado: false,
     },
     {
-      id: "0127",
-      voluntario: "Victor Hugo Carvalho Moreira dos Santos",
+      id: "01754",
+      nome: "Victor Hugo Carvalho Moreira dos Santos",
+      email: "victorMoreira@gmail.com",
+      senha: "123456",
+      telefone: "11939606494",
       status: "ATIVO",
       permissao: "VOLUNTÁRIO",
       selecionado: false,
     },
-    {
-      id: "0128",
-      voluntario: "Victor Hugo Carvalho Moreira dos Santos",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
-    {
-      id: "0129",
-      voluntario: "Victor Hugo Carvalho Moreira dos Santos",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
-    {
-      id: "0130",
-      voluntario: "Victor Hugo Carvalho Moreira dos Santos",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
-    {
-      id: "0131",
-      voluntario: "Victor Hugo Carvalho Moreira dos Santos",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
+    // {
+    //   id: "0128",
+    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "VOLUNTÁRIO",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "0129",
+    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "VOLUNTÁRIO",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "0130",
+    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "VOLUNTÁRIO",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "0131",
+    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "VOLUNTÁRIO",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "0132",
+    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "VOLUNTÁRIO",
+    //   selecionado: false,
+    // },
   ]);
-
 
   const [atividades] = useState([
     {
@@ -150,45 +191,44 @@ export const Voluntarios = () => {
       label: "Permissões",
       options: [
         { label: "Administrador", value: "ADMIN" },
-        { label: "Voluntário", value: "VOLUNTÁRIO" }
+        { label: "Supervisor", value: "SUPERVISOR" },
+        { label: "Voluntário", value: "VOLUNTARIO" }
       ]
     }
   ];
 
-  //MARK: CHECKBOX
-  const selecionaVoluntario = (id) => {
-    setvoluntarios((preVoluntarios) =>
-      preVoluntarios.map((volunteer) =>
-        volunteer.id === id
-          ? { ...volunteer, selecionado: !volunteer.selecionado }
-          : volunteer
-      )
-    );
-  };
+  // //MARK: CHECKBOX
+  // const selecionaVoluntario = (id) => {
+  //   setVoluntarios((preVoluntarios) =>
+  //     preVoluntarios.map((volunteer) =>
+  //       volunteer.id === id
+  //         ? { ...volunteer, selecionado: !volunteer.selecionado }
+  //         : volunteer
+  //     )
+  //   );
+  // };
 
-  const selecionaTodos = (event) => {
-    const isChecked = event.target.checked;
-    setvoluntarios((preVoluntarios) =>
-      preVoluntarios.map((volunteer) => ({
-        ...volunteer,
-        selecionado: isChecked,
-      }))
-    );
-  };
+  // const selecionaTodos = (event) => {
+  //   const isChecked = event.target.checked;
+  //   setVoluntarios((preVoluntarios) =>
+  //     preVoluntarios.map((volunteer) => ({
+  //       ...volunteer,
+  //       selecionado: isChecked,
+  //     }))
+  //   );
+  // };
 
   //MARK: FILTROS
-  const [termoPesquisa, setTermoPesquisa] = useState(""); // input
-  const [filtredOptions, setFiltredOptions] = useState([]); // filtros
+
+  const [termoPesquisa, setTermoPesquisa] = useState(""); // input - pesquisa
+  const [filtredOptions, setFiltredOptions] = useState([]); // filtros 
   const [selectedFilters, setSelectedFilters] = useState({
     status: [],
     permissao: [],
   });
 
-
-
   // filtra
   useEffect(() => {
-
 
   setFiltredOptions(
     voluntarios.filter((volunteer) => {
@@ -196,7 +236,7 @@ export const Voluntarios = () => {
       const termo = termoPesquisa.toLowerCase();
       const buscarVoluntario = 
         volunteer.id.toLowerCase().includes(termo) ||
-        volunteer.voluntario.toLowerCase().includes(termo) 
+        volunteer.nome.toLowerCase().includes(termo) 
 
 
       const statusSelecionado = selectedFilters.status.length === 0 || //status
@@ -242,56 +282,73 @@ export const Voluntarios = () => {
       setSelectedFilters(novaSelecao);
   };
 
-  // MARK: Modal add volunt 
 
 
   //MARK: RETURN
   return (
     //pra reinderizar tudo na tela
     <div className="h-full w-full flex">
-      <Navbar />
+      <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} />
       <div className="w-11/12 my-5 mx-auto font-sans flex flex-col gap-2.5">
         <div className="header">
           <h2>Gerenciar Equipe</h2>
         </div>
 
+    <ErrorBoundary>
+
         <FerramentasHeader 
-        
           volunteer={voluntarios}
-          setvoluntarios={setvoluntarios}
+          setVoluntarios={setVoluntarios}
           setPesquisaVoluntario={setTermoPesquisa} //input p/ pesquisa 
           options={fltros} // filtros
           atualizandoFiltros={atualizandoFiltros} //atualizar os filtros
-        />
-
+          onClick={() => setModalOpen(true)}
+          />
+    </ErrorBoundary>
 
         <div className="container_tudo">
 
+          {/* <table className="h-600 overflow-y-auto w-[68%] border-collapse"> */}
           <table className="volunteer-list">
+          {/* <table className="volunteer-list"> */}
             <HeaderTable 
-              selecionaTodos={(e) =>
-                setvoluntarios((prev) =>
-                prev.map((v) => ({ ...v, selecionado: e.target.checked }))
-              )
-            }
+            //   selecionaTodos={(e) =>
+            //     setvoluntarios((prev) =>
+            //     prev.map((v) => ({ ...v, selecionado: e.target.checked }))
+            //   )
+            // }
              />
             <tbody>
+
               {filtredOptions.map((volunteer) => (
+                // <ErrorBoundary>
+
                 <Voluntario 
-                  key={volunteer.id}
-                  volunteer={volunteer}
-                  selecionaVoluntario={(id) =>
-                    setvoluntarios((prev) =>
-                      prev.map((v) =>
-                        v.id === id ? { ...v, selecionado: !v.selecionado } : v
-                      )
-                    )
-                  }
-                  
+                volunteer={volunteer}
+                key={volunteer.id}
+                id={volunteer.id}
+                nome={volunteer.nome}
+                status={volunteer.status}
+                permissao={volunteer.permissao}
+                editar={setEditar}
+                modalEditar={setModalOpen}
+                setVoluntarios={setVoluntarios}
+                voluntarios={voluntarios}
                 />
+
               ))}
             </tbody>
           </table>
+
+          {modalOpen && (
+          <CadastroVoluntario
+            voluntarios={voluntarios}
+            editar={editar}
+            isOpen={modalOpen}
+            setVoluntarios={setVoluntarios}
+            onClose={() => setModalOpen(false)}
+          />
+        )}
 
           <div className="recentActivities">
 
@@ -301,7 +358,7 @@ export const Voluntarios = () => {
                 {atividades.map((atividade) => (
                   <AtividadesRecentes 
                     key={atividade.id}
-                    atividade={atividade} /> //  card atividade | smp colocar key = id;
+                    atividade={atividade} /> // card atividade | smp colocar key = id;
                 ))}
               </div>
 

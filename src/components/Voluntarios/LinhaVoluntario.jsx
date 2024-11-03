@@ -1,26 +1,36 @@
 import React from "react";
+import Modal from "./ModalEditar";
+import "../../styles/voluntarios.css";
 
-export const Voluntario = ({ volunteer, selecionaVoluntario }) => {
+export const Voluntario = ({ 
+    id = '',
+    nome = '',
+    email = '',
+    senha = '',
+    telefone = '',
+    status = '',
+    permissao = '',
+    editar,
+    modalEditar,
+    voluntarios,
+    volunteer, 
+    setVoluntarios,
+    selecionaVoluntario }) => {
+  
+
   return (
     <tr>
+      <td className="text-center">{id}</td>
+      <td className="text-left">{nome}</td>
       <td>
-        <input
-          type="checkbox"
-          checked={volunteer.selecionado}
-          onChange={() => selecionaVoluntario(volunteer.id)}
-        />
-      </td>
-      <td className="idVoluntario">{volunteer.id}</td>
-      <td className="nomeVoluntario">{volunteer.voluntario}</td>
-      <td>
-        <span className={`status ${volunteer.status.toLowerCase()}`}>
-          {volunteer.status}
+        <span className={`status ${status.toLowerCase()}`}>
+          {status}
         </span>
       </td>
-      <td className="permissaoVoluntario">{volunteer.permissao}</td>
-      <td className="acoesVoluntario">
-        <button className="acoes-btn">...</button>
-      </td>
+      <td className="text-center">{permissao}</td>
+        <td className="text-center">
+          <Modal volunteer={volunteer} editar={editar} modalEditar={modalEditar} setVoluntarios={setVoluntarios} voluntarios={voluntarios}/>
+        </td>
     </tr>
   );
 };
