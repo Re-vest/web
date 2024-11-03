@@ -295,7 +295,6 @@ export const Voluntarios = () => {
         </div>
 
     <ErrorBoundary>
-
         <FerramentasHeader 
           volunteer={voluntarios}
           setVoluntarios={setVoluntarios}

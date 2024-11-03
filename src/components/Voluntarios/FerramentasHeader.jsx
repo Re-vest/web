@@ -6,10 +6,6 @@ import  Filtro from "./Filtros";
 
 export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, options, atualizandoFiltros, onClick}) => {
 
-  const handleInputChange = (event) => {
-    setPesquisaVoluntario(event.target.value); // Atualiza o termo de pesquisa
-  }; 
-
   return (
 
     
@@ -18,7 +14,7 @@ export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, op
         <Input
           placeholder="Pesquisa..."
           icon={<Search w-full />}
-          onChange={handleInputChange}
+          onChange={setPesquisaVoluntario}
         />
       </div>
       <div className="acoes">

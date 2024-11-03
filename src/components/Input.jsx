@@ -9,7 +9,7 @@ export function Input({ icon, placeholder, onChange}) {
       placeholder={placeholder} 
       type="text" 
       className="w-full bg-transparent outline-none border-none " 
-      onChange={onChange}
+      onChange={e => onChange(e.target.value)}
       />
     </div>
   )
