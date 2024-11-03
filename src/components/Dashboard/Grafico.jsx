@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
-export const Grafico = () => {
+export const Grafico = ({ semana }) => {
   const [options] = useState({
     chart: {
       id: "basic-bar",

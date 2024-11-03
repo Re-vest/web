@@ -8,9 +8,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: gray;
   padding: 30px;
   border-radius: 5px;
+  border: 2px solid #DDD;
 }
 
 .evento-info {
@@ -123,4 +123,3 @@
 .monitoramento p {
   margin-left: 10px;
 }
-
