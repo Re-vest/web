@@ -3,8 +3,7 @@ import dash from '../../styles/dashboard.module.css'
 import { ArrowLeft, ArrowLeftCircle, ArrowRightCircle, CalendarDays } from 'lucide-react';
 import {Button} from '../Button'
 
-export function CarrouselEvents({ events }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
 
   function formatStringToDate(string) {
     let date = new Date(string)
@@ -52,8 +51,11 @@ export function CarrouselEvents({ events }) {
 
   return (
     <>
+    <div className='text-2xl'>Eventos</div>
     {(events && events.length > 0) ? (
-      <div className={dash["header"]}>
+      <div className={dash["header"]} style={{
+        border: `2px solid ${events[currentIndex].cor ? events[currentIndex].cor : '#DDD'}` 
+      }}>
         <button onClick={prevEvent}>
       <ArrowLeftCircle size={32}  />
 

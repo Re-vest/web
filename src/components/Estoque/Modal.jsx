@@ -1,6 +1,7 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
 import modal from "../../styles/Modal.module.css";
+import api from '../../api'
 
 function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +32,14 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
     setIsOpen(!isOpen);
   };
 
-  function deleteProduto() {
-    setProdutos(produtos.filter((pr) => pr.id !== product.id));
+  async function deleteProduto() {
+    try {
+      await api.delete(`/produtos/${product.id}`)
+
+      setProdutos(produtos.filter((pr) => pr.id !== product.id));
+    } catch(e) {
+      console.log(e);
+    }
     setIsOpen(false);
   }
 

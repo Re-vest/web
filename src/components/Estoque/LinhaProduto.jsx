@@ -22,7 +22,7 @@ export const LinhaProduto = ({
         <td>{nome}</td>
         <td>{descricao}</td>
         <td>
-          <span className={estoque[`status ${product.status.toLowerCase()}`]}>
+          <span className={estoque[product.status]}>
             {status}
           </span>
         </td>

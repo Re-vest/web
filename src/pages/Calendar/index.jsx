@@ -14,31 +14,37 @@ export function CalendarPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN) {
+    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
-      api.get("/eventos", {}).then((response) => {
-        setEvents(
-          response.data.map((event) => {
-            const dataInicio = new Date(event.dataInicio);
-            dataInicio.setHours(0);
-            dataInicio.setDate(dataInicio.getDate() + 1);
-  
-            const dataFim = new Date(event.dataFim);
-            dataFim.setHours(0);
-            dataFim.setDate(dataFim.getDate() + 1);
-  
-            return {
-              id: event.id,
-              titulo: event.titulo,
-              descricao: event.descricao,
-              dataInicio: dataInicio,
-              dataFim: dataFim,
-              cor: event.cor,
-            };
-          })
-        );
-      });
+      try {
+
+        api.get("/eventos", {}).then((response) => {
+          setEvents(
+            response.data.map((event) => {
+              const dataInicio = new Date(event.dataInicio);
+              dataInicio.setHours(0);
+              dataInicio.setDate(dataInicio.getDate() + 1);
+    
+              const dataFim = new Date(event.dataFim);
+              dataFim.setHours(0);
+              dataFim.setDate(dataFim.getDate() + 1);
+    
+              return {
+                id: event.id,
+                titulo: event.titulo,
+                descricao: event.descricao,
+                dataInicio: dataInicio,
+                dataFim: dataFim,
+                cor: event.cor,
+              };
+            })
+          );
+        });
+      } catch (e) {
+        console.log(e);
+        
+      }
     }
   }, []);
 

@@ -34,8 +34,15 @@ const Login = () => {
 
       sessionStorage.ID_USER = response.data.userId
       sessionStorage.TOKEN = response.data.token
+      sessionStorage.PERFIL = response.data.perfil
+      sessionStorage.NAME = response.data.nome
+      
+      if (sessionStorage.PERFIL === 'CLIENTE') {
+        alert("Usuário não possui privilégios suficientes")
+        return
+      } 
 
-      navigate('/estoque')
+      navigate('/dashboard')
 
     } catch(e) {
       console.log(e)

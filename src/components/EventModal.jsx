@@ -19,40 +19,47 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   const [startEvent, setStartEvent] = useState(event.dataInicio ? formatDateToString(event.dataInicio) : date);
   const [endEvent, setEndEvent] = useState(event.dataFim ? formatDateToString(event.dataFim) : date);
   const [titulo, setTitulo] = useState(event.titulo ? event.titulo : '');
-  const [cor, setCor] = useState(event.cor ? event.cor : '');
+  const [cor, setCor] = useState(event.cor ? event.cor : '#DDD');
   const [descricao, setDescricao] = useState(event.descricao ? event.descricao : '');
 
 
   async function handleChangeEvent() {
     if (!event.id) {
 
-      const response = await api.post('/eventos',
-        {
-          titulo,
-          descricao,
-          cor,
-          dataInicio: startEvent,
-          dataFim: endEvent
+      try {
+        const response = await api.post('/eventos',
+          {
+            titulo,
+            descricao,
+            cor,
+            dataInicio: startEvent,
+            dataFim: endEvent
+          }
+        )
+  
+        const dataInicio = new Date(response.data.dataInicio)
+        dataInicio.setHours(0)
+        dataInicio.setDate(dataInicio.getDate() + 1)
+  
+        const dataFim = new Date(response.data.dataFim)
+        dataFim.setHours(0)
+        dataFim.setDate(dataFim.getDate() + 1)
+  
+        const newEvents = {
+          titulo: response.data.titulo,
+          dataInicio: dataInicio,
+          dataFim: dataFim,
+          descricao: response.data.descricao,
+          cor: response.data.cor
         }
-      )
+  
+        setEvents(prev => [...prev, newEvents])
 
-      const dataInicio = new Date(response.data.dataInicio)
-      dataInicio.setHours(0)
-      dataInicio.setDate(dataInicio.getDate() + 1)
-
-      const dataFim = new Date(response.data.dataFim)
-      dataFim.setHours(0)
-      dataFim.setDate(dataFim.getDate() + 1)
-
-      const newEvents = {
-        titulo: response.data.titulo,
-        dataInicio: dataInicio,
-        dataFim: dataFim,
-        descricao: response.data.descricao,
-        cor: response.data.cor
+      } catch (e) {
+        console.log(e);
+        
       }
 
-      setEvents(prev => [...prev, newEvents])
 
 
     } else {

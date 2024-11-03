@@ -71,25 +71,53 @@
   text-align: center;
 }
 
-.status.disponível   {
+.DISPONIVEL   {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
   background-color: #d4edda;
   color: #28a745;
   font-weight: bold;
 }
 
-.status.vendido   {
+.VENDIDO   {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
   background-color: #cce5ff;
   color: #007bff;
   font-weight: bold;  
 }
 
-.status.oculto {
+.OCULTO {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
   background-color: #e2e3e5;
   color: #6c757d;
   font-weight: bold;
 }
 
-.status.indisponível {
+.INDISPONIVEL {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
   background-color: #f8d7da;
   color: #dc3545;
   font-weight: bold;

@@ -34,20 +34,15 @@ function parseFormattedPrice(value) {
 const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
-  const [tipo, setTipo] = useState(editar.tipo);
-  const [categoria, setCategoria] = useState(editar.categoria);
+  const [tipo, setTipo] = useState(editar.categoria);
+  const [categoria, setCategoria] = useState(editar.tipo);
   const [status, setStatus] = useState(editar.status);
   const [cor, setCor] = useState(editar.cor);
   const [tamanho, setTamanho] = useState(editar.tamanho);
   const [finalidade, setFinalidade] = useState(editar.finalidade);
   const [images, setImages] = useState([]);
-  const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
-  const [preco, setPreco] = useState(formatPrice(editar.preco || "0"));
-  console.log(typeof (parseFormattedPrice(preco)))
-  console.log("------------");
-  console.log(typeof (formatPrice(preco)))
-
-
+  const [estadoProduto, setEstadoProduto] = useState(editar.estado ? editar.estado === 'Semi novo' ? 'SEMI_NOVO' : editar.estado.toUpperCase() : '');
+  const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : '0');
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -58,6 +53,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setImages(images.filter((_, i) => i !== index));
   };
 
+  
+  
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
 
@@ -79,11 +76,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         estado: estadoProduto,
         tipo: categoria,
         status,
-        // tamanho,
+        tamanho,
         // images
       }
-
-      console.log(newProduct)
 
       try {
 
@@ -96,27 +91,44 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
 
     } else {
       const updateProduct = {
-        id: editar.id,
         nome,
+        preco: parseFormattedPrice(preco),
         descricao,
-        tipo,
-        categoria,
-        status,
-        estadoProduto,
         cor,
-        tamanho,
-        preco,
         finalidade,
-        images
+        categoria: tipo.toUpperCase(),
+        estado: estadoProduto,
+        tipo: categoria,
+        status,
+        tamanho,
+        // images
       };
 
-      const productsUpdated = produtos.map(eventProps => {
-        if (eventProps === editar) {
-          return updateProduct;
-        } else return eventProps;
-      });
+      console.log(updateProduct)
 
-      setProdutos(productsUpdated);
+      try {
+        if(status === 'VENDIDO') {
+          await api.post("/vendas", {
+            produtosId: [editar.id],
+            idVendedor: sessionStorage.ID_USER
+          })
+        }
+
+        const response = await api.put(`/produtos/${editar.id}`, updateProduct)
+  
+        const productsUpdated = produtos.map(eventProps => {
+          if (eventProps.id === response.data.id) {
+            return response.data;
+          } else return eventProps;
+        });
+
+  
+        setProdutos(productsUpdated);
+      } catch(e) {
+        console.log(e);
+        
+      }
+
     }
 
     onClose(); // Fecha o modal após salvar
@@ -188,7 +200,6 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <PickList
               options={[
                 { label: "Disponível", value: "DISPONIVEL" },
-                { label: "Indisponível", value: "INDISPONIVEL" },
                 { label: "Oculto", value: "OCULTO" },
                 { label: "Vendido", value: "VENDIDO" },
               ]}

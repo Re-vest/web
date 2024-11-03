@@ -16,6 +16,10 @@ export function Dashboard() {
   const [city, setCity] = useState('')
   const [categoriaMaisVendida, setCategoriaMaisVendida] = useState()
   const [semana, setSemana] = useState([])
+  const [totalVendido, setTotalVendido] = useState(0.0)
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
 
     try {
@@ -25,7 +29,6 @@ export function Dashboard() {
         setCity(response.data.results.city)
         response.data.results.forecast.map(clima => {
           setSemana(prev => [...prev, clima.weekday])
-
         })
       })
     } catch (e) {
@@ -43,7 +46,6 @@ export function Dashboard() {
       console.log(e);
     }
   }, [])
-  console.log(categoriaMaisVendida)
 
   function formatStringToDate(string) {
     let date = new Date(string)
@@ -71,10 +73,9 @@ export function Dashboard() {
 
   }, [])
   useEffect(() => {
-    // if(!sessionStorage.TOKEN) {
-    //   sessionStorage.clear()
-    //   navigate('/')
-    // }
+    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+      navigate('/login')
+    }
 
     getWeather()
     getEvents()
@@ -102,12 +103,12 @@ export function Dashboard() {
       <div className={dash["container"]}>
         <div className={dash["esquerdo"]}>
           <h1>Dashboard</h1>
-          {events.length > 0 ?? (
-            <div>asd</div>
-          )}
-          <CarrouselEvents events={events} />
+          <CarrouselEvents events={events} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
           <div className={dash["grafico"]}>
-            <Grafico semana={semana} />
+            {semana.length ? (
+              <Grafico semana={semana} />
+
+            ) : <></>}
           </div>
           <div className="flex flex-col items-center p-16 border-2 border-[#DDD]  rounded-lg">
             <div className="w-full flex justify-between">
@@ -142,8 +143,8 @@ export function Dashboard() {
           <div className={dash["bem-vindo"]}><h1>Olá, {sessionStorage.NAME}</h1></div>
           <div className={dash["cards"]}>
             <div className={dash["vendas"]}>
-              <p>Total de vendas na semana</p>
-              <h2>R$ 477,90</h2>
+              <p>Total de vendas</p>
+              <h2>R$ {totalVendido}</h2>
               {/* <p>1,7% a mais que na última edição</p> */}
             </div>
             <div className={dash["categoria"]}>

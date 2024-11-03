@@ -41,10 +41,9 @@ export const Estoque = () => {
     {
       label: "Status",
       options: [
-        { label: "Disponível", value: "Disponível" },
-        { label: "Oculto", value: "Oculto" },
-        { label: "Indisponível", value: "Indisponível" },
-        { label: "Vendido", value: "Vendido" },
+        { label: "Disponível", value: "DISPONIVEL" },
+        { label: "Oculto", value: "OCULTO" },
+        { label: "Vendido", value: "VENDIDO" },
       ],
     },
     {
@@ -67,55 +66,57 @@ export const Estoque = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN) {
+    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
 
       try {
         api.get("/produtos").then(response => {
           setProdutos(response.data)
+          console.log(response.data)
         })
       } catch(e) {
         console.log(e)
       }
-
-      console.log(produtos)
-
-      setFiltredOptions(
-        produtos.filter((product) => {
-          const matchesSearchTerm =
-            product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.id.toLowerCase().includes(searchTerm.toLowerCase());
-  
-          const matchesStatus =
-            selectedFilters.status.length === 0 ||
-            selectedFilters.status.includes(product.status);
-  
-  
-          const matchesCategoria =
-            selectedFilters.categoria.length === 0 ||
-            selectedFilters.categoria.includes(product.categoria.toLowerCase());
-  
-          const matchesValor =
-            selectedFilters.valor.length === 0 ||
-            (selectedFilters.valor.includes("ate_5_reais") &&
-              product.preco <= 5) ||
-            (selectedFilters.valor.includes("entre_6_e_20_reais") &&
-              product.preco > 5 &&
-              product.preco <= 20) ||
-            (selectedFilters.valor.includes("mais_de_21_reais") &&
-              product.preco > 21);
-  
-          return (
-            matchesSearchTerm &&
-            matchesStatus &&
-            matchesCategoria &&
-            matchesValor
-          );
-        })
-      );
+      
     }
-  }, [searchTerm, selectedFilters, produtos]);
+  }, []);
+
+  useEffect(() => {
+    setFiltredOptions(
+      produtos.filter((product) => {
+        const matchesSearchTerm =
+          product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          String(product.id).toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesStatus =
+          selectedFilters.status.length === 0 ||
+          selectedFilters.status.includes(product.status);
+
+
+        const matchesCategoria =
+          selectedFilters.categoria.length === 0 ||
+          selectedFilters.categoria.includes(product.categoria.toLowerCase());
+
+        const matchesValor =
+          selectedFilters.valor.length === 0 ||
+          (selectedFilters.valor.includes("ate_5_reais") &&
+            product.preco <= 5) ||
+          (selectedFilters.valor.includes("entre_6_e_20_reais") &&
+            product.preco > 5 &&
+            product.preco <= 20) ||
+          (selectedFilters.valor.includes("mais_de_21_reais") &&
+            product.preco > 21);
+
+        return (
+          matchesSearchTerm &&
+          matchesStatus &&
+          matchesCategoria &&
+          matchesValor
+        );
+      })
+    );
+  }, [searchTerm, selectedFilters, produtos])
 
   const handleFilterChange = (event) => {
     const options = event;
@@ -148,7 +149,10 @@ export const Estoque = () => {
           setSearchTerm={setSearchTerm}
           options={filterOptions}
           handleFilterChange={handleFilterChange}
-          onClick={() => setModalOpen(true)}
+          onClick={() => {
+            setEditar({})
+            setModalOpen(true)
+          }}
         />
 
         <table className={estoque["inventory-table"]}>

@@ -6,7 +6,6 @@ import Filter from "./Filter";
 import estoque from "../../styles/estoque.module.css";
 
 export const Acoes = ({
-  products,
   setSearchTerm,
   options,
   handleFilterChange,

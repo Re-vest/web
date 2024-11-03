@@ -35,7 +35,7 @@ export const Header = ({ selecionaTodos }) => {
             <ArrowDownUp size={18} />
           </div>
         </th>
-        <th>Categoria</th>
+        <th>Tipo</th>
         <th>Ações</th>
       </tr>
     </thead>
