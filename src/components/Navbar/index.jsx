@@ -1,4 +1,4 @@
-  import { AlignEndHorizontal, Calendar, CircleDollarSign, LogOut, Shirt, UsersRound } from "lucide-react";
+import { AlignEndHorizontal, Calendar, CircleDollarSign, LogOut, Shirt, UsersRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
   export function Navbar() {

@@ -1,3 +1,4 @@
+import  {Voluntarios}  from "./pages/Voluntarios"
 import { HistoricoVendas } from "./pages/HistoricoVendas/index.jsx"; 
 import { CalendarPage } from "./pages/Calendar";
 import { Home } from "./pages/Home";
@@ -17,6 +18,7 @@ function App() {
           <Route path="/eventos" element={<CalendarPage />} />
           <Route path="/vendas" element={<HistoricoVendas />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/equipe" element={<Voluntarios />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </BrowserRouter>
