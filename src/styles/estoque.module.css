@@ -1,5 +1,5 @@
 .inventory-container {
-  width: 90%;
+  width: 88%;
   margin: 20px auto;
   font-family: Arial, sans-serif;
   display: flex;
@@ -20,6 +20,7 @@
 
 .acoes {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -43,7 +44,6 @@
   position: sticky; /* Fixa o cabeçalho da tabela */
   top: 0; /* Faz o cabeçalho ficar fixo no topo */
   background-color: #f1f1f1; /* Estilo de fundo do cabeçalho */
-  z-index: 1; /* Garante que o cabeçalho fique sobre o conteúdo */
   padding: 10px;
   text-align: center;
 }
@@ -66,23 +66,61 @@
   padding: 5px 10px;
   border-radius: 12px;
   font-size: 12px;
-  width: 60%;
+  width: 70%;
+  min-width: fit-content;
   text-align: center;
 }
 
-.status.ativo {
-  background-color: #dafbe1;
-  color: #228b22;
+.DISPONIVEL   {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
+  background-color: #d4edda;
+  color: #28a745;
+  font-weight: bold;
 }
 
-.status.oculto {
-  background-color: #fde9c7;
-  color: #ff9900;
+.VENDIDO   {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
+  background-color: #cce5ff;
+  color: #007bff;
+  font-weight: bold;  
 }
 
-.status.indisponível {
-  background-color: #fbe1e1;
-  color: #d9534f;
+.OCULTO {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
+  background-color: #e2e3e5;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.INDISPONIVEL {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: 70%;
+  min-width: fit-content;
+  text-align: center;
+  background-color: #f8d7da;
+  color: #dc3545;
+  font-weight: bold;
 }
 
 .acoes-btn {
@@ -93,7 +131,7 @@
 }
 
 .search{
-  width: 50%;
+  width: 30%;
 }
 
 .head-status{
