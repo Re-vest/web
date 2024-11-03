@@ -6,6 +6,8 @@ import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
 import { Acoes } from "../../components/Estoque/Acoes";
 import { Navbar } from "../../components/Navbar";
 import CadastroProdutoModal from "../../components/ModalProduto";
+import { useNavigate } from "react-router-dom";
+import api from '../../api'
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,40 +63,58 @@ export const Estoque = () => {
       ],
     },
   ];
+
+  const navigate = useNavigate()
+
   useEffect(() => {
-    setFiltredOptions(
-      produtos.filter((product) => {
-        const matchesSearchTerm =
-          product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.id.toLowerCase().includes(searchTerm.toLowerCase());
+    if(!sessionStorage.TOKEN) {
+      navigate('/login')
+    } else {
 
-        const matchesStatus =
-          selectedFilters.status.length === 0 ||
-          selectedFilters.status.includes(product.status);
+      try {
+        api.get("/produtos").then(response => {
+          setProdutos(response.data)
+        })
+      } catch(e) {
+        console.log(e)
+      }
 
+      console.log(produtos)
 
-        const matchesCategoria =
-          selectedFilters.categoria.length === 0 ||
-          selectedFilters.categoria.includes(product.categoria.toLowerCase());
-
-        const matchesValor =
-          selectedFilters.valor.length === 0 ||
-          (selectedFilters.valor.includes("ate_5_reais") &&
-            product.preco <= 5) ||
-          (selectedFilters.valor.includes("entre_6_e_20_reais") &&
-            product.preco > 5 &&
-            product.preco <= 20) ||
-          (selectedFilters.valor.includes("mais_de_21_reais") &&
-            product.preco > 21);
-
-        return (
-          matchesSearchTerm &&
-          matchesStatus &&
-          matchesCategoria &&
-          matchesValor
-        );
-      })
-    );
+      setFiltredOptions(
+        produtos.filter((product) => {
+          const matchesSearchTerm =
+            product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            product.id.toLowerCase().includes(searchTerm.toLowerCase());
+  
+          const matchesStatus =
+            selectedFilters.status.length === 0 ||
+            selectedFilters.status.includes(product.status);
+  
+  
+          const matchesCategoria =
+            selectedFilters.categoria.length === 0 ||
+            selectedFilters.categoria.includes(product.categoria.toLowerCase());
+  
+          const matchesValor =
+            selectedFilters.valor.length === 0 ||
+            (selectedFilters.valor.includes("ate_5_reais") &&
+              product.preco <= 5) ||
+            (selectedFilters.valor.includes("entre_6_e_20_reais") &&
+              product.preco > 5 &&
+              product.preco <= 20) ||
+            (selectedFilters.valor.includes("mais_de_21_reais") &&
+              product.preco > 21);
+  
+          return (
+            matchesSearchTerm &&
+            matchesStatus &&
+            matchesCategoria &&
+            matchesValor
+          );
+        })
+      );
+    }
   }, [searchTerm, selectedFilters, produtos]);
 
   const handleFilterChange = (event) => {

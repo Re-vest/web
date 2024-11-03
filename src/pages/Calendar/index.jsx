@@ -3,6 +3,7 @@ import { ContinuousCalendar } from "../../components/ContinuousCalendar";
 import { EventModal } from "../../components/EventModal";
 import { useEffect, useState } from "react";
 import api from "../../api";
+import { useNavigate } from "react-router-dom";
 
 export function CalendarPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,29 +11,35 @@ export function CalendarPage() {
   3;
   const [events, setEvents] = useState([]);
 
+  const navigate = useNavigate()
+
   useEffect(() => {
-    api.get("/eventos", {}).then((response) => {
-      setEvents(
-        response.data.map((event) => {
-          const dataInicio = new Date(event.dataInicio);
-          dataInicio.setHours(0);
-          dataInicio.setDate(dataInicio.getDate() + 1);
-
-          const dataFim = new Date(event.dataFim);
-          dataFim.setHours(0);
-          dataFim.setDate(dataFim.getDate() + 1);
-
-          return {
-            id: event.id,
-            titulo: event.titulo,
-            descricao: event.descricao,
-            dataInicio: dataInicio,
-            dataFim: dataFim,
-            cor: event.cor,
-          };
-        })
-      );
-    });
+    if(!sessionStorage.TOKEN) {
+      navigate('/login')
+    } else {
+      api.get("/eventos", {}).then((response) => {
+        setEvents(
+          response.data.map((event) => {
+            const dataInicio = new Date(event.dataInicio);
+            dataInicio.setHours(0);
+            dataInicio.setDate(dataInicio.getDate() + 1);
+  
+            const dataFim = new Date(event.dataFim);
+            dataFim.setHours(0);
+            dataFim.setDate(dataFim.getDate() + 1);
+  
+            return {
+              id: event.id,
+              titulo: event.titulo,
+              descricao: event.descricao,
+              dataInicio: dataInicio,
+              dataFim: dataFim,
+              cor: event.cor,
+            };
+          })
+        );
+      });
+    }
   }, []);
 
   const exampleEvent = {

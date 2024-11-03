@@ -4,6 +4,7 @@ import modalProduto from "../styles/ModalProduto.module.css"
 import PickList from "./picklist";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import api from '../api'
 
 Modal.setAppElement("#root");
 
@@ -21,6 +22,15 @@ function formatPrice(value) {
   return newValue;
 }
 
+function parseFormattedPrice(value) {
+  // Remove pontos de milhar e substitui a vírgula decimal por ponto
+  let parsedValue = value.replace(/\./g, '').replace(',', '.');
+
+  // Converte para double (ou seja, número em ponto flutuante)
+  return parseFloat(parsedValue);
+}
+
+
 const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
@@ -29,10 +39,15 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   const [status, setStatus] = useState(editar.status);
   const [cor, setCor] = useState(editar.cor);
   const [tamanho, setTamanho] = useState(editar.tamanho);
-  const [estampa, setEstampa] = useState(editar.estampa);
+  const [finalidade, setFinalidade] = useState(editar.finalidade);
   const [images, setImages] = useState([]);
   const [estadoProduto, setEstadoProduto] = useState(editar.estadoProduto);
   const [preco, setPreco] = useState(formatPrice(editar.preco || "0"));
+  console.log(typeof (parseFormattedPrice(preco)))
+  console.log("------------");
+  console.log(typeof (formatPrice(preco)))
+
+
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -43,33 +58,42 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setImages(images.filter((_, i) => i !== index));
   };
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
-  
+
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !estampa) {
+    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !finalidade) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
-  
+
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
-        id: String(Math.random()),
         nome,
+        preco: parseFormattedPrice(preco),
         descricao,
-        tipo,
-        categoria,
-        status,
-        estadoProduto,
         cor,
-        tamanho,
-        preco,
-        estampa,
-        images
-      };
-  
-      setProdutos(prev => [...prev, newProduct]);
+        finalidade,
+        categoria: tipo,
+        estado: estadoProduto,
+        tipo: categoria,
+        status,
+        // tamanho,
+        // images
+      }
+
+      console.log(newProduct)
+
+      try {
+
+        const response = await api.post('/produtos', newProduct)
+
+        setProdutos(prev => [...prev, response.data]);
+      } catch (e) {
+        console.log(e)
+      }
+
     } else {
       const updateProduct = {
         id: editar.id,
@@ -82,22 +106,22 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         cor,
         tamanho,
         preco,
-        estampa,
+        finalidade,
         images
       };
-  
+
       const productsUpdated = produtos.map(eventProps => {
         if (eventProps === editar) {
           return updateProduct;
         } else return eventProps;
       });
-  
+
       setProdutos(productsUpdated);
     }
-  
+
     onClose(); // Fecha o modal após salvar
   }
-  
+
   const handleCheckboxChange = (value) => {
     setEstadoProduto(value);
   };
@@ -132,18 +156,17 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>Tipo:</label>
             <PickList
               options={[
-                { label: "Calçados", value: "calçados" },
-                { label: "Camisas", value: "camisas" },
-                { label: "Calças", value: "calças" },
-                { label: "Blusas", value: "blusas" },
-                { label: "Vestidos", value: "vestidos" },
-                { label: "Shorts", value: "shorts" },
-                { label: "Outros (Roupas)", value: "outros-roupas" },
-                { label: "Bolsas", value: "bolsas" },
-                { label: "Cintos", value: "cintos" },
-                { label: "Relógios", value: "relogios" },
-                { label: "Óculos de Sol", value: "oculos-de-sol" },
-                { label: "Outros (Acessórios)", value: "outros-acessorios" },
+                { label: "Calçados", value: "CALCADO" },
+                { label: "Camisas", value: "CAMISETA" },
+                { label: "Calças", value: "CALCA" },
+                { label: "Blusas", value: "BLUSA" },
+                { label: "Vestidos", value: "VESTIDO" },
+                { label: "Shorts", value: "SHORTS" },
+                { label: "Bolsas", value: "BOLSA" },
+                { label: "Cintos", value: "CINTO" },
+                { label: "Relógios", value: "RELOGIO" },
+                { label: "Óculos", value: "OCULOS" },
+                { label: "Outros", value: "OUTRO" },
               ]}
               onChange={setTipo}
               value={tipo}
@@ -153,8 +176,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>Categoria:</label>
             <PickList
               options={[
-                { label: "Roupas", value: "Roupas" },
-                { label: "Acessórios", value: "acessorios" },
+                { label: "Roupa", value: "Roupa" },
+                { label: "Acessório", value: "Acessorio" },
               ]}
               onChange={setCategoria}
               value={categoria}
@@ -164,10 +187,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>Status:</label>
             <PickList
               options={[
-                { label: "Disponível", value: "Disponível" },
-                { label: "Indisponível", value: "Indisponível" },
-                { label: "Oculto", value: "Oculto" },
-                { label: "Vendido", value: "Vendido" },
+                { label: "Disponível", value: "DISPONIVEL" },
+                { label: "Indisponível", value: "INDISPONIVEL" },
+                { label: "Oculto", value: "OCULTO" },
+                { label: "Vendido", value: "VENDIDO" },
               ]}
               onChange={setStatus}
               value={status}
@@ -181,24 +204,24 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "Novo" || editar.estado === 'Novo'}
-                onChange={() => handleCheckboxChange("Novo")}
+                checked={estadoProduto === "NOVO" || editar.estado === 'NOVO'}
+                onChange={() => handleCheckboxChange("NOVO")}
               />
               Novo
             </label>
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "Seminovo" || editar.estado === 'Seminovo'}
-                onChange={() => handleCheckboxChange("Seminovo")}
+                checked={estadoProduto === "SEMI_NOVO" || editar.estado === 'SEMI_NOVO'}
+                onChange={() => handleCheckboxChange("SEMI_NOVO")}
               />
               Seminovo
             </label>
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "Usado" || editar.estado === 'Usado'}
-                onChange={() => handleCheckboxChange("Usado")}
+                checked={estadoProduto === "USADO" || editar.estado === 'USADO'}
+                onChange={() => handleCheckboxChange("USADO")}
               />
               Usado
             </label>
@@ -227,8 +250,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           </div>
 
           <div className={modalProduto["input-estampa"]}>
-            <label>Estampa:</label>
-            <Input value={estampa} onChange={setEstampa} />
+            <label>Finalidade:</label>
+            <Input value={finalidade} onChange={setFinalidade} />
           </div>
         </div>
         <div className={modalProduto["form-group"]}>
