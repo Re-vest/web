@@ -51,7 +51,6 @@ export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
 
   return (
     <>
-    <div className='text-2xl'>Eventos</div>
     {(events && events.length > 0) ? (
       <div className={dash["header"]} style={{
         border: `2px solid ${events[currentIndex].cor ? events[currentIndex].cor : '#DDD'}` 

@@ -165,15 +165,16 @@ export function Dashboard() {
           <div className={dash["cards"]}>
             <div className={dash["vendas"]}>
               <p>Total de vendas</p>
-              <h2>R$ {totalVendido}</h2>
+              <h2>R$ 24,10</h2>
               {/* <p>1,7% a mais que na última edição</p> */}
             </div>
+
             <div className={dash["categoria"]}>
               <p>
                 Categoria de peça mais <br />
                 vendida
               </p>
-              <h2>{categoriaMaisVendida}</h2>
+              <h2>Calça</h2>
             </div>
             {/* <div className={dash["monitoramento"]}>
               <h2>

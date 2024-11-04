@@ -88,11 +88,11 @@ export function Home() {
 
       <div className="flex justify-center -mt-[72px] z-30">
 
-      <div className="w-[70%] h-36 bg-white flex justify-between items-center gap-14 px-14 py-12 rounded-3xl shadow-2xl">
+      {/* <div className="w-[70%] h-36 bg-white flex justify-between items-center gap-14 px-14 py-12 rounded-3xl shadow-2xl">
       <span className="font-bold text-3xl text-nowrap">Fique por dentro! </span>
       <Input icon={<AtSign width={24} />} placeholder="example@example.com" />
       <Button text="Salvar" />
-      </div>
+      </div> */}
       </div>
 
       <div className="z-20 -mt-[72px]">

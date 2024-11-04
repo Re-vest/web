@@ -18,7 +18,7 @@ export const Grafico = ({ semana }) => {
   const [series] = useState([
     {
       name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91],
+      data: [25, 20, 15, 7, 7, 15, 20, 25],
     },
   ]);
 

@@ -17,68 +17,7 @@ import { useNavigate } from "react-router-dom";
 export const Voluntarios = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
-  const [voluntarios, setVoluntarios] = useState([
-    // {
-    //   id: "23785",
-    //   nome: "Gustavo de Oliveira Antunes",
-    //   email: "gustavo@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "ADMIN",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "16487",
-    //   nome: "Patrick de Lima Rodrigues",
-    //   email: "patrick@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "ADMIN",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "29478",
-    //   nome: "Rafaela de Souza Scarabe",
-    //   email: "rafaela@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "INATIVO",
-    //   permissao: "ADMIN",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "20636",
-    //   nome: "Samuel de Oliveira Batista",
-    //   email: "samuel@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "VOLUNTÁRIO",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "72068",
-    //   nome: "Vitor Santos Tigre",
-    //   email: "vitorTigre@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "VOLUNTÁRIO",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "01754",
-    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
-    //   email: "victorMoreira@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "VOLUNTÁRIO",
-    //   selecionado: false,
-    // },
-  ]);
+  const [voluntarios, setVoluntarios] = useState([]);
 
   const [atividades] = useState([
     {
@@ -131,19 +70,19 @@ export const Voluntarios = () => {
       },
   ]);
 
-  const fltros = [
-    {
-      label: "Status",
-      options: [
-        { label: "Ativo", value: "ATIVO" },
-        { label: "Inativo", value: "INATIVO" }
-      ]
-    },
+  const filtros = [
+    // {
+    //   label: "Status",
+    //   options: [
+    //     { label: "Ativo", value: "ATIVO" },
+    //     { label: "Inativo", value: "INATIVO" }
+    //   ]
+    // },
     {
       label: "Permissões",
       options: [
         { label: "Administrador", value: "ADMINISTRADOR" },
-        { label: "Supervisor", value: "SUPERVISOR" },
+        // { label: "Supervisor", value: "SUPERVISOR" },
         { label: "Voluntário", value: "VOLUNTARIO" }
       ]
     }
@@ -216,13 +155,13 @@ export const Voluntarios = () => {
         volunteer.nome.toLowerCase().includes(termo) 
 
 
-      const statusSelecionado = selectedFilters.status.length === 0 || //status
-        selectedFilters.status.includes(volunteer.status.toUpperCase()); 
+      // const statusSelecionado = selectedFilters.status.length === 0 || //status
+      //   selectedFilters.status.includes(volunteer.status.toUpperCase()); 
 
       const permissaoSelecionada = selectedFilters.permissao.length === 0 || //permissão
-        selectedFilters.permissao.includes(volunteer.permissao.toUpperCase());
+        selectedFilters.permissao.includes(volunteer.perfil.toUpperCase());
 
-      return buscarVoluntario && statusSelecionado && permissaoSelecionada;
+      return buscarVoluntario && permissaoSelecionada;
     })
   );
 
@@ -239,7 +178,7 @@ export const Voluntarios = () => {
 
     const novaSelecao = { ...selectedFilters };
 
-      fltros.forEach((group) => {
+      filtros.forEach((group) => {
         if (group.label.toLowerCase() === "status") {
           novaSelecao.status = selectedValues.filter(
             (value) => group.options.some((option) => option.value === value)
@@ -274,7 +213,7 @@ export const Voluntarios = () => {
           volunteer={voluntarios}
           setVoluntarios={setVoluntarios}
           setPesquisaVoluntario={setTermoPesquisa} //input p/ pesquisa 
-          options={fltros} // filtros
+          options={filtros} // filtros
           atualizandoFiltros={atualizandoFiltros} //atualizar os filtros
           onClick={() => setModalOpen(true)}
           />
@@ -298,16 +237,16 @@ export const Voluntarios = () => {
                 // <ErrorBoundary>
 
                 <Voluntario 
-                volunteer={volunteer}
-                key={volunteer.id}
-                id={volunteer.id}
-                nome={volunteer.nome}
-                status={volunteer.status}
-                permissao={volunteer.perfil}
-                editar={setEditar}
-                modalEditar={setModalOpen}
-                setVoluntarios={setVoluntarios}
-                voluntarios={voluntarios}
+                  volunteer={volunteer}
+                  key={volunteer.id}
+                  id={volunteer.id}
+                  nome={volunteer.nome}
+                  status={volunteer.status}
+                  permissao={volunteer.perfil}
+                  editar={setEditar}
+                  modalEditar={setModalOpen}
+                  setVoluntarios={setVoluntarios}
+                  voluntarios={voluntarios}
                 />
 
               ))}

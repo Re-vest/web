@@ -6,6 +6,7 @@ import { Estoque } from "./pages/Estoque/Estoque.jsx";
 import Login from './pages/Login/Login.jsx'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard"
+import Cadastro from './pages/Cadastro'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/eventos" element={<CalendarPage />} />
           <Route path="/vendas" element={<HistoricoVendas />} />
