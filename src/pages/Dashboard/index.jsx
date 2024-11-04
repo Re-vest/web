@@ -7,6 +7,7 @@ import dash from "../../styles/dashboard.module.css";
 import { useNavigate } from "react-router-dom";
 import api from '../../api'
 import { CarrouselEvents } from "../../components/Dashboard/CarrouselEvents";
+import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -18,6 +19,26 @@ export function Dashboard() {
   const [semana, setSemana] = useState([])
   const [totalVendido, setTotalVendido] = useState(0.0)
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [atividades] = useState([
+    {
+      id: 1,
+      data: "2024-10-01",
+      nomeVoluntario: "Patrick de Lima Rodrigues",
+      acao: "Produto adicionado",
+    },
+    {
+      id: 2,
+      data: "2024-09-30",
+      nomeVoluntario: "Rafaela de Souza Scarabe",
+      acao: "Preço atualizado",
+    },
+    {
+      id: 3,
+      data: "2024-09-28",
+      nomeVoluntario: "Samuel de Oliveira Batista",
+      acao: "Produto removido",
+    }
+  ]);
 
   // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
@@ -163,7 +184,11 @@ export function Dashboard() {
               <p>Voluntários Ativos: 7</p>
               <p>Equipe total: 9 pessoas</p>
             </div> */}
-            <Atividade />
+            {atividades.map((atividade) => (
+                  <AtividadesRecentes
+                    key={atividade.id}
+                    atividade={atividade} /> // card atividade | smp colocar key = id;
+                ))}
           </div>
         </div>
       </div>

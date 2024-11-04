@@ -3,21 +3,22 @@ import { Input } from "../Input";
 import { Plus, Search } from "lucide-react";
 import { Button } from "../Button";
 import  Filtro from "./Filtros";
+import table from '../../styles/voluntarios.module.css'
 
 export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, options, atualizandoFiltros, onClick}) => {
 
   return (
 
     
-    <div className="header">
-      <div className="search">
+    <div className={table["header"]}>
+      <div className={table["search"]}>
         <Input
           placeholder="Pesquisa..."
           icon={<Search w-full />}
           onChange={setPesquisaVoluntario}
         />
       </div>
-      <div className="acoes">
+      <div className={table["acoes"]}>
         <Filtro 
         options={options} 
         atualizandoFiltros={atualizandoFiltros}/>

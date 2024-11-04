@@ -48,7 +48,6 @@
   
   .volunteer-list thead th {
     background-color: #f1f1f1; 
-    z-index: 1; 
     padding: 10px;
     text-align: center;
   }
@@ -182,12 +181,12 @@
   }
 
   /* MARK: Form cadastro produto */
-  form{
+  .form{
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 500px;
     padding: 30px;
     border-radius: 15px;
-
+    gap: 1rem;
   }

@@ -34,7 +34,7 @@ const Login = () => {
 
       sessionStorage.ID_USER = response.data.userId
       sessionStorage.TOKEN = response.data.token
-      sessionStorage.PERFIL = response.data.perfil
+      sessionStorage.PERFIL = response.data.perfilUsuario
       sessionStorage.NAME = response.data.nome
       
       if (sessionStorage.PERFIL === 'CLIENTE') {

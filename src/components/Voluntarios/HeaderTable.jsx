@@ -11,17 +11,13 @@ export const HeaderTable = ({ selecionaTodos }) => {
         </th> */}
         <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">ID</th>
         <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">Voluntário</th>
-        <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">
-          <div className="flex">
+        {/* <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">
             Status
             <ArrowDownUp size={20} />
-          </div>
-        </th>
+        </th> */}
         <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">
-          <div className="flex">
             Permissão
-            <ArrowDownUp size={20} />
-          </div>
+            {/* <ArrowDownUp size={20} /> */}
         </th>
         <th className="top-0 bg-gray-200 z-10 p-2.5 text-center">Ações</th>
       </tr>

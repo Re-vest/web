@@ -1,24 +1,25 @@
 import React from "react"; 
 
-import { Bell} from "lucide-react";
+import { Bell} from "lucide-react"; 
+import ati from '../../styles/voluntarios.module.css'
 
 export const AtividadesRecentes = ({ atividade }) => {
 
   return (
-    <div className="atividade-card">
+    <div className={ati["atividade-card"]}>
 
-        <div className="imgArea">
+        <div className={ati["imgArea"]}>
         < Bell size={20}/>
         </div>
 
     <div>
 
-      <p className="idAtividade"> {atividade.id} </p>
-      <p className="dataAtividade"> {atividade.data} </p>
-      <p className="acaoAtividade"> 
+      <p className={ati["idAtividade"]}> {atividade.id} </p>
+      <p className={ati["dataAtividade"]}> {atividade.data} </p>
+      <p className={ati["acaoAtividade"]}> 
         <strong> {atividade.acao}</strong> 
       </p>
-      <p className="nomeAtividade"> Alterado por {atividade.nomeVoluntario} </p>
+      <p className={ati["nomeAtividade"]}> Alterado por {atividade.nomeVoluntario} </p>
     </div>
       
     </div>

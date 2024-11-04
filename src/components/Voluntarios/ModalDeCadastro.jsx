@@ -5,6 +5,8 @@ import PickList from "./picklist";
 import {Input} from "./Input";
 import { Button } from "../Button";
 //import { Voluntarios } from "../../pages/Voluntarios";
+import modal from '../../styles/voluntarios.module.css'
+import api from "../../api";
 
 
 Modal.setAppElement("#root");
@@ -15,16 +17,17 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
   const [senha, setSenha] = useState(editar.senha);
   const [telefone, setTelefone] = useState(editar.telefone);
   const [status, setStatus] = useState(editar.status);
-  const [permissao, setPermissao] = useState(editar.permissao);
+  const [permissao, setPermissao] = useState(editar.perfil);
+  console.log(editar)
   
 
   const [mensagemErro, setMensagemErro] = useState("");
 
 
-  function salvar(event) {
+  async function salvar(event) {
     event.preventDefault(); // Evitar o recarregamento da página
   
-    if (!nome || !email || !senha || !telefone || !status || !permissao) {
+    if (!nome || !email || !permissao) {
 
       setMensagemErro("Por favor, preencha todos os campos!");
       return;
@@ -34,35 +37,52 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
     setMensagemErro("");
   
     if (!editar.id) { //cadastrar voluntario
-      const addVoluntario = {
-        id: Math.floor(Math.random() * 1000000).toString(),
-        nome,
-        email,
-        senha,
-        telefone,
-        status,
-        permissao
-      };
+      
+      try {
+        const addVoluntario = {
+          nome,
+          email,
+          senha,
+          // telefone,
+          // status,
+          perfil: permissao
+        };
+
+        const response = await api.post("usuarios", addVoluntario)
+
+        setVoluntarios(prev => [...prev, response.data]);
+      } catch(e) {
+        console.log(e);
+        
+      }
   
-      setVoluntarios(prev => [...prev, addVoluntario]);
     } else {
-      const editarVolutario = { //atualizar voluntario
-        id: editar.id,
-        nome,
-        email,
-        senha,
-        telefone,
-        status,
-        permissao
-      };
-  
-      const voluntarioEditado = voluntarios.map(eventProps => {
-        if (eventProps === editar) {
-          return editarVolutario;
-        } else return eventProps;
-      });
-  
-      setVoluntarios(voluntarioEditado);
+
+      try {
+
+        const editarVolutario = { //atualizar voluntario
+          id: editar.id,
+          nome,
+          email,
+          senha,
+          // telefone,
+          // status,
+          perfil: permissao
+        };
+
+        const response = await api.put(`/usuarios/${editar.id}`, editarVolutario)
+    
+        const voluntarioEditado = voluntarios.map(eventProps => {
+          if (eventProps.id === response.data.id) {
+            return response.data;
+          } else return eventProps;
+        });
+    
+        setVoluntarios(voluntarioEditado);
+      } catch(e) {
+        console.log(e);
+        
+      }
     }
   
     onClose(); // Fechar o modal
@@ -81,33 +101,33 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Cadastrar Voluntario"
-      className="w-auto h-[700px] bg-white p-5 rounded-lg"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
+      className="w-auto bg-white p-5 rounded-lg"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[999]"
       shouldCloseOnOverlayClick={false}
     >
-      <form className="flex flex-col gap-1.5" onSubmit={salvar}>
+      <form className={modal["form"]} onSubmit={salvar}>
         
-        <div className="flex w-full gap-1.5">
+        <div className="flex flex-col w-full gap-1.5">
           <label>Nome:</label>
           <Input value={nome} placeholder={""} onChange={setNome} />
         </div>
 
-        <div className="flex w-full gap-1.5">
+        <div className="flex flex-col w-full gap-1.5">
           <label>Email:</label>
           <Input value={email} placeholder={""} onChange={setEmail} type="phone" />
         </div>
 
-        <div className="flex w-full gap-1.5">
+        {/* <div className="flex w-full gap-1.5">
           <label>Telefone:</label>
           <Input value={telefone} placeholder={""} onChange={setTelefone} />
-        </div>
+        </div> */}
 
-        <div className="flex w-full gap-1.5">
+        <div className="flex flex-col w-full gap-1.5">
           <label>Senha:</label>
           <Input value={senha} placeholder={""} onChange={setSenha}/>
         </div>
 
-        <div className="flex w-full flex-col gap-1.5">
+        {/* <div className="flex w-full flex-col gap-1.5">
             <label>Status:</label>
             <PickList
               options={[
@@ -117,7 +137,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
               onChange={setStatus}
               value={status}
             />
-          </div>
+          </div> */}
 
         <div className="flex w-full flex-col gap-1.5">
           <label>Definir Permissão:</label>
@@ -127,8 +147,8 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
                       <input
                         className="w-5 h-5 mr-1.5"
                         type="checkbox"
-                        checked={permissao === "ADMIN" || editar.permissao === 'ADMIN'}
-                        onChange={() => permissaoSelecionada("ADMIN")}
+                        checked={permissao === "ADMINISTRADOR" || editar.permissao === 'ADMINISTRADOR'}
+                        onChange={() => permissaoSelecionada("ADMINISTRADOR")}
                         />
                       Administrador
                 </label>
@@ -137,7 +157,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
                 <p className="text-[13px] pl-6 text-gray-500">Pode editar usuários (alterar senha, perrmissões, ...).</p>
               </span>
 
-              <span>
+              {/* <span>
                 <label className="flex items-center gap-1.5">
                   <input
                     className="w-5 h-5 mr-1.5"
@@ -150,7 +170,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
                 <p className="text-[13px] pl-6 text-gray-500">Pode promover e rebaixar usuários;</p>
                 <p className="text-[13px] pl-6 text-gray-500">Pode editar produtos (alterar valores, status, estado, ...);</p>
                 <p className="text-[13px] pl-6 text-gray-500">Pode baixar relatórios.</p>
-              </span>
+              </span> */}
 
 
               <span>

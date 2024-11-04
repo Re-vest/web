@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "./ModalEditar";
-import "../../styles/voluntarios.css";
+import "../../styles/voluntarios.module.css";
 
 export const Voluntario = ({ 
     id = '',
@@ -21,12 +21,12 @@ export const Voluntario = ({
   return (
     <tr>
       <td className="text-center">{id}</td>
-      <td className="text-left">{nome}</td>
-      <td>
+      <td className="text-cemter">{nome}</td>
+      {/* <td>
         <span className={`status ${status.toLowerCase()}`}>
           {status}
         </span>
-      </td>
+      </td> */}
       <td className="text-center">{permissao}</td>
         <td className="text-center">
           <Modal volunteer={volunteer} editar={editar} modalEditar={modalEditar} setVoluntarios={setVoluntarios} voluntarios={voluntarios}/>

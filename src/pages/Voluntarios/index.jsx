@@ -1,85 +1,57 @@
 import React, { useState } from "react";
 import { useEffect } from 'react';
-import "../../styles/voluntarios.css";
+import dash from "../../styles/voluntarios.module.css";
 
 import { Navbar } from "../../components/Navbar";
 import { HeaderTable } from "../../components/Voluntarios/HeaderTable";
 import { Voluntario } from "../../components/Voluntarios/LinhaVoluntario";
 import { FerramentasHeader } from "../../components/Voluntarios/FerramentasHeader";
 import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
+import api from '../../api'
 
 import CadastroVoluntario from "../../components/Voluntarios/ModalDeCadastro";
 
 import ErrorBoundary from "../../components/ErrorBoundary" // pra depurar erro
+import { useNavigate } from "react-router-dom";
 
 export const Voluntarios = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [voluntarios, setVoluntarios] = useState([
-    {
-      id: "23785",
-      nome: "Gustavo de Oliveira Antunes",
-      email: "gustavo@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "ATIVO",
-      permissao: "ADMIN",
-      selecionado: false,
-    },
-    {
-      id: "16487",
-      nome: "Patrick de Lima Rodrigues",
-      email: "patrick@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "ATIVO",
-      permissao: "ADMIN",
-      selecionado: false,
-    },
-    {
-      id: "29478",
-      nome: "Rafaela de Souza Scarabe",
-      email: "rafaela@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "INATIVO",
-      permissao: "ADMIN",
-      selecionado: false,
-    },
-    {
-      id: "20636",
-      nome: "Samuel de Oliveira Batista",
-      email: "samuel@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
-    {
-      id: "72068",
-      nome: "Vitor Santos Tigre",
-      email: "vitorTigre@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
-    {
-      id: "01754",
-      nome: "Victor Hugo Carvalho Moreira dos Santos",
-      email: "victorMoreira@gmail.com",
-      senha: "123456",
-      telefone: "11939606494",
-      status: "ATIVO",
-      permissao: "VOLUNTÁRIO",
-      selecionado: false,
-    },
     // {
-    //   id: "0128",
-    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
+    //   id: "23785",
+    //   nome: "Gustavo de Oliveira Antunes",
+    //   email: "gustavo@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "ADMIN",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "16487",
+    //   nome: "Patrick de Lima Rodrigues",
     //   email: "patrick@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "ATIVO",
+    //   permissao: "ADMIN",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "29478",
+    //   nome: "Rafaela de Souza Scarabe",
+    //   email: "rafaela@gmail.com",
+    //   senha: "123456",
+    //   telefone: "11939606494",
+    //   status: "INATIVO",
+    //   permissao: "ADMIN",
+    //   selecionado: false,
+    // },
+    // {
+    //   id: "20636",
+    //   nome: "Samuel de Oliveira Batista",
+    //   email: "samuel@gmail.com",
     //   senha: "123456",
     //   telefone: "11939606494",
     //   status: "ATIVO",
@@ -87,9 +59,9 @@ export const Voluntarios = () => {
     //   selecionado: false,
     // },
     // {
-    //   id: "0129",
-    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
-    //   email: "patrick@gmail.com",
+    //   id: "72068",
+    //   nome: "Vitor Santos Tigre",
+    //   email: "vitorTigre@gmail.com",
     //   senha: "123456",
     //   telefone: "11939606494",
     //   status: "ATIVO",
@@ -97,29 +69,9 @@ export const Voluntarios = () => {
     //   selecionado: false,
     // },
     // {
-    //   id: "0130",
+    //   id: "01754",
     //   nome: "Victor Hugo Carvalho Moreira dos Santos",
-    //   email: "patrick@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "VOLUNTÁRIO",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "0131",
-    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
-    //   email: "patrick@gmail.com",
-    //   senha: "123456",
-    //   telefone: "11939606494",
-    //   status: "ATIVO",
-    //   permissao: "VOLUNTÁRIO",
-    //   selecionado: false,
-    // },
-    // {
-    //   id: "0132",
-    //   nome: "Victor Hugo Carvalho Moreira dos Santos",
-    //   email: "patrick@gmail.com",
+    //   email: "victorMoreira@gmail.com",
     //   senha: "123456",
     //   telefone: "11939606494",
     //   status: "ATIVO",
@@ -190,7 +142,7 @@ export const Voluntarios = () => {
     {
       label: "Permissões",
       options: [
-        { label: "Administrador", value: "ADMIN" },
+        { label: "Administrador", value: "ADMINISTRADOR" },
         { label: "Supervisor", value: "SUPERVISOR" },
         { label: "Voluntário", value: "VOLUNTARIO" }
       ]
@@ -227,15 +179,40 @@ export const Voluntarios = () => {
     permissao: [],
   });
 
+  const navigate = useNavigate()
+
+  const getUsers = async () => {
+    try {
+      const response = await api.get('/usuarios')
+      let users = response.data.filter(user => {
+        return user.perfil === 'ADMINISTRADOR' || user.perfil === 'VOLUNTARIO'
+      })
+      setVoluntarios(users)
+    } catch(e) {
+      console.log(e);
+      
+    }
+  }
+
+  console.log(voluntarios)
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
   // filtra
   useEffect(() => {
+
+    if(sessionStorage.PERFIL !== 'ADMINISTRADOR' || !sessionStorage.PERFIL) {
+      navigate('/dashboard')
+    }
 
   setFiltredOptions(
     voluntarios.filter((volunteer) => {
 
       const termo = termoPesquisa.toLowerCase();
       const buscarVoluntario = 
-        volunteer.id.toLowerCase().includes(termo) ||
+        String(volunteer.id).toLowerCase().includes(termo) ||
         volunteer.nome.toLowerCase().includes(termo) 
 
 
@@ -248,8 +225,6 @@ export const Voluntarios = () => {
       return buscarVoluntario && statusSelecionado && permissaoSelecionada;
     })
   );
-
-    console.log(filtredOptions);// testando filtros
 
   }, [selectedFilters, voluntarios, termoPesquisa]);
 
@@ -290,7 +265,7 @@ export const Voluntarios = () => {
     <div className="h-full w-full flex">
       <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} />
       <div className="w-11/12 my-5 mx-auto font-sans flex flex-col gap-2.5">
-        <div className="header">
+        <div className={dash["header"]}>
           <h2>Gerenciar Equipe</h2>
         </div>
 
@@ -305,10 +280,10 @@ export const Voluntarios = () => {
           />
     </ErrorBoundary>
 
-        <div className="container_tudo">
+        <div className={dash["container_tudo"]}>
 
           {/* <table className="h-600 overflow-y-auto w-[68%] border-collapse"> */}
-          <table className="volunteer-list">
+          <table className={dash["volunteer-list"]}>
           {/* <table className="volunteer-list"> */}
             <HeaderTable 
             //   selecionaTodos={(e) =>
@@ -328,7 +303,7 @@ export const Voluntarios = () => {
                 id={volunteer.id}
                 nome={volunteer.nome}
                 status={volunteer.status}
-                permissao={volunteer.permissao}
+                permissao={volunteer.perfil}
                 editar={setEditar}
                 modalEditar={setModalOpen}
                 setVoluntarios={setVoluntarios}
@@ -349,11 +324,11 @@ export const Voluntarios = () => {
           />
         )}
 
-          <div className="recentActivities">
+          <div className={dash["recentActivities"]}>
 
               {/* <h1>Atividades Recentes</h1> */}
-            <div className="atividades-container">
-              <div className="atividades-lista">
+            <div className={dash["atividades-container"]}>
+              <div className={dash["atividades-lista"]}>
                 {atividades.map((atividade) => (
                   <AtividadesRecentes 
                     key={atividade.id}

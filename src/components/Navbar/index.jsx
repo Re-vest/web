@@ -26,10 +26,14 @@ import { useNavigate } from "react-router-dom";
 
         </a>
 
+        {sessionStorage.PERFIL !== 'ADMINISTRADOR' ? (<></>) : (
+
         <a href="equipe" className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">
           <UsersRound size={24} />
 
         </a>
+        ) }
+
 
         <a href="vendas" className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">
           <CircleDollarSign size={24} />

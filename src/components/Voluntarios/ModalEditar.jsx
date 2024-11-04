@@ -1,5 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
+import api from "../../api";
 
 function Modal({ volunteer, editar, modalEditar, setVoluntarios, voluntarios }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,9 @@ function Modal({ volunteer, editar, modalEditar, setVoluntarios, voluntarios }) 
     setIsOpen(!isOpen);
   };
 
-  function deletarVoluntario() {
+  async function deletarVoluntario() {
+    await api.delete(`/usuarios/${volunteer.id}`)
+
     setVoluntarios(voluntarios.filter((pr) => pr.id !== volunteer.id));
     setIsOpen(false);
   }
