@@ -1,7 +1,16 @@
 import { ArrowDownUp } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import api from "../../api";
 
-export const Header = ({ selecionaTodos }) => {
+export const Header = ({ produtos, setProdutos }) => {
+
+  const [ordem, setOrdem] = useState(true)
+
+  const ordenarPreco = async () => {
+    setOrdem(!ordem)
+    const response = await api.get(`/produtos/por-preco?ordem=${ordem ? 'asc' : 'desc'}`)
+    setProdutos(response.data)
+  }
   return (
     <thead>
       <tr>
@@ -21,7 +30,7 @@ export const Header = ({ selecionaTodos }) => {
             Status
           </div>
         </th>
-        <th>
+        <th onClick={ordenarPreco}>
           <div
             style={{
               display: "flex",
@@ -29,6 +38,7 @@ export const Header = ({ selecionaTodos }) => {
               width: "100%",
               gap: "9px",
               justifyContent: "center",
+              cursor: 'pointer'
             }}
           >
             Preço

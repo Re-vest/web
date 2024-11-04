@@ -156,7 +156,7 @@ export const Estoque = () => {
         />
 
         <table className={estoque["inventory-table"]}>
-          <Header />
+          <Header setProdutos={setProdutos} />
           <tbody>
             {filtredOptions.map((product) => (
               <LinhaProduto
