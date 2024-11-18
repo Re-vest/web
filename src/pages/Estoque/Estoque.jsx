@@ -8,25 +8,26 @@ import { Navbar } from "../../components/Navbar";
 import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
 import api from '../../api'
+import { Plus } from "lucide-react";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([
-    // {
-    //   id: "01232555",
-    //   nome: "Macacão Baby",
-    //   descricao: "Blusa xadrez de manga comprida",
-    //   tipo: "Camisas",
-    //   categoria: "Roupas",
-    //   status: "Disponível",
-    //   estadoProduto: "Novo",
-    //   cor: "Vermelho",
-    //   tamanho: "3",
-    //   preco: 4.0,
-    //   estampa: "Lisa",
-    //   images: "",
-    // },
+    {
+      id: "0123255",
+      nome: "Macacão Baby",
+      descricao: "Blusa xadrez",
+      tipo: "Camisas",
+      categoria: "Roupas",
+      status: "Disponível",
+      estadoProduto: "Novo",
+      cor: "Vermelho",
+      tamanho: "3",
+      preco: 4.00,
+      estampa: "Lisa",
+      images: "",
+    },
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,23 +66,23 @@ export const Estoque = () => {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
-      navigate('/login')
-    } else {
+  // useEffect(() => {
+  //   if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+  //     navigate('/login')
+  //   } else {
 
-      try {
-        api.get("/produtos").then(response => {
-          setProdutos(response.data)
-          console.log(response.data)
-        })
-      } catch(e) {
-        console.log(e)
-      }
+  //     try {
+  //       api.get("/produtos").then(response => {
+  //         setProdutos(response.data)
+  //         console.log(response.data)
+  //       })
+  //     } catch(e) {
+  //       console.log(e)
+  //     }
       
-    }
-  }, []);
-
+  //   }
+  // }, []);
+  
   useEffect(() => {
     setFiltredOptions(
       produtos.filter((product) => {
@@ -137,8 +138,8 @@ export const Estoque = () => {
   };
 
   return (
-    <div className="w-full h-full flex">
-      <Navbar />
+    <div className="w-full h-full flex justify-center">
+      {/* <Navbar /> */}
       <div className={estoque["inventory-container"]}>
         <div className={estoque["header"]}>
           <h2>Controle de Estoque</h2>
@@ -154,6 +155,9 @@ export const Estoque = () => {
             setModalOpen(true)
           }}
         />
+
+        <div className="w-full overflow-x-scroll md:overflow-x-visible">
+
 
         <table className={estoque["inventory-table"]}>
           <Header setProdutos={setProdutos} />
@@ -172,10 +176,11 @@ export const Estoque = () => {
                 modalEditar={setModalOpen}
                 setProdutos={setProdutos}
                 produtos={produtos}
-              />
-            ))}
+                />
+              ))}
           </tbody>
         </table>
+              </div>
 
         {modalOpen && (
           <CadastroProdutoModal
@@ -186,7 +191,14 @@ export const Estoque = () => {
             onClose={() => setModalOpen(false)}
           />
         )}
+      <div className="absolute bottom-0 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
+            setEditar({})
+            setModalOpen(true)
+          }}>
+        <Plus size={16} />
+      </div>
       </div>
     </div>
+    
   );
 };

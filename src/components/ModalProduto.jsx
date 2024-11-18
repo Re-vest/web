@@ -27,7 +27,7 @@ function parseFormattedPrice(value) {
   let parsedValue = value.replace(/\./g, '').replace(',', '.');
 
   // Converte para double (ou seja, número em ponto flutuante)
-  return parseFloat(parsedValue);
+  return parseFloat(parsedValue).toFixed(2);
 }
 
 
