@@ -22,11 +22,14 @@ export const Acoes = ({
       </div>
       <div className={estoque["acoes"]}>
         <Filter options={options} handleFilterChange={handleFilterChange} />
+        <div className="hidden md:flex">
         <Button
           text={"Adicionar Produto"}
           icon={<Plus size={24} />}
           onClick={onClick}
         />
+
+        </div>
       </div>
     </div>
   );

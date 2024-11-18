@@ -70,7 +70,7 @@ const Login = () => {
               {errors.senha && <ErrorMessage message={errors.senha.message} />}
             </div>
 
-            <Button type="submit" secondary text={"Entrar"} />
+            <Button type="submit" text={"Entrar"} />
             <p>Não possui uma conta? <a href="/cadastro" className="text-blue-500 hover:underline">Criar Conta</a></p>
           </form>
 

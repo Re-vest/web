@@ -210,7 +210,21 @@ input[type="number"]::-webkit-outer-spin-button {
 
   .image-preview {
     display: flex;
-    
   }
   
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 900px;
+  }
+  .select-options {
+    gap: 5px;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .select-status {
+    width: 33%;
+  }
 }

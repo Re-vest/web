@@ -66,22 +66,22 @@ export const Estoque = () => {
 
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
-  //     navigate('/login')
-  //   } else {
+  useEffect(() => {
+    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+      navigate('/login')
+    } else {
 
-  //     try {
-  //       api.get("/produtos").then(response => {
-  //         setProdutos(response.data)
-  //         console.log(response.data)
-  //       })
-  //     } catch(e) {
-  //       console.log(e)
-  //     }
+      try {
+        api.get("/produtos").then(response => {
+          setProdutos(response.data)
+          console.log(response.data)
+        })
+      } catch(e) {
+        console.log(e)
+      }
       
-  //   }
-  // }, []);
+    }
+  }, []);
   
   useEffect(() => {
     setFiltredOptions(

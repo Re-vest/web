@@ -153,7 +153,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       overlayClassName={modalProduto['modal-overlay']}
       shouldCloseOnOverlayClick={false}
     >
-      <h2>Controle de Estoque › Adicionar Produto</h2>
+      <div className="hidden md:flex">
+        <h2>Controle de Estoque › Adicionar Produto</h2>
+      </div>
       <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
         <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
@@ -164,6 +166,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <Input value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className={modalProduto["select-options"]}>
+          <div className="w-full md:w-[66%] flex gap-1">
+
           <div className={modalProduto["select-tipo"]}>
             <label>Tipo:</label>
             <PickList
@@ -182,7 +186,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               ]}
               onChange={setTipo}
               value={tipo}
-            />
+              />
           </div>
           <div className={modalProduto["select-categoria"]}>
             <label>Categoria:</label>
@@ -193,8 +197,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               ]}
               onChange={setCategoria}
               value={categoria}
-            />
+              />
           </div>
+            </div>
           <div className={modalProduto["select-status"]}>
             <label>Status:</label>
             <PickList
