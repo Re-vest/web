@@ -64,6 +64,16 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
 
+    var valorTipo = opcoesTipo.find((opcao) => opcao.label == tipo).value
+    var valorStatus = opcoesStatus.find((opcao) => opcao.label == status).value
+    var valorCategoria = opcoesCategoria.find((opcao) => opcao.label == categoria).value
+
+    console.log(`
+      valorTipo: ${valorTipo}
+      valorStatus: ${valorStatus}
+      valorCategoria: ${valorCategoria}
+    `);
+
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
@@ -72,10 +82,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         descricao,
         cor,
         finalidade,
-        categoria: tipo,
+        categoria: valorTipo,
         estado: estadoProduto,
-        tipo: categoria,
-        status,
+        tipo: valorCategoria,
+        status: valorStatus,
         tamanho,
         // images
       }
@@ -144,6 +154,29 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setPreco(formattedValue);
   };
 
+  const opcoesTipo = [
+    { label: "Calçados", value: "CALCADO" },
+    { label: "Camisas", value: "CAMISETA" },
+    { label: "Calças", value: "CALCA" },
+    { label: "Blusas", value: "BLUSA" },
+    { label: "Vestidos", value: "VESTIDO" },
+    { label: "Shorts", value: "SHORTS" },
+    { label: "Bolsas", value: "BOLSA" },
+    { label: "Cintos", value: "CINTO" },
+    { label: "Relógios", value: "RELOGIO" },
+    { label: "Óculos", value: "OCULOS" },
+    { label: "Outros", value: "OUTRO" },
+  ]
+  const opcoesCategoria = [
+    { label: "Roupa", value: "Roupa" },
+    { label: "Acessório", value: "Acessorio" },
+  ]
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ]
+
   return (
     <Modal
       isOpen={isOpen}
@@ -171,19 +204,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <div className={modalProduto["select-tipo"]}>
             <label>Tipo:</label>
             <PickList
-              options={[
-                { label: "Calçados", value: "CALCADO" },
-                { label: "Camisas", value: "CAMISETA" },
-                { label: "Calças", value: "CALCA" },
-                { label: "Blusas", value: "BLUSA" },
-                { label: "Vestidos", value: "VESTIDO" },
-                { label: "Shorts", value: "SHORTS" },
-                { label: "Bolsas", value: "BOLSA" },
-                { label: "Cintos", value: "CINTO" },
-                { label: "Relógios", value: "RELOGIO" },
-                { label: "Óculos", value: "OCULOS" },
-                { label: "Outros", value: "OUTRO" },
-              ]}
+              options={opcoesTipo}
               onChange={setTipo}
               value={tipo}
               />
@@ -191,10 +212,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <div className={modalProduto["select-categoria"]}>
             <label>Categoria:</label>
             <PickList
-              options={[
-                { label: "Roupa", value: "Roupa" },
-                { label: "Acessório", value: "Acessorio" },
-              ]}
+              options={opcoesCategoria}
               onChange={setCategoria}
               value={categoria}
               />
@@ -203,11 +221,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <div className={modalProduto["select-status"]}>
             <label>Status:</label>
             <PickList
-              options={[
-                { label: "Disponível", value: "DISPONIVEL" },
-                { label: "Oculto", value: "OCULTO" },
-                { label: "Vendido", value: "VENDIDO" },
-              ]}
+              options={opcoesStatus}
               onChange={setStatus}
               value={status}
             />
