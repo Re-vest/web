@@ -1,5 +1,4 @@
 .modal {
-  width: 900px;
   height: auto;
   background-color: #ffffff;
   padding: 32px;
@@ -168,6 +167,7 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
+    overflow-y: scroll;
   }
 
   .select-options {
@@ -214,9 +214,15 @@ input[type="number"]::-webkit-outer-spin-button {
   
 }
 
+@media (min-width: 500px) {
+  .modal {
+    width: 450px;
+  }
+}
+
 @media (min-width: 768px) {
   .modal {
-    width: 900px;
+    width: 680px;
   }
   .select-options {
     gap: 5px;

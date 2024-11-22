@@ -9,6 +9,7 @@ import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
 import api from '../../api'
 import { Plus } from "lucide-react";
+import { NavbarMobile } from "../../components/NavbarMobile";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -70,7 +71,6 @@ export const Estoque = () => {
     if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
-
       try {
         api.get("/produtos").then(response => {
           setProdutos(response.data)
@@ -139,7 +139,13 @@ export const Estoque = () => {
 
   return (
     <div className="w-full h-full flex justify-center">
-      {/* <Navbar /> */}
+      <div className="hidden md:flex">
+        <Navbar />
+      </div>
+
+      <div className="flex md:hidden">
+        <NavbarMobile />
+      </div>
       <div className={estoque["inventory-container"]}>
         <div className={estoque["header"]}>
           <h2>Controle de Estoque</h2>
@@ -191,7 +197,7 @@ export const Estoque = () => {
             onClose={() => setModalOpen(false)}
           />
         )}
-      <div className="absolute bottom-0 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
+      <div className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
             setEditar({})
             setModalOpen(true)
           }}>

@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
         </a>
         <a href="/estoque" className="relative w-full flex justify-center py-5 cursor-pointer hover:bg-white group">
           <Shirt size={24} />
-          <span className="opacity-0 group-hover:opacity-100 absolute -right-14 bg-black rounded-md text-white p-1">aasd</span>
+          <span className="opacity-0 group-hover:opacity-100 absolute -right-14 bg-black rounded-md text-white p-1">Estoque</span>
 
         </a>
         <a href="/eventos" className="w-full flex justify-center py-5 cursor-pointer hover:bg-white">

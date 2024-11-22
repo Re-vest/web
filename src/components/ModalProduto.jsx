@@ -53,7 +53,28 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setImages(images.filter((_, i) => i !== index));
   };
 
-  
+  const opcoesTipo = [
+    { label: "Calçados", value: "CALCADO" },
+    { label: "Camisas", value: "CAMISETA" },
+    { label: "Calças", value: "CALCA" },
+    { label: "Blusas", value: "BLUSA" },
+    { label: "Vestidos", value: "VESTIDO" },
+    { label: "Shorts", value: "SHORTS" },
+    { label: "Bolsas", value: "BOLSA" },
+    { label: "Cintos", value: "CINTO" },
+    { label: "Relógios", value: "RELOGIO" },
+    { label: "Óculos", value: "OCULOS" },
+    { label: "Outros", value: "OUTRO" },
+  ]
+  const opcoesCategoria = [
+    { label: "Roupa", value: "Roupa" },
+    { label: "Acessório", value: "Acessorio" },
+  ]
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ]
   
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
@@ -154,28 +175,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setPreco(formattedValue);
   };
 
-  const opcoesTipo = [
-    { label: "Calçados", value: "CALCADO" },
-    { label: "Camisas", value: "CAMISETA" },
-    { label: "Calças", value: "CALCA" },
-    { label: "Blusas", value: "BLUSA" },
-    { label: "Vestidos", value: "VESTIDO" },
-    { label: "Shorts", value: "SHORTS" },
-    { label: "Bolsas", value: "BOLSA" },
-    { label: "Cintos", value: "CINTO" },
-    { label: "Relógios", value: "RELOGIO" },
-    { label: "Óculos", value: "OCULOS" },
-    { label: "Outros", value: "OUTRO" },
-  ]
-  const opcoesCategoria = [
-    { label: "Roupa", value: "Roupa" },
-    { label: "Acessório", value: "Acessorio" },
-  ]
-  const opcoesStatus = [
-    { label: "Disponível", value: "DISPONIVEL" },
-    { label: "Oculto", value: "OCULTO" },
-    { label: "Vendido", value: "VENDIDO" },
-  ]
+  
 
   return (
     <Modal
