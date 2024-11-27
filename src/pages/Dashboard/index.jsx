@@ -94,9 +94,9 @@ export function Dashboard() {
 
   }, [])
   useEffect(() => {
-    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+    /*if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
-    }
+    }*/
 
     getWeather()
     getEvents()

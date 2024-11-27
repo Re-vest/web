@@ -5,23 +5,23 @@ export default {
     extend: {
       backgroundImage: {
         home: "url('/src/assets/home.png')",
-        bazar: "url('/src/assets/bazar.png')",
-        doacao: "url('/src/assets/doacoes.png')"
       },
       fontFamily: {
-        'rhodium': "'Rhodium Libre', 'serif'"
+        rhodium: "'Rhodium Libre', 'serif'",
       },
       colors: {
         yellow: {
-          600: '#FFC600'
+          600: "#FFC600",
         },
         blue: {
           500: "#00A1FF",
-          950: "#1F2A44"
-        }
-      }
+          950: "#1F2A44",
+        },
+      },
+      screens: {
+        custom: { max: "1000px" }, // Breakpoint personalizado
+      },
     },
   },
   plugins: [],
-}
-
+};
