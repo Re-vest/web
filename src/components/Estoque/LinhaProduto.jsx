@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import Modal from "./Modal";
 import estoque from "../../styles/estoque.module.css";
-
 export const LinhaProduto = ({
   product,
   id = '',
@@ -15,6 +14,7 @@ export const LinhaProduto = ({
   setProdutos,
   produtos
 }) => {
+  const [precoFormatado, setPrecoFormatado] = useState(preco.toLocaleString('pt-br', {style: "currency", currency: "BRL"}))
   return (
     <>
       <tr>
@@ -26,7 +26,7 @@ export const LinhaProduto = ({
             {status}
           </span>
         </td>
-        <td>R$ {preco}</td>
+        <td>{precoFormatado}</td>
         <td>{categoria}</td>
         <td>
           <Modal product={product} editar={editar} modalEditar={modalEditar} setProdutos={setProdutos} produtos={produtos}/>
@@ -35,3 +35,8 @@ export const LinhaProduto = ({
     </>
   );
 };
+
+
+
+
+

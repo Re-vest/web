@@ -27,7 +27,7 @@ function parseFormattedPrice(value) {
   let parsedValue = value.replace(/\./g, '').replace(',', '.');
 
   // Converte para double (ou seja, número em ponto flutuante)
-  return parseFloat(parsedValue);
+  return parseFloat(parsedValue).toFixed(2);
 }
 
 
@@ -53,7 +53,28 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setImages(images.filter((_, i) => i !== index));
   };
 
-  
+  const opcoesTipo = [
+    { label: "Calçados", value: "CALCADO" },
+    { label: "Camisas", value: "CAMISETA" },
+    { label: "Calças", value: "CALCA" },
+    { label: "Blusas", value: "BLUSA" },
+    { label: "Vestidos", value: "VESTIDO" },
+    { label: "Shorts", value: "SHORTS" },
+    { label: "Bolsas", value: "BOLSA" },
+    { label: "Cintos", value: "CINTO" },
+    { label: "Relógios", value: "RELOGIO" },
+    { label: "Óculos", value: "OCULOS" },
+    { label: "Outros", value: "OUTRO" },
+  ]
+  const opcoesCategoria = [
+    { label: "Roupa", value: "Roupa" },
+    { label: "Acessório", value: "Acessorio" },
+  ]
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ]
   
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
@@ -64,6 +85,16 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
 
+    var valorTipo = opcoesTipo.find((opcao) => opcao.label == tipo).value
+    var valorStatus = opcoesStatus.find((opcao) => opcao.label == status).value
+    var valorCategoria = opcoesCategoria.find((opcao) => opcao.label == categoria).value
+
+    console.log(`
+      valorTipo: ${valorTipo}
+      valorStatus: ${valorStatus}
+      valorCategoria: ${valorCategoria}
+    `);
+
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
@@ -72,10 +103,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         descricao,
         cor,
         finalidade,
-        categoria: tipo,
+        categoria: valorTipo,
         estado: estadoProduto,
-        tipo: categoria,
-        status,
+        tipo: valorCategoria,
+        status: valorStatus,
         tamanho,
         // images
       }
@@ -144,6 +175,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setPreco(formattedValue);
   };
 
+  
+
   return (
     <Modal
       isOpen={isOpen}
@@ -153,7 +186,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       overlayClassName={modalProduto['modal-overlay']}
       shouldCloseOnOverlayClick={false}
     >
-      <h2>Controle de Estoque › Adicionar Produto</h2>
+      <div className="hidden md:flex">
+        <h2>Controle de Estoque › Adicionar Produto</h2>
+      </div>
       <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
         <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
@@ -164,45 +199,29 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <Input value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className={modalProduto["select-options"]}>
+          <div className="w-full md:w-[66%] flex gap-1">
+
           <div className={modalProduto["select-tipo"]}>
             <label>Tipo:</label>
             <PickList
-              options={[
-                { label: "Calçados", value: "CALCADO" },
-                { label: "Camisas", value: "CAMISETA" },
-                { label: "Calças", value: "CALCA" },
-                { label: "Blusas", value: "BLUSA" },
-                { label: "Vestidos", value: "VESTIDO" },
-                { label: "Shorts", value: "SHORTS" },
-                { label: "Bolsas", value: "BOLSA" },
-                { label: "Cintos", value: "CINTO" },
-                { label: "Relógios", value: "RELOGIO" },
-                { label: "Óculos", value: "OCULOS" },
-                { label: "Outros", value: "OUTRO" },
-              ]}
+              options={opcoesTipo}
               onChange={setTipo}
               value={tipo}
-            />
+              />
           </div>
           <div className={modalProduto["select-categoria"]}>
             <label>Categoria:</label>
             <PickList
-              options={[
-                { label: "Roupa", value: "Roupa" },
-                { label: "Acessório", value: "Acessorio" },
-              ]}
+              options={opcoesCategoria}
               onChange={setCategoria}
               value={categoria}
-            />
+              />
           </div>
+            </div>
           <div className={modalProduto["select-status"]}>
             <label>Status:</label>
             <PickList
-              options={[
-                { label: "Disponível", value: "DISPONIVEL" },
-                { label: "Oculto", value: "OCULTO" },
-                { label: "Vendido", value: "VENDIDO" },
-              ]}
+              options={opcoesStatus}
               onChange={setStatus}
               value={status}
             />
