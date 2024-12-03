@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import api from '../../api'
 import { CarrouselEvents } from "../../components/Dashboard/CarrouselEvents";
 import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
+import { NavbarMobile } from "../../components/NavbarMobile";
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -120,10 +121,21 @@ export function Dashboard() {
 
   return (
     <div>
-      <Navbar />
+      <div className="hidden md:flex">
+        <Navbar />
+      </div>
+
+      <div className="flex md:hidden">
+        <NavbarMobile />
+      </div>
+      <div className="flex flex-col gap-6">
+        <header className="gap-4 flex justify-between mx-[8%] font-bold text-2xl mt-12 flex-col-reverse sm:flex-row">
+          <h1 className="text-center sm:text-left">Dashboard</h1>
+          <h1 className="text-nowrap">Olá, {sessionStorage.NAME}</h1>
+        </header>
+
       <div className={dash["container"]}>
         <div className={dash["esquerdo"]}>
-          <h1>Dashboard</h1>
           <CarrouselEvents events={events} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
           <div className={dash["grafico"]}>
             {semana.length ? (
@@ -131,7 +143,7 @@ export function Dashboard() {
 
             ) : <></>}
           </div>
-          <div className="flex flex-col items-center p-16 border-2 border-[#DDD]  rounded-lg">
+          <div className="flex flex-col items-center p-8 md:p-16 border-2 border-[#DDD]  rounded-lg">
             <div className="w-full flex justify-between">
               <h2>{climaPorDia.length ? climaPorDia[0].weekday : ('Carregando')}</h2>
               <p className="text-sm">{city}</p>
@@ -147,7 +159,7 @@ export function Dashboard() {
 
             <div className="w-full flex flex-col gap-8">
               <p className="flex gap-4"><Sun size={24} /> Clima</p>
-              <div className="w-full flex justify-between">
+              <div className="w-full flex justify-between overflow-auto ">
                 {
                   climaPorDia.map((day, index) =>
                     index !== 0 ? (
@@ -161,7 +173,6 @@ export function Dashboard() {
 
         </div>
         <div className={dash["direito"]}>
-          <div className={dash["bem-vindo"]}><h1>Olá, {sessionStorage.NAME}</h1></div>
           <div className={dash["cards"]}>
             <div className={dash["vendas"]}>
               <p>Total de vendas</p>
@@ -193,6 +204,8 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+      </div>
+
     </div>
   );
 }

@@ -1,8 +1,8 @@
 .container {
   margin: 0 5%;
-  padding: 3rem 2rem;
   display: flex;
 }
+
 .header {
   width: 100%;
   display: flex;
@@ -43,14 +43,12 @@
 .cards {
   display: flex;
   flex-direction: column;
-  margin-left: 25px;
   gap: 20px;
 }
 
 .esquerdo {
   display: flex;
   flex-direction: column;
-  width: 70%;
   gap: 15px;
 }
 
@@ -59,8 +57,6 @@
   font-size: 26px;
   gap: 15px;
 }
-
-
 
 .bem-vindo {
   display: flex;
@@ -76,7 +72,6 @@
 
 .direito {
   display: flex;
-  width: 30%;
   flex-direction: column;
   gap: 15px;
 }
@@ -122,4 +117,36 @@
 
 .monitoramento p {
   margin-left: 10px;
+}
+
+@media (min-width: 360px) {
+  .container {
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 100px;
+    padding: 0 0rem;
+  }
+  
+  .esquerdo, .direito {
+    width: 100%;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    gap: 25px;
+    margin-bottom: 0;
+    padding: 0 2rem;
+  }
+
+  .esquerdo {
+    width: 70%;
+  }
+
+  .direito {
+    width: 30%;
+  }
+
 }

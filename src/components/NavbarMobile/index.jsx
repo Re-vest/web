@@ -12,34 +12,34 @@ import { useNavigate } from "react-router-dom";
 
     return (
       <div className="z-[1000] fixed w-full bottom-0 h-14 bg-gradient-to-b from-[#0D35FE] to-[#5CC3FF] flex items-center" id="Navbar">
-        <a href="/dashboard" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white">
-          <AlignEndHorizontal size={24} />
+        <a href="/dashboard" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
+          <AlignEndHorizontal className="w-5" />
         </a>
-        <a href="/estoque" className="relative w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white group">
-          <Shirt size={24} />
+        <a href="/estoque" className="relative w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black group">
+          <Shirt className="w-5" />
           <span className="opacity-0 group-hover:opacity-100 absolute -top-14 bg-black rounded-md text-white p-1">Estoque</span>
 
         </a>
-        <a href="/eventos" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white">
-          <Calendar size={24} />
+        <a href="/eventos" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
+          <Calendar className="w-5" />
 
         </a>
 
         {sessionStorage.PERFIL !== 'ADMINISTRADOR' ? (<></>) : (
 
-        <a href="equipe" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white">
-          <UsersRound size={24} />
+        <a href="equipe" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
+          <UsersRound className="w-5" />
 
         </a>
         ) }
 
 
-        <a href="vendas" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white">
-          <CircleDollarSign size={24} />
+        <a href="vendas" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
+          <CircleDollarSign className="w-5" />
         </a>
 
-        <a onClick={handleExit} className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white">
-          <LogOut size={24} />
+        <a onClick={handleExit} className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
+          <LogOut className="w-5" />
         </a>
       </div>
     )
