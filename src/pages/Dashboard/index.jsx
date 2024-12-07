@@ -12,7 +12,6 @@ import { NavbarMobile } from "../../components/NavbarMobile";
 
 export function Dashboard() {
   const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(true)
   const [climaPorDia, setClimaPorDia] = useState([])
   const [events, setEvents] = useState([])
   const [city, setCity] = useState('')
@@ -20,26 +19,7 @@ export function Dashboard() {
   const [semana, setSemana] = useState([])
   const [totalVendido, setTotalVendido] = useState(0.0)
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [atividades] = useState([
-    {
-      id: 1,
-      data: "2024-10-01",
-      nomeVoluntario: "Patrick de Lima Rodrigues",
-      acao: "Produto adicionado",
-    },
-    {
-      id: 2,
-      data: "2024-09-30",
-      nomeVoluntario: "Rafaela de Souza Scarabe",
-      acao: "Preço atualizado",
-    },
-    {
-      id: 3,
-      data: "2024-09-28",
-      nomeVoluntario: "Samuel de Oliveira Batista",
-      acao: "Produto removido",
-    }
-  ]);
+  const [atividades, setAtividade] = useState([]);
 
   // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
@@ -76,6 +56,34 @@ export function Dashboard() {
     return date
   }
 
+  const getHistorico = useCallback(async () => {
+    try {
+      const response = await api.get("/historico")
+      let histories = []
+      
+      if(response.status !== 204) {
+        histories = response.data
+
+        histories.map(async (history) => {
+          try {
+            const user = await api.get(`/usuarios/${history.idUsuario}`)
+            
+            history.nomeUsuario = user.data.nome
+          } catch (e) {
+            console.log(e);
+          }
+        })
+
+        setTimeout(() => {
+          setAtividade(histories)
+        }, 100)
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, [])
+
   const getEvents = useCallback(async () => {
     try {
 
@@ -102,8 +110,7 @@ export function Dashboard() {
     getWeather()
     getEvents()
     getCategoria()
-
-    setIsLoading(false)
+    getHistorico()
 
   }, [])
 
@@ -196,11 +203,14 @@ export function Dashboard() {
               <p>Voluntários Ativos: 7</p>
               <p>Equipe total: 9 pessoas</p>
             </div> */}
+              <div className="flex flex-col-reverse">
             {atividades.map((atividade) => (
-                  <AtividadesRecentes
-                    key={atividade.id}
-                    atividade={atividade} /> // card atividade | smp colocar key = id;
+
+                <AtividadesRecentes
+                  key={atividade.id}
+                  atividade={atividade} />
                 ))}
+                </div>
           </div>
         </div>
       </div>
