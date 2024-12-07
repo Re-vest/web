@@ -84,16 +84,17 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       alert("Por favor, preencha todos os campos obrigatórios.");
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
+    
+    console.log(`
+      valorTipo: ${tipo}
+      valorStatus: ${status}
+      valorCategoria: ${categoria}
+    `);
 
     var valorTipo = opcoesTipo.find((opcao) => opcao.label == tipo).value
     var valorStatus = opcoesStatus.find((opcao) => opcao.label == status).value
     var valorCategoria = opcoesCategoria.find((opcao) => opcao.label == categoria).value
 
-    console.log(`
-      valorTipo: ${valorTipo}
-      valorStatus: ${valorStatus}
-      valorCategoria: ${valorCategoria}
-    `);
 
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
@@ -113,7 +114,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
 
       try {
 
-        const response = await api.post('/produtos', newProduct)
+        console.log(sessionStorage.ID_USER);
+        
+        const response = await api.post(`/produtos?idUsuario=${sessionStorage.ID_USER}`, newProduct)
 
         setProdutos(prev => [...prev, response.data]);
       } catch (e) {
@@ -145,14 +148,13 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           })
         }
 
-        const response = await api.put(`/produtos/${editar.id}`, updateProduct)
+        const response = await api.put(`/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`, updateProduct)
   
         const productsUpdated = produtos.map(eventProps => {
           if (eventProps.id === response.data.id) {
             return response.data;
           } else return eventProps;
         });
-
   
         setProdutos(productsUpdated);
       } catch(e) {
