@@ -11,7 +11,6 @@ export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, op
   }; 
 
   return (
-
     
     <div className="header">
       <div className="search">
@@ -26,6 +25,7 @@ export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, op
         options={options} 
         atualizandoFiltros={atualizandoFiltros}/>
         <Button 
+          className="md:hidden absolute"
           text={"Novo Voluntário"} 
           icon={<Plus size={24} />}
           onClick={onClick} 

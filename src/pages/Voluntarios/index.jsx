@@ -12,6 +12,8 @@ import CadastroVoluntario from "../../components/Voluntarios/ModalDeCadastro";
 
 import ErrorBoundary from "../../components/ErrorBoundary" // pra depurar erro
 
+import { Plus } from "lucide-react";
+
 export const Voluntarios = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
@@ -75,7 +77,7 @@ export const Voluntarios = () => {
       status: "ATIVO",
       permissao: "VOLUNTÁRIO",
       selecionado: false,
-    },
+    }
     // {
     //   id: "0128",
     //   nome: "Victor Hugo Carvalho Moreira dos Santos",
@@ -288,14 +290,13 @@ export const Voluntarios = () => {
   return (
     //pra reinderizar tudo na tela
     <div className="h-full w-full flex">
-      <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} />
+      {/* <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} /> */}
       <div className="w-11/12 my-5 mx-auto font-sans flex flex-col gap-2.5">
         <div className="header">
           <h2>Gerenciar Equipe</h2>
         </div>
 
     <ErrorBoundary>
-
         <FerramentasHeader 
           volunteer={voluntarios}
           setVoluntarios={setVoluntarios}
@@ -308,20 +309,12 @@ export const Voluntarios = () => {
 
         <div className="container_tudo">
 
-          {/* <table className="h-600 overflow-y-auto w-[68%] border-collapse"> */}
           <table className="volunteer-list">
-          {/* <table className="volunteer-list"> */}
-            <HeaderTable 
-            //   selecionaTodos={(e) =>
-            //     setvoluntarios((prev) =>
-            //     prev.map((v) => ({ ...v, selecionado: e.target.checked }))
-            //   )
-            // }
-             />
+
+            <HeaderTable />
             <tbody>
 
               {filtredOptions.map((volunteer) => (
-                // <ErrorBoundary>
 
                 <Voluntario 
                 volunteer={volunteer}
@@ -337,7 +330,9 @@ export const Voluntarios = () => {
                 />
 
               ))}
+
             </tbody>
+
           </table>
 
           {modalOpen && (
@@ -349,6 +344,13 @@ export const Voluntarios = () => {
             onClose={() => setModalOpen(false)}
           />
         )}
+
+        <div className="bottom-2 right-2 p-5 bg-yellow-500 rounded-full md:hidden fixed" onClick={() => {
+              setEditar({})
+              setModalOpen(true)
+            }}>
+          <Plus size={16} />
+        </div>
 
           <div className="recentActivities">
 

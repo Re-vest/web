@@ -9,7 +9,7 @@ const makeAnimation = MakeAnimation()
 const Filtro = ({options, atualizandoFiltros}) => {
 
   return (
-    <div style={{ zIndex: 999 }}>
+    <div style={{ width:"100%", }}>
       <Select
         options={options} //selecionar os filtros
         onChange={(e) => atualizandoFiltros(e)} //atualizar filtros qnd selecionar mais ou alterar

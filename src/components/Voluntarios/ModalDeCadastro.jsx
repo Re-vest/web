@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import PickList from "./picklist";
-// import { Input } from "../Input";
 import {Input} from "./Input";
 import { Button } from "../Button";
-//import { Voluntarios } from "../../pages/Voluntarios";
-
 
 Modal.setAppElement("#root");
 
@@ -16,10 +13,8 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
   const [telefone, setTelefone] = useState(editar.telefone);
   const [status, setStatus] = useState(editar.status);
   const [permissao, setPermissao] = useState(editar.permissao);
-  
 
   const [mensagemErro, setMensagemErro] = useState("");
-
 
   function salvar(event) {
     event.preventDefault(); // Evitar o recarregamento da página
@@ -172,7 +167,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
 
         {mensagemErro && <p className="text-red-500 text-[13px]">{mensagemErro}</p>}
         
-        <div className="flex justify-end gap-2.5">
+        <div className="flex md:flex sm:block justify-end gap-2.5">
           <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />
           <Button text={"Salvar"} onClick={salvar} />
         </div>

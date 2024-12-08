@@ -20,14 +20,14 @@ export const Voluntario = ({
 
   return (
     <tr>
-      <td className="text-center">{id}</td>
-      <td className="text-left">{nome}</td>
+      <td className="text-center text-sm">{id}</td>
+      <td className="text-left text-sm ">{nome}</td>
       <td>
         <span className={`status ${status.toLowerCase()}`}>
           {status}
         </span>
       </td>
-      <td className="text-center">{permissao}</td>
+      <td className="text-center text-sm">{permissao}</td>
         <td className="text-center">
           <Modal volunteer={volunteer} editar={editar} modalEditar={modalEditar} setVoluntarios={setVoluntarios} voluntarios={voluntarios}/>
         </td>
