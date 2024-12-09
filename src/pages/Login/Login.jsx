@@ -103,7 +103,7 @@ const Login = () => {
       </div>
 
       {/* Oculta a imagem em telas menores */}
-      <div className="hidden lg:block lg:w-1/2 h-full bg-home bg-no-repeat bg-cover bg-center" />
+      <div className="hidden mdCustom:block mdCustom:w-1/2 h-full bg-home bg-no-repeat bg-cover bg-center" />
     </div>
   );
 };

@@ -20,6 +20,7 @@ export default {
       },
       screens: {
         custom: { max: "1000px" }, // Breakpoint personalizado
+        mdCustom: "769px", // Aparece a partir de 769px
       },
     },
   },
