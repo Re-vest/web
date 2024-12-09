@@ -6,13 +6,15 @@ export const LinhaProduto = ({
   id = '',
   nome = '',
   descricao = '',
-  preco = '',
+  preco = 0.0,
   status = '',
   categoria = '',
   editar,
   modalEditar,
   setProdutos,
-  produtos
+  produtos,
+  desfazer,
+  setDesfazer
 }) => {
   const [precoFormatado, setPrecoFormatado] = useState(preco.toLocaleString('pt-br', {style: "currency", currency: "BRL"}))
   return (
@@ -23,13 +25,13 @@ export const LinhaProduto = ({
         <td>{descricao}</td>
         <td>
           <span className={estoque[product.status]}>
-            {status}
+            {status.toUpperCase()}
           </span>
         </td>
-        <td>{precoFormatado}</td>
+        <td>{preco.toFixed(2)}</td>
         <td>{categoria}</td>
         <td>
-          <Modal product={product} editar={editar} modalEditar={modalEditar} setProdutos={setProdutos} produtos={produtos}/>
+          <Modal desfazer={desfazer} setDesfazer={setDesfazer} product={product} editar={editar} modalEditar={modalEditar} setProdutos={setProdutos} produtos={produtos}/>
         </td>
       </tr>
     </>

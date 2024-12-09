@@ -42,8 +42,10 @@ export function Dashboard() {
 
   const getCategoria = useCallback(async () => {
     try {
-      const response = await api.get('/produtos/categoria-mais-vendida')
-      setCategoriaMaisVendida(Object.keys(response.data)[0])
+      const response = await api.get('/produtos/tipo-mais-vendido')
+      if(response.status === 200) setCategoriaMaisVendida(Object.keys(response.data)[0])
+      console.log(response.data);
+      
     } catch (e) {
       console.log(e);
     }
@@ -72,7 +74,7 @@ export function Dashboard() {
           } catch (e) {
             console.log(e);
           }
-        })
+        })  
 
         setTimeout(() => {
           setAtividade(histories)
@@ -82,6 +84,32 @@ export function Dashboard() {
     } catch (e) {
       console.log(e);
     }
+  }, [])
+
+  const getVendas = useCallback(async () => {
+    
+    let valorTotal = 0
+    try {
+      const response = await api.get("/vendas")
+
+      
+      response.data.map(venda => {
+        console.log(venda.valorTotal);
+        
+        valorTotal += venda.valorTotal
+      })
+
+      console.log(valorTotal);
+      
+      
+    } catch(e) {
+      console.log(e);
+      
+    }
+    setTimeout(() => {
+
+      setTotalVendido(valorTotal)
+    }, 100)
   }, [])
 
   const getEvents = useCallback(async () => {
@@ -111,6 +139,7 @@ export function Dashboard() {
     getEvents()
     getCategoria()
     getHistorico()
+    getVendas()
 
   }, [])
 
@@ -183,7 +212,7 @@ export function Dashboard() {
           <div className={dash["cards"]}>
             <div className={dash["vendas"]}>
               <p>Total de vendas</p>
-              <h2>R$ 24,10</h2>
+              <h2>R$ {totalVendido.toFixed(2)}</h2>
               {/* <p>1,7% a mais que na última edição</p> */}
             </div>
 
@@ -192,7 +221,7 @@ export function Dashboard() {
                 Categoria de peça mais <br />
                 vendida
               </p>
-              <h2>Calça</h2>
+              <h2>{categoriaMaisVendida}</h2>
             </div>
             {/* <div className={dash["monitoramento"]}>
               <h2>
@@ -203,7 +232,7 @@ export function Dashboard() {
               <p>Voluntários Ativos: 7</p>
               <p>Equipe total: 9 pessoas</p>
             </div> */}
-              <div className="flex flex-col-reverse">
+              <div className="flex flex-col max-h-96 overflow-y-auto">
             {atividades.map((atividade) => (
 
                 <AtividadesRecentes
