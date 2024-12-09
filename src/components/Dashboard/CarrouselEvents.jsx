@@ -18,10 +18,8 @@ export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
     
     const index = events.findIndex(event => {
       const start = event.dataInicio;
-      console.log('INICIO'+start);
       
       const end = event.dataFim;
-      console.log('FIM'+end);
       
       return now >= start && now <= end; // Verifica se o evento está ocorrendo agora
     });
