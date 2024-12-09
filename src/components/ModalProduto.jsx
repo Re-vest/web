@@ -43,7 +43,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   const [tamanho, setTamanho] = useState(editar.tamanho);
   const [finalidade, setFinalidade] = useState(editar.finalidade);
   const [images, setImages] = useState(editar.imagem ? editar.imagem.urlImagem : null);
-  const [condicaoProduto, setCondicaoProduto] = useState(editar.condicao ? editar.condicao === 'Semi novo' ? 'SEMI_NOVO' : editar.condicao.toUpperCase() : '');
+  const [condicaoProduto, setCondicaoProduto] = useState(editar.condicao ? editar.condicao : '');
   const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : '0');
 
   const handleImageUpload = (event) => {
@@ -173,6 +173,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   
         const productsUpdated = produtos.map(eventProps => {
           if (eventProps.id === response.data.id) {
+            response.data.tipo = opcoesTipo.find((opcao) => opcao.value === response.data.tipo).label
+            response.data.categoria = opcoesCategoria.find((opcao) => opcao.value === response.data.categoria).label
             return response.data;
           } else return eventProps;
         });
@@ -270,7 +272,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={condicaoProduto === "NOVO" || editar.condicao === 'NOVO'}
+                checked={condicaoProduto === "NOVO"}
                 onChange={() => handleCheckboxChange("NOVO")}
               />
               Novo
@@ -278,7 +280,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={condicaoProduto === "SEMI_NOVO" || editar.condicao === 'SEMI_NOVO'}
+                checked={condicaoProduto === "SEMI_NOVO"}
                 onChange={() => handleCheckboxChange("SEMI_NOVO")}
               />
               Seminovo
@@ -286,7 +288,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={condicaoProduto === "USADO" || editar.condicao === 'USADO'}
+                checked={condicaoProduto === "USADO"}
                 onChange={() => handleCheckboxChange("USADO")}
               />
               Usado

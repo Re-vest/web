@@ -232,7 +232,7 @@ export function Dashboard() {
               <p>Voluntários Ativos: 7</p>
               <p>Equipe total: 9 pessoas</p>
             </div> */}
-              <div className="flex flex-col-reverse">
+              <div className="flex flex-col max-h-96 overflow-y-auto">
             {atividades.map((atividade) => (
 
                 <AtividadesRecentes

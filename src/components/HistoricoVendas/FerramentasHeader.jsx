@@ -8,6 +8,7 @@ export const FerramentasHeader = ({ setBusca }) => {
 
   const gerarRelatorio = async () => {
     await api.get("/relatorio")
+    alert("Relatório gerado na pasta Downloads")
   }
 
   return (

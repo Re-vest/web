@@ -12,7 +12,8 @@ export const Acoes = ({
   handleFilterChange,
   onClick,
   desfazer,
-  setDesfazer
+  setDesfazer,
+  setProdutos
 }) => {
   const opcoesTipo = [
     { label: "Calçados", value: "CALCADO" },
@@ -33,10 +34,9 @@ const opcoesCategoria = [
 ]
 
   const desfazerProduto = async () => {
-    let desfazerAux = [desfazer]
+    let desfazerAux = desfazer
     let produto = desfazerAux.pop()
 
-    console.log(produto);
     produto.tipo = opcoesTipo.find((opcao) => opcao.label === produto.tipo).value
     produto.categoria = opcoesCategoria.find((opcao) => opcao.label === produto.categoria).value
      
@@ -51,10 +51,13 @@ const opcoesCategoria = [
         }
       })
 
-      desfazer.id = response.data[0].id
+      produto.id = response.data.id
 
       if(response.status === 201) {
         setDesfazer(desfazerAux)
+        produto.tipo = opcoesTipo.find((opcao) => opcao.value === produto.tipo).label
+        produto.categoria = opcoesCategoria.find((opcao) => opcao.value === produto.categoria).label
+        setProdutos(prev => [...prev, produto])
       }
   }
 
@@ -69,7 +72,7 @@ const opcoesCategoria = [
       </div>
       <div className={estoque["acoes"]}>
         <Filter options={options} handleFilterChange={handleFilterChange} />
-        <div className="hidden md:flex">
+        <div className="hidden md:flex gap-3">
           {desfazer.length > 0 && (
 
           <Button icon={<RotateCcw size={24} />} onClick={desfazerProduto} />
