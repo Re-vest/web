@@ -218,8 +218,7 @@ export function Dashboard() {
 
             <div className={dash["categoria"]}>
               <p>
-                Categoria de peça mais <br />
-                vendida
+                Tipo de peça mais vendida
               </p>
               <h2>{categoriaMaisVendida}</h2>
             </div>
