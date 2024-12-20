@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import dash from '../../styles/dashboard.module.css'
 import { ArrowLeft, ArrowLeftCircle, ArrowRightCircle, CalendarDays } from 'lucide-react';
 import {Button} from '../Button'
+import api from '../../api';
 
 export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
 
@@ -14,8 +15,6 @@ export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
 
   const findCurrentEventIndex = (events) => {
     const now = new Date(); // Obtém a data e hora atual
-    console.log(now);
-    
     const index = events.findIndex(event => {
       const start = event.dataInicio;
       
@@ -25,9 +24,6 @@ export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
     });
 
     setCurrentIndex(index > -1 ? index : 0)
-
-    console.log(index)
-
   };
   
 
@@ -51,7 +47,7 @@ export function CarrouselEvents({ events, currentIndex, setCurrentIndex }) {
     <>
     {(events && events.length > 0) ? (
       <div className={dash["header"]} style={{
-        border: `2px solid ${events[currentIndex].cor ? events[currentIndex].cor : '#DDD'}` 
+        border: `3px solid ${events[currentIndex].cor ? events[currentIndex].cor : '#DDD'}` 
       }}>
         <button onClick={prevEvent}>
       <ArrowLeftCircle size={32}  />

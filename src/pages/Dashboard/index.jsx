@@ -44,7 +44,6 @@ export function Dashboard() {
     try {
       const response = await api.get('/produtos/tipo-mais-vendido')
       if(response.status === 200) setCategoriaMaisVendida(Object.keys(response.data)[0])
-      console.log(response.data);
       
     } catch (e) {
       console.log(e);
@@ -94,14 +93,9 @@ export function Dashboard() {
 
       
       response.data.map(venda => {
-        console.log(venda.valorTotal);
-        
         valorTotal += venda.valorTotal
       })
 
-      console.log(valorTotal);
-      
-      
     } catch(e) {
       console.log(e);
       
@@ -110,6 +104,21 @@ export function Dashboard() {
 
       setTotalVendido(valorTotal)
     }, 100)
+  }, [])
+
+  const getVendasPorEvento = useCallback(async (id) => {
+    
+    let valorTotal = 0
+    try {
+      const response = await api.get(`/produtos/vendidos-evento?eventoId=${id}`)
+
+      if(response.data) setTotalVendido(response.data)
+      else setTotalVendido(0)
+
+    } catch(e) {
+      console.log(e);
+      
+    }
   }, [])
 
   const getEvents = useCallback(async () => {
@@ -130,6 +139,11 @@ export function Dashboard() {
     }
 
   }, [])
+
+  useEffect(() => {
+    if (events.length > 0) getVendasPorEvento(events[currentIndex].id)
+  }, [events, currentIndex])
+
   useEffect(() => {
     /*if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
@@ -139,8 +153,7 @@ export function Dashboard() {
     getEvents()
     getCategoria()
     getHistorico()
-    getVendas()
-
+    
   }, [])
 
   const urlSvg = 'https://assets.hgbrasil.com/weather/icons/conditions/'
@@ -173,12 +186,12 @@ export function Dashboard() {
       <div className={dash["container"]}>
         <div className={dash["esquerdo"]}>
           <CarrouselEvents events={events} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+            {events.length ? (
           <div className={dash["grafico"]}>
-            {semana.length ? (
-              <Grafico semana={semana} />
+              <Grafico currentIndex={currentIndex} events={events} />
 
-            ) : <></>}
           </div>
+            ) : <></>}
           <div className="flex flex-col items-center p-8 md:p-16 border-2 border-[#DDD]  rounded-lg">
             <div className="w-full flex justify-between">
               <h2>{climaPorDia.length ? climaPorDia[0].weekday : ('Carregando')}</h2>
