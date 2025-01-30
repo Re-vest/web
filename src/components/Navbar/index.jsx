@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
     }
 
     return (
-      <div className="h-full w-14 bg-[#0D35FE] py-6 flex flex-col items-center fixed space-y-8 justify-center" id="Navbar">
+      <div className="h-full w-20 bg-[#0D35FE] py-6 flex flex-col items-center fixed space-y-8 justify-center rounded-br-lg rounded-tr-lg" id="Navbar">
         <a href="/dashboard" className="w-full flex justify-center py-5 cursor-pointer hover:bg-[#ffc600] text-white hover:text-black">
           <AlignEndHorizontal size={24} />
 

@@ -30,19 +30,19 @@ export function Home() {
       </div>
 
       <div className="flex justify-center items-center mb-24 -mt-28">
-        <div className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -mr-16">
+        <div data-aos="flip-left" className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -mr-16">
           <img src={data} alt="icone" className="w-9" />
           <span className="text-4xl text-blue-500">Contribua</span>
           <p className="opacity-70 w-1/2 text-sm font-medium">Junte-se a nós e ajude a transformar ideias em realidade.</p>
         </div>
 
-        <div className="w-[394px] h-[291px] flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-[999]">
+        <div data-aos="flip-left" className="w-[394px] h-[291px] flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-[999]">
           <img src={data} alt="icone" className="w-9" />
           <span className="text-4xl text-blue-500">Catálogo</span>
           <p className="opacity-70 w-3/5 text-sm font-medium">Explore nossos produtos e encontre exatamente o que procura!</p>
         </div>
 
-        <div className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -ml-12">
+        <div data-aos="flip-left" className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -ml-12">
           <img src={data} alt="icone" className="w-9" />
           <span className="text-4xl text-blue-500">Data do evento</span>
           <p className="opacity-70 w-1/2 text-sm font-medium">Esteja informado e aproveite a oportunidade para participar!</p>
@@ -50,7 +50,7 @@ export function Home() {
       </div>
 
       <div className="h-[552px] bg-bazar bg-cover text-white" id="about">
-        <div className="h-full w-1/2 bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
+        <div data-aos="fade-right" className="h-full w-1/2 bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] left-0 border-yellow-600 border-r-2 border-b-2 border-t-2 rounded-tr-full rounded-br-full"></div>
           <div className="w-1/2 flex flex-col gap-2">
             <p className="">Bem vindo a nossa</p>
@@ -66,7 +66,7 @@ export function Home() {
       </div>
 
       <div className="h-[552px] bg-doacao bg-cover flex justify-end text-white">
-        <div className="h-full w-1/2 bg-blue-950 rounded-tl-full rounded-bl-full flex flex-col items-center justify-center relative">
+        <div data-aos="fade-left" className="h-full w-1/2 bg-blue-950 rounded-tl-full rounded-bl-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] right-0 border-yellow-600 border-l-2 border-b-2 border-t-2 rounded-tl-full rounded-bl-full"></div>
           <div className="w-1/2 flex flex-col gap-2 ">
             <h2 className="text-4xl font-bold">Transforme vidas</h2>

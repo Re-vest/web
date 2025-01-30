@@ -15,6 +15,7 @@ export const Grafico = ({ events, currentIndex }) => {
     xaxis: {
       categories: vendas.map(venda => {return venda[0]}),
     },
+    colors: ['#0D35FE']
   }
 
   const series = [
