@@ -5,6 +5,8 @@ import PickList from "./picklist";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import api from '../api'
+import FormData from 'form-data';
+
 
 Modal.setAppElement("#root");
 
@@ -24,45 +26,76 @@ function formatPrice(value) {
 
 function parseFormattedPrice(value) {
   // Remove pontos de milhar e substitui a vírgula decimal por ponto
-  let parsedValue = value.replace(/\./g, '').replace(',', '.');
+  let parsedValue = value.replace(',', '.');
 
   // Converte para double (ou seja, número em ponto flutuante)
-  return parseFloat(parsedValue);
+  return parseFloat(parsedValue).toFixed(2);
 }
 
 
 const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
-  const [tipo, setTipo] = useState(editar.categoria);
-  const [categoria, setCategoria] = useState(editar.tipo);
+  const [tipo, setTipo] = useState(editar.tipo);
+  const [categoria, setCategoria] = useState(editar.categoria);
   const [status, setStatus] = useState(editar.status);
   const [cor, setCor] = useState(editar.cor);
   const [tamanho, setTamanho] = useState(editar.tamanho);
   const [finalidade, setFinalidade] = useState(editar.finalidade);
-  const [images, setImages] = useState([]);
-  const [estadoProduto, setEstadoProduto] = useState(editar.estado ? editar.estado === 'Semi novo' ? 'SEMI_NOVO' : editar.estado.toUpperCase() : '');
+  const [images, setImages] = useState(editar.imagem ? editar.imagem.urlImagem : null);
+  const [condicaoProduto, setCondicaoProduto] = useState(editar.condicao ? editar.condicao : '');
   const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : '0');
 
   const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    setImages([...images, ...files]);
+    setImages(event.target.files[0]);
   };
 
-  const removeImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
+
+  const removeImage = () => {
+    setImages(null)
   };
 
-  
+    const opcoesTipo = [
+      { label: "Calçados", value: "CALCADO" },
+      { label: "Camisas", value: "CAMISETA" },
+      { label: "Calças", value: "CALCA" },
+      { label: "Blusas", value: "BLUSA" },
+      { label: "Vestidos", value: "VESTIDO" },
+      { label: "Shorts", value: "SHORTS" },
+      { label: "Bolsas", value: "BOLSA" },
+      { label: "Cintos", value: "CINTO" },
+      { label: "Relógios", value: "RELOGIO" },
+      { label: "Óculos", value: "OCULOS" },
+      { label: "Outros", value: "OUTRO" },
+    ]
+  const opcoesCategoria = [
+    { label: "Roupa", value: "ROUPA" },
+    { label: "Acessório", value: "ACESSORIO" },
+  ]
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ]
   
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
 
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !estadoProduto || !preco || !finalidade) {
+    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !condicaoProduto || !preco) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
+    
+    var valorTipo = opcoesTipo.find((opcaoTipo) => opcaoTipo.label === tipo || opcaoTipo.value === tipo).value
+    var valorStatus = opcoesStatus.find((opcao) => opcao.label === status || opcao.value == status).value
+    var valorCategoria = opcoesCategoria.find((opcao) => opcao.label === categoria || opcao.value === categoria).value
+
+    console.log(`
+      valorTipo: ${valorTipo}
+      valorStatus: ${valorStatus}
+      valorCategoria: ${valorCategoria}
+    `);
 
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
@@ -71,57 +104,80 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         preco: parseFormattedPrice(preco),
         descricao,
         cor,
-        finalidade,
-        categoria: tipo,
-        estado: estadoProduto,
-        tipo: categoria,
-        status,
-        tamanho,
-        // images
+        categoria: valorCategoria,
+        condicao: condicaoProduto,
+        tipo: valorTipo,
+        status: valorStatus,
+        tamanho
       }
+      
+      const formData = new FormData();
+      formData.append('produto', new Blob([JSON.stringify(newProduct)], {
+        type: 'application/json'
+      }));
+      formData.append('arquivo', images)
 
       try {
 
-        const response = await api.post('/produtos', newProduct)
+        // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
+        const response = await api.post(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
 
-        setProdutos(prev => [...prev, response.data]);
+        response.data.map(product => {
+          product.categoria = opcoesCategoria.find(category => category.value === product.categoria).label
+          product.tipo = opcoesTipo.find(type => type.value === product.tipo).label
+        })
+
+        if(response.status === 201) setProdutos(prev => [...prev, response.data]);
       } catch (e) {
         console.log(e)
       }
 
     } else {
+      console.log(images);
+      
       const updateProduct = {
         nome,
         preco: parseFormattedPrice(preco),
         descricao,
         cor,
-        finalidade,
-        categoria: tipo.toUpperCase(),
-        estado: estadoProduto,
-        tipo: categoria,
-        status,
         tamanho,
-        // images
+        tipo: valorTipo,
+        condicao: condicaoProduto,
+        status: valorStatus,
+        categoria: valorCategoria,
       };
 
-      console.log(updateProduct)
-
       try {
-        if(status === 'VENDIDO') {
-          await api.post("/vendas", {
+        if(status === 'Vendido') {
+          await api.post(`/vendas?idUsuario=${sessionStorage.ID_USER}`, {
             produtosId: [editar.id],
             idVendedor: sessionStorage.ID_USER
           })
         }
 
-        const response = await api.put(`/produtos/${editar.id}`, updateProduct)
+        const formData = new FormData()
+        formData.append('produto', new Blob([JSON.stringify(updateProduct)], {
+          type: 'application/json'
+        }))
+        // formData.append('arquivo', images)
+
+        const response = await api.put(`/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
   
         const productsUpdated = produtos.map(eventProps => {
           if (eventProps.id === response.data.id) {
+            response.data.tipo = opcoesTipo.find((opcao) => opcao.value === response.data.tipo).label
+            response.data.categoria = opcoesCategoria.find((opcao) => opcao.value === response.data.categoria).label
             return response.data;
           } else return eventProps;
         });
-
   
         setProdutos(productsUpdated);
       } catch(e) {
@@ -135,7 +191,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   }
 
   const handleCheckboxChange = (value) => {
-    setEstadoProduto(value);
+    setCondicaoProduto(value);
   };
 
   const handlePrecoChange = (event) => {
@@ -144,6 +200,21 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setPreco(formattedValue);
   };
 
+  const Image = () => {     
+    return (
+
+      <div className={modalProduto["image-container"]}>
+        <img
+          src={images}
+          alt={`Preview`}
+          className={modalProduto["preview-img"]}
+        />
+        <button type="button" onClick={removeImage}>
+          X
+        </button>
+      </div>
+    )
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -153,7 +224,9 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       overlayClassName={modalProduto['modal-overlay']}
       shouldCloseOnOverlayClick={false}
     >
-      <h2>Controle de Estoque › Adicionar Produto</h2>
+      <div className="hidden md:flex">
+        <h2>Controle de Estoque › Adicionar Produto</h2>
+      </div>
       <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
         <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
@@ -164,45 +237,29 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           <Input value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className={modalProduto["select-options"]}>
+          <div className="w-full md:w-[66%] flex gap-1">
+
           <div className={modalProduto["select-tipo"]}>
             <label>Tipo:</label>
             <PickList
-              options={[
-                { label: "Calçados", value: "CALCADO" },
-                { label: "Camisas", value: "CAMISETA" },
-                { label: "Calças", value: "CALCA" },
-                { label: "Blusas", value: "BLUSA" },
-                { label: "Vestidos", value: "VESTIDO" },
-                { label: "Shorts", value: "SHORTS" },
-                { label: "Bolsas", value: "BOLSA" },
-                { label: "Cintos", value: "CINTO" },
-                { label: "Relógios", value: "RELOGIO" },
-                { label: "Óculos", value: "OCULOS" },
-                { label: "Outros", value: "OUTRO" },
-              ]}
+              options={opcoesTipo}
               onChange={setTipo}
               value={tipo}
-            />
+              />
           </div>
           <div className={modalProduto["select-categoria"]}>
             <label>Categoria:</label>
             <PickList
-              options={[
-                { label: "Roupa", value: "Roupa" },
-                { label: "Acessório", value: "Acessorio" },
-              ]}
+              options={opcoesCategoria}
               onChange={setCategoria}
               value={categoria}
-            />
+              />
           </div>
+            </div>
           <div className={modalProduto["select-status"]}>
             <label>Status:</label>
             <PickList
-              options={[
-                { label: "Disponível", value: "DISPONIVEL" },
-                { label: "Oculto", value: "OCULTO" },
-                { label: "Vendido", value: "VENDIDO" },
-              ]}
+              options={opcoesStatus}
               onChange={setStatus}
               value={status}
             />
@@ -210,12 +267,12 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         </div>
 
         <div className={modalProduto["checkbox-group"]}>
-          <label>Estado do produto:</label>
+          <label>Condicao do produto:</label>
           <div className={modalProduto["checkbox-options"]}>
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "NOVO" || editar.estado === 'NOVO'}
+                checked={condicaoProduto === "NOVO"}
                 onChange={() => handleCheckboxChange("NOVO")}
               />
               Novo
@@ -223,7 +280,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "SEMI_NOVO" || editar.estado === 'SEMI_NOVO'}
+                checked={condicaoProduto === "SEMI_NOVO"}
                 onChange={() => handleCheckboxChange("SEMI_NOVO")}
               />
               Seminovo
@@ -231,7 +288,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
             <label>
               <input
                 type="checkbox"
-                checked={estadoProduto === "USADO" || editar.estado === 'USADO'}
+                checked={condicaoProduto === "USADO"}
                 onChange={() => handleCheckboxChange("USADO")}
               />
               Usado
@@ -259,33 +316,18 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               required
             />
           </div>
-
-          <div className={modalProduto["input-estampa"]}>
-            <label>Finalidade:</label>
-            <Input value={finalidade} onChange={setFinalidade} />
-          </div>
-        </div>
         <div className={modalProduto["form-group"]}>
           <label>Anexar Imagem:</label>
           <input
             type="file"
             onChange={handleImageUpload}
-            multiple
           />
         </div>
+        </div>
         <div className={modalProduto["image-preview"]}>
-          {images.map((image, index) => (
-            <div key={index} className={modalProduto["image-container"]}>
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`Preview ${index}`}
-                className={modalProduto["preview-img"]}
-              />
-              <button type="button" onClick={() => removeImage(index)}>
-                X
-              </button>
-            </div>
-          ))}
+
+          {images && <Image />}
+
         </div>
         <div className={modalProduto["form-actions"]}>
           <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />

@@ -8,26 +8,15 @@ import { Navbar } from "../../components/Navbar";
 import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
 import api from '../../api'
+import { Plus } from "lucide-react";
+import { NavbarMobile } from "../../components/NavbarMobile";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
-  const [produtos, setProdutos] = useState([
-    // {
-    //   id: "01232555",
-    //   nome: "Macacão Baby",
-    //   descricao: "Blusa xadrez de manga comprida",
-    //   tipo: "Camisas",
-    //   categoria: "Roupas",
-    //   status: "Disponível",
-    //   estadoProduto: "Novo",
-    //   cor: "Vermelho",
-    //   tamanho: "3",
-    //   preco: 4.0,
-    //   estampa: "Lisa",
-    //   images: "",
-    // },
-  ]);
+  const [produtos, setProdutos] = useState([]);
+  const [desfazer, setDesfazer] = useState([]);
+  
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filtredOptions, setFiltredOptions] = useState([]);
@@ -49,30 +38,53 @@ export const Estoque = () => {
     {
       label: "Categoria",
       options: [
-        { label: "Roupas", value: "roupas" },
-        { label: "Acessórios", value: "acessórios" },
+        { label: "Roupas", value: "ROUPAS" },
+        { label: "Acessórios", value: "ACESSORIOS" },
       ],
     },
     {
       label: "Valor",
       options: [
-        { label: "Até R$5,00", value: "ate_5_reais" },
-        { label: "Entre R$6 - R$20,00", value: "entre_6_e_20_reais" },
-        { label: "Mais de R$21,00", value: "mais_de_21_reais" },
+        { label: "Até R$30,00", value: "ate_30_reais" },
+        { label: "Entre R$6 - R$50,00", value: "entre_6_e_50_reais" },
+        { label: "Mais de R$100,00", value: "mais_de_100_reais" },
       ],
     },
   ];
 
   const navigate = useNavigate()
 
+  const opcoesTipo = [
+    { label: "Calçados", value: "CALCADO" },
+    { label: "Camisas", value: "CAMISETA" },
+    { label: "Calças", value: "CALCA" },
+    { label: "Blusas", value: "BLUSA" },
+    { label: "Vestidos", value: "VESTIDO" },
+    { label: "Shorts", value: "SHORTS" },
+    { label: "Bolsas", value: "BOLSA" },
+    { label: "Cintos", value: "CINTO" },
+    { label: "Relógios", value: "RELOGIO" },
+    { label: "Óculos", value: "OCULOS" },
+    { label: "Outros", value: "OUTRO" },
+  ]
+const opcoesCategoria = [
+  { label: "Roupa", value: "ROUPA" },
+  { label: "Acessório", value: "ACESSORIO" },
+]
+
+
   useEffect(() => {
     if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
-
       try {
         api.get("/produtos").then(response => {
-          setProdutos(response.data)
+          response.data.map(product => {
+            product.categoria = opcoesCategoria.find(category => category.value === product.categoria).label
+            product.tipo = opcoesTipo.find(type => type.value === product.tipo).label
+          })
+
+          if(response.status !== 204) setProdutos(response.data)
           console.log(response.data)
         })
       } catch(e) {
@@ -81,7 +93,7 @@ export const Estoque = () => {
       
     }
   }, []);
-
+  
   useEffect(() => {
     setFiltredOptions(
       produtos.filter((product) => {
@@ -100,13 +112,13 @@ export const Estoque = () => {
 
         const matchesValor =
           selectedFilters.valor.length === 0 ||
-          (selectedFilters.valor.includes("ate_5_reais") &&
-            product.preco <= 5) ||
-          (selectedFilters.valor.includes("entre_6_e_20_reais") &&
+          (selectedFilters.valor.includes("ate_30_reais") &&
+            product.preco <= 30) ||
+          (selectedFilters.valor.includes("entre_6_e_50_reais") &&
             product.preco > 5 &&
-            product.preco <= 20) ||
-          (selectedFilters.valor.includes("mais_de_21_reais") &&
-            product.preco > 21);
+            product.preco <= 50) ||
+          (selectedFilters.valor.includes("mais_de_100_reais") &&
+            product.preco > 100);
 
         return (
           matchesSearchTerm &&
@@ -136,9 +148,18 @@ export const Estoque = () => {
     setSelectedFilters(newSelectedFilters);
   };
 
+  console.log(desfazer);
+  
+
   return (
-    <div className="w-full h-full flex">
-      <Navbar />
+    <div className="w-full h-full flex justify-center">
+      <div className="hidden md:flex">
+        <Navbar />
+      </div>
+
+      <div className="flex md:hidden">
+        <NavbarMobile />
+      </div>
       <div className={estoque["inventory-container"]}>
         <div className={estoque["header"]}>
           <h2>Controle de Estoque</h2>
@@ -153,7 +174,12 @@ export const Estoque = () => {
             setEditar({})
             setModalOpen(true)
           }}
+          desfazer={desfazer}
+          setDesfazer={setDesfazer}
         />
+
+        <div className="w-full overflow-x-scroll md:overflow-x-visible">
+
 
         <table className={estoque["inventory-table"]}>
           <Header setProdutos={setProdutos} />
@@ -172,10 +198,13 @@ export const Estoque = () => {
                 modalEditar={setModalOpen}
                 setProdutos={setProdutos}
                 produtos={produtos}
-              />
-            ))}
+                desfazer={desfazer}
+                setDesfazer={setDesfazer}
+                />
+              ))}
           </tbody>
         </table>
+              </div>
 
         {modalOpen && (
           <CadastroProdutoModal
@@ -186,7 +215,14 @@ export const Estoque = () => {
             onClose={() => setModalOpen(false)}
           />
         )}
+      <div className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
+            setEditar({})
+            setModalOpen(true)
+          }}>
+        <Plus size={16} />
+      </div>
       </div>
     </div>
+    
   );
 };

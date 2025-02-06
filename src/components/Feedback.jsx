@@ -2,7 +2,7 @@ import Aspas from '../assets/aspas.svg'
 
 export function Feedback({name, responsability, message}) {
   return (
-    <div className="bg-white rounded-3xl flex flex-col gap-16 py-16 px-14 w-[504px] h-[427px] drop-shadow-2xl">
+    <div data-aos="fade-up" className="bg-white rounded-3xl flex flex-col gap-16 py-16 px-14 w-[504px] h-[427px] drop-shadow-2xl">
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <span className="text-2xl font-bold">{name}</span>

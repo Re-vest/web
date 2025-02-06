@@ -5,7 +5,7 @@ import MakeAnimation from "react-select/animated";
 const makeAnimation = MakeAnimation();
 
 const Filter = ({ options, handleFilterChange }) => (
-  <div style={{ maxWidth: "570px", fontSize: "14px" }}>
+  <div style={{maxWidth: "570px", width:"100%", fontSize: "13px" }}>
     <Select
       options={options}
       onChange={(e) => handleFilterChange(e)}

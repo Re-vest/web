@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import modal from "../../styles/Modal.module.css";
 import api from '../../api'
 
-function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
+function Modal({ product, editar, modalEditar, setProdutos, produtos, desfazer, setDesfazer }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -19,6 +19,12 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
     setIsOpen(!isOpen);
   };
 
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ]
+
   const editarProduto = () => {
     if (!isOpen) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
@@ -27,14 +33,19 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos }) {
         left: buttonRect.right + window.scrollX - 170,
       });
     }
+    // product.status = opcoesStatus.find(status => status.value === product.status).label
     editar(product);
     modalEditar(true);
     setIsOpen(!isOpen);
   };
 
   async function deleteProduto() {
+    let desfazerAux = desfazer
+    desfazerAux.push(product)
+    setDesfazer(desfazerAux)
+
     try {
-      await api.delete(`/produtos/${product.id}`)
+      await api.delete(`/produtos/${product.id}?idUsuario=${sessionStorage.ID_USER}`)
 
       setProdutos(produtos.filter((pr) => pr.id !== product.id));
     } catch(e) {

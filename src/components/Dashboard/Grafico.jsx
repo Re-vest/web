@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import api from "../../api";
 
-export const Grafico = ({ semana }) => {
-  console.log(semana)
-  const [options] = useState({
+export const Grafico = ({ events, currentIndex }) => {
+  const [vendas, setVendas] = useState([])
+
+  const options = {
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -11,18 +13,41 @@ export const Grafico = ({ semana }) => {
       },
     },
     xaxis: {
-      categories: semana,
+      categories: vendas.map(venda => {return venda[0]}),
     },
-  });
+    colors: ['#0D35FE']
+  }
 
-  const [series] = useState([
+  const series = [
     {
       name: "series-1",
-      data: [25, 20, 15, 7, 7, 15, 20, 25],
+      data: vendas.map(venda => {return venda[1]})
     },
-  ]);
+  ]
 
-  return (
+  const getVendasPorEvento = async (id) => {
+    try {
+
+        const response = await api.get(`/produtos/vendidos-por-dia?eventoId=${id}`)
+
+        if(response.status !== 204) {
+          setVendas(response.data)
+          
+        }
+        else setVendas([[]])
+        
+
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  useEffect(() => {
+    if(events.length > 0) getVendasPorEvento(events[currentIndex].id)
+  }, [events, currentIndex])
+
+  return vendas.length > 0 && (
     <div className="app">
       <div className="row">
         <div className="mixed-chart">

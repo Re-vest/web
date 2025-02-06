@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from 'react';
 import dash from "../../styles/voluntarios.module.css";
 
@@ -19,56 +19,7 @@ export const Voluntarios = () => {
   const [editar, setEditar] = useState("");
   const [voluntarios, setVoluntarios] = useState([]);
 
-  const [atividades] = useState([
-    {
-      id: 1,
-      data: "2024-10-01",
-      nomeVoluntario: "Patrick de Lima Rodrigues",
-      acao: "Produto adicionado",
-    },
-    {
-      id: 2,
-      data: "2024-09-30",
-      nomeVoluntario: "Rafaela de Souza Scarabe",
-      acao: "Preço atualizado",
-    },
-    {
-      id: 3,
-      data: "2024-09-28",
-      nomeVoluntario: "Samuel de Oliveira Batista",
-      acao: "Produto removido",
-    },
-    {
-        id: 4,
-        data: "2024-09-25",
-        nomeVoluntario: "Gustavo de Oliveira Antunes",
-        acao: "Voluntário criado",
-      },
-      {
-        id: 5,
-        data: "2024-09-24",
-        nomeVoluntario: "Victor Hugo Carvalho Moreira",
-        acao: "Venda realizada",
-      },
-      {
-        id: 6,
-        data: "2024-09-22",
-        nomeVoluntario: "Vitor Santos Tigre",
-        acao: "Relatório exportado",
-      },
-      {
-        id: 7,
-        data: "2024-09-23",
-        nomeVoluntario: "Vitor Santos Tigre",
-        acao: "testando outros",
-      },
-      {
-        id: 8,
-        data: "2024-09-23",
-        nomeVoluntario: "Vitor Santos Tigre",
-        acao: "Relatório exportado",
-      },
-  ]);
+  const [atividades, setAtividade] = useState([]);
 
   const filtros = [
     // {
@@ -86,30 +37,7 @@ export const Voluntarios = () => {
         { label: "Voluntário", value: "VOLUNTARIO" }
       ]
     }
-  ];
-
-  // //MARK: CHECKBOX
-  // const selecionaVoluntario = (id) => {
-  //   setVoluntarios((preVoluntarios) =>
-  //     preVoluntarios.map((volunteer) =>
-  //       volunteer.id === id
-  //         ? { ...volunteer, selecionado: !volunteer.selecionado }
-  //         : volunteer
-  //     )
-  //   );
-  // };
-
-  // const selecionaTodos = (event) => {
-  //   const isChecked = event.target.checked;
-  //   setVoluntarios((preVoluntarios) =>
-  //     preVoluntarios.map((volunteer) => ({
-  //       ...volunteer,
-  //       selecionado: isChecked,
-  //     }))
-  //   );
-  // };
-
-  //MARK: FILTROS
+  ]
 
   const [termoPesquisa, setTermoPesquisa] = useState(""); // input - pesquisa
   const [filtredOptions, setFiltredOptions] = useState([]); // filtros 
@@ -133,10 +61,37 @@ export const Voluntarios = () => {
     }
   }
 
-  console.log(voluntarios)
+  const getHistorico = useCallback(async () => {
+    try {
+      const response = await api.get("/historico")
+      let histories = []
+      
+      if(response.status !== 204) {
+        histories = response.data
+
+        histories.map(async (history) => {
+          try {
+            const user = await api.get(`/usuarios/${history.idUsuario}`)
+            
+            history.nomeUsuario = user.data.nome
+          } catch (e) {
+            console.log(e);
+          }
+        })
+
+        setTimeout(() => {
+          setAtividade(histories)
+        }, 100)
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, [])
 
   useEffect(() => {
     getUsers()
+    getHistorico()
   }, [])
 
   // filtra

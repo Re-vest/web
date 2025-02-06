@@ -5,6 +5,8 @@ export default {
     extend: {
       backgroundImage: {
         home: "url('/src/assets/home.png')",
+        doacao: "url('/src/assets/doacoes.png')",
+        bazar: "url('/src/assets/bazar.png')"
       },
       fontFamily: {
         rhodium: "'Rhodium Libre', 'serif'",

@@ -7,10 +7,10 @@ export const RegistroVenda = ({ venda }) => {
     <>
       <tr>
         <td>{venda.id}</td>
-        <td>{venda.nome}</td>
-        <td>{venda.email}</td>
-        <td>{venda.quantidade}</td>
-        <td>R$ {venda.preco.toFixed(2)}</td>
+        <td>{venda.carrinho[0].nome}</td>
+        <td>{venda.usuario.email}</td>
+        <td>{venda.carrinho.length}</td>
+        <td>R$ {venda.valorTotal.toFixed(2)}</td>
       </tr>
     </>
   );

@@ -1,5 +1,4 @@
 .modal {
-  width: 900px;
   height: auto;
   background-color: #ffffff;
   padding: 32px;
@@ -100,9 +99,7 @@
 
 .form-group select,
 .form-group input {
-  width: calc(
-    100% - 210px
-  ); 
+  width: calc(100% - 210px);
   border-radius: 5px;
   padding: 5px;
   border: 1px solid #ccc;
@@ -161,4 +158,79 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+@media (min-width: 360px) {
+  .modal {
+    width: 310px;
+    height: auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: scroll;
+  }
+
+  .select-options {
+    display: flex;
+    width: 100%;
+    gap: 3px;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  
+  .select-tipo,
+  .select-categoria,
+  .select-status {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  .checkbox-options {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    gap: 6px;
+  }
+
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+
+  .form-group input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .image-preview {
+    display: flex;
+  }
+  
+}
+
+@media (min-width: 500px) {
+  .modal {
+    width: 450px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 680px;
+  }
+  .select-options {
+    gap: 5px;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .select-status {
+    width: 33%;
+  }
 }
