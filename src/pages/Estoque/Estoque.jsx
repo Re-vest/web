@@ -16,7 +16,7 @@ export const Estoque = () => {
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([]);
   const [desfazer, setDesfazer] = useState([]);
-  
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filtredOptions, setFiltredOptions] = useState([]);
@@ -67,14 +67,14 @@ export const Estoque = () => {
     { label: "Óculos", value: "OCULOS" },
     { label: "Outros", value: "OUTRO" },
   ]
-const opcoesCategoria = [
-  { label: "Roupa", value: "ROUPA" },
-  { label: "Acessório", value: "ACESSORIO" },
-]
-
+  const opcoesCategoria = [
+    { label: "Roupa", value: "ROUPA" },
+    { label: "Acessório", value: "ACESSORIO" },
+  ]
+  
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
       try {
@@ -84,16 +84,16 @@ const opcoesCategoria = [
             product.tipo = opcoesTipo.find(type => type.value === product.tipo).label
           })
 
-          if(response.status !== 204) setProdutos(response.data)
+          if (response.status !== 204) setProdutos(response.data)
           console.log(response.data)
         })
-      } catch(e) {
+      } catch (e) {
         console.log(e)
       }
-      
+
     }
   }, []);
-  
+
   useEffect(() => {
     setFiltredOptions(
       produtos.filter((product) => {
@@ -148,9 +148,6 @@ const opcoesCategoria = [
     setSelectedFilters(newSelectedFilters);
   };
 
-  console.log(desfazer);
-  
-
   return (
     <div className="w-full h-full flex justify-center">
       <div className="hidden md:flex">
@@ -181,30 +178,30 @@ const opcoesCategoria = [
         <div className="w-full overflow-x-scroll md:overflow-x-visible">
 
 
-        <table className={estoque["inventory-table"]}>
-          <Header setProdutos={setProdutos} />
-          <tbody>
-            {filtredOptions.map((product) => (
-              <LinhaProduto
-                product={product}
-                key={product.id}
-                id={product.id}
-                nome={product.nome}
-                descricao={product.descricao}
-                preco={product.preco}
-                categoria={product.categoria}
-                status={product.status}
-                editar={setEditar}
-                modalEditar={setModalOpen}
-                setProdutos={setProdutos}
-                produtos={produtos}
-                desfazer={desfazer}
-                setDesfazer={setDesfazer}
+          <table className={estoque["inventory-table"]}>
+            <Header setProdutos={setProdutos} />
+            <tbody>
+              {filtredOptions.map((product) => (
+                <LinhaProduto
+                  product={product}
+                  key={product.id}
+                  id={product.id}
+                  nome={product.nome}
+                  descricao={product.descricao}
+                  preco={product.preco}
+                  categoria={product.categoria}
+                  status={product.status}
+                  editar={setEditar}
+                  modalEditar={setModalOpen}
+                  setProdutos={setProdutos}
+                  produtos={produtos}
+                  desfazer={desfazer}
+                  setDesfazer={setDesfazer}
                 />
               ))}
-          </tbody>
-        </table>
-              </div>
+            </tbody>
+          </table>
+        </div>
 
         {modalOpen && (
           <CadastroProdutoModal
@@ -215,14 +212,14 @@ const opcoesCategoria = [
             onClose={() => setModalOpen(false)}
           />
         )}
-      <div className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
-            setEditar({})
-            setModalOpen(true)
-          }}>
-        <Plus size={16} />
-      </div>
+        <div className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
+          setEditar({})
+          setModalOpen(true)
+        }}>
+          <Plus size={16} />
+        </div>
       </div>
     </div>
-    
+
   );
 };

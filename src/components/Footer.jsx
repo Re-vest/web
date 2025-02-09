@@ -10,7 +10,8 @@ export function Footer() {
     <footer id='contato' className="h-[464px] bg-blue-950 flex flex-col items-center justify-between py-24 px-48 text-white">
       <div className='w-full flex justify-between'>
       <div className='flex gap-8 items-center'>
-        <img src={endereco} alt="asd" />
+      <img src={Email} alt="asd" />
+
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Endereço</span>
@@ -19,7 +20,7 @@ export function Footer() {
       </div>
 
       <div className='flex gap-8 items-center'>
-        <img src={Contato} alt="asd" />
+        <img src={endereco} alt="asd" />
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Contato</span>
@@ -28,7 +29,8 @@ export function Footer() {
       </div>
 
       <div className='flex gap-8 items-center'>
-        <img src={Email} alt="asd" />
+
+        <img src={Contato} alt="asd" />
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Email</span>

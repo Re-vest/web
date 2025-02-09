@@ -78,7 +78,7 @@ export function CalendarPage() {
         />
       )}
 
-      <div className="w-full flex justify-between pt-10 pl-10 ml-10">
+      <div className="w-full flex justify-between pt-10 pl-16 ml-10">
         <div className="w-60 flex flex-col gap-5 overflow-y-scroll"
         style={{
           scrollbarWidth: 'none',

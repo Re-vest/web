@@ -15,7 +15,7 @@ export const Grafico = ({ events, currentIndex }) => {
     xaxis: {
       categories: vendas.map(venda => {return venda[0]}),
     },
-    colors: ['#0D35FE']
+    colors: ['#0d35fe']
   }
 
   const series = [
@@ -47,21 +47,21 @@ export const Grafico = ({ events, currentIndex }) => {
     if(events.length > 0) getVendasPorEvento(events[currentIndex].id)
   }, [events, currentIndex])
 
-  return vendas.length > 0 && (
+  return vendas.length > 0 ? (
     <div className="app">
       <div className="row">
         <div className="mixed-chart">
           <Chart
             options={options}
             series={series}
-            type="bar"
+            type="line"
             width="100%"
             height="300px"
           />
         </div>
       </div>
     </div>
-  );
+  ) : <></>
 };
 
 
