@@ -80,7 +80,7 @@ export const Voluntarios = () => {
         })
 
         setTimeout(() => {
-          setAtividade(histories)
+          setAtividade(histories.reverse())
         }, 100)
 
       }
@@ -158,7 +158,7 @@ export const Voluntarios = () => {
     //pra reinderizar tudo na tela
     <div className="h-full w-full flex">
       <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} />
-      <div className="w-11/12 my-5 mx-auto font-sans flex flex-col gap-2.5">
+      <div className="w-11/12 my-5 mx-28 font-sans flex flex-col gap-2.5">
         <div className={dash["header"]}>
           <h2>Gerenciar Equipe</h2>
         </div>

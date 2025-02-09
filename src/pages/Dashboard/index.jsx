@@ -76,7 +76,7 @@ export function Dashboard() {
         })  
 
         setTimeout(() => {
-          setAtividade(histories)
+          setAtividade(histories.reverse())
         }, 100)
 
       }
@@ -167,6 +167,7 @@ export function Dashboard() {
     )
   }
 
+  console.log(events);
 
   return (
     <div>

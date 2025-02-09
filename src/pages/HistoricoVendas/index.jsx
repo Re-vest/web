@@ -54,13 +54,10 @@ export const HistoricoVendas = () => {
     venda.usuario.email.toLowerCase().includes(busca.toLowerCase())
 );
 
-  console.log(VendasFiltradas);
-  
-
   return (
     <div className="h-full w-full flex">
       <Navbar />
-      <div className="w-11/12 my-5 mx-20 font-sans flex flex-col gap-2.5">
+      <div className="w-11/12 my-5 mx-28 font-sans flex flex-col gap-2.5">
         <div className="header">
           <h2>Histórico de Vendas</h2>
         </div>
