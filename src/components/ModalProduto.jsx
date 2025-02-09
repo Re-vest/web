@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import modalProduto from "../styles/ModalProduto.module.css"
+import modalProduto from "../styles/ModalProduto.module.css";
 import PickList from "./picklist";
 import { Input } from "./Input";
 import { Button } from "./Button";
-import api from '../api'
-import FormData from 'form-data';
-
+import api from "../api";
+import FormData from "form-data";
 
 Modal.setAppElement("#root");
 
@@ -15,8 +14,8 @@ function formatPrice(value) {
   let newValue = value.replace(/\D/g, "");
 
   // Adiciona a vírgula para os centavos e ponto para milhares
-  newValue = new Intl.NumberFormat('pt-BR', {
-    style: 'decimal',
+  newValue = new Intl.NumberFormat("pt-BR", {
+    style: "decimal",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(parseFloat(newValue) / 100);
@@ -26,60 +25,70 @@ function formatPrice(value) {
 
 function parseFormattedPrice(value) {
   // Remove pontos de milhar e substitui a vírgula decimal por ponto
-  let parsedValue = value.replace(',', '.');
+  let parsedValue = value.replace(",", ".");
 
   // Converte para double (ou seja, número em ponto flutuante)
   return parseFloat(parsedValue).toFixed(2);
 }
 
+const CadastroProdutoModal = ({
+  isOpen,
+  onClose,
+  setProdutos,
+  editar,
+  produtos,
+}) => {
 
-const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }) => {
+  const opcoesStatus = [
+    { label: "Disponível", value: "DISPONIVEL" },
+    { label: "Oculto", value: "OCULTO" },
+    { label: "Vendido", value: "VENDIDO" },
+  ];
+
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao);
   const [tipo, setTipo] = useState(editar.tipo);
   const [categoria, setCategoria] = useState(editar.categoria);
-  const [status, setStatus] = useState(editar.status);
+  const [status, setStatus] = useState(editar.status ? opcoesStatus.find(status => status.value === editar.status).label : "");
   const [cor, setCor] = useState(editar.cor);
   const [tamanho, setTamanho] = useState(editar.tamanho);
   const [finalidade, setFinalidade] = useState(editar.finalidade);
-  const [images, setImages] = useState(editar.imagem ? editar.imagem.urlImagem : null);
-  const [condicaoProduto, setCondicaoProduto] = useState(editar.condicao ? editar.condicao : '');
-  const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : '0');
+  const [images, setImages] = useState(
+    editar.imagem ? editar.imagem.urlImagem : null
+  );
+  const [condicaoProduto, setCondicaoProduto] = useState(
+    editar.condicao ? editar.condicao : ""
+  );
+  const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : "0");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
   };
 
-
   const removeImage = () => {
-    setImages(null)
+    setImages(null);
   };
 
-    const opcoesTipo = [
-      { label: "Calçados", value: "CALCADO" },
-      { label: "Camisas", value: "CAMISETA" },
-      { label: "Calças", value: "CALCA" },
-      { label: "Blusas", value: "BLUSA" },
-      { label: "Vestidos", value: "VESTIDO" },
-      { label: "Shorts", value: "SHORTS" },
-      { label: "Bolsas", value: "BOLSA" },
-      { label: "Cintos", value: "CINTO" },
-      { label: "Relógios", value: "RELOGIO" },
-      { label: "Óculos", value: "OCULOS" },
-      { label: "Outros", value: "OUTRO" },
-    ]
+  const opcoesTipo = [
+    { label: "Calçados", value: "CALCADO" },
+    { label: "Camisas", value: "CAMISETA" },
+    { label: "Calças", value: "CALCA" },
+    { label: "Blusas", value: "BLUSA" },
+    { label: "Vestidos", value: "VESTIDO" },
+    { label: "Shorts", value: "SHORTS" },
+    { label: "Bolsas", value: "BOLSA" },
+    { label: "Cintos", value: "CINTO" },
+    { label: "Relógios", value: "RELOGIO" },
+    { label: "Óculos", value: "OCULOS" },
+    { label: "Outros", value: "OUTRO" },
+  ];
   const opcoesCategoria = [
     { label: "Roupa", value: "ROUPA" },
     { label: "Acessório", value: "ACESSORIO" },
-  ]
-  const opcoesStatus = [
-    { label: "Disponível", value: "DISPONIVEL" },
-    { label: "Oculto", value: "OCULTO" },
-    { label: "Vendido", value: "VENDIDO" },
-  ]
+  ];
   
+
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
 
@@ -88,14 +97,30 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setIsSubmitting(true);
 
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !condicaoProduto || !preco) {
+    if (
+      !nome ||
+      !descricao ||
+      !tipo ||
+      !categoria ||
+      !status ||
+      !cor ||
+      !tamanho ||
+      !condicaoProduto ||
+      !preco
+    ) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return; // Retorna imediatamente se os campos não estiverem preenchidos
     }
-    
-    var valorTipo = opcoesTipo.find((opcaoTipo) => opcaoTipo.label === tipo || opcaoTipo.value === tipo).value
-    var valorStatus = opcoesStatus.find((opcao) => opcao.label === status || opcao.value == status).value
-    var valorCategoria = opcoesCategoria.find((opcao) => opcao.label === categoria || opcao.value === categoria).value
+
+    var valorTipo = opcoesTipo.find(
+      (opcaoTipo) => opcaoTipo.label === tipo || opcaoTipo.value === tipo
+    ).value;
+    var valorStatus = opcoesStatus.find(
+      (opcao) => opcao.label === status || opcao.value == status
+    ).value;
+    var valorCategoria = opcoesCategoria.find(
+      (opcao) => opcao.label === categoria || opcao.value === categoria
+    ).value;
 
     console.log(`
       valorTipo: ${valorTipo}
@@ -114,37 +139,47 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         condicao: condicaoProduto,
         tipo: valorTipo,
         status: valorStatus,
-        tamanho
-      }
-      
+        tamanho,
+      };
+
+      console.log(newProduct);
+
       const formData = new FormData();
-      formData.append('produto', new Blob([JSON.stringify(newProduct)], {
-        type: 'application/json'
-      }));
-      formData.append('arquivo', images)
+      formData.append(
+        "produto",
+        new Blob([JSON.stringify(newProduct)], {
+          type: "application/json",
+        })
+      );
+      formData.append("arquivo", images);
 
       try {
-
         // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
-        const response = await api.post(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+        const response = await api.post(
+          `/produtos?idUsuario=${sessionStorage.ID_USER}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
+        );
 
-        response.data.map(product => {
-          product.categoria = opcoesCategoria.find(category => category.value === product.categoria).label
-          product.tipo = opcoesTipo.find(type => type.value === product.tipo).label
-        })
-
-        if(response.status === 201) setProdutos(prev => [...prev, response.data]);
+        if (response.status === 201) {
+          response.data.categoria = opcoesCategoria.find(
+            (category) => category.value === newProduct.categoria
+          ).label;
+          response.data.tipo = opcoesTipo.find(
+            (type) => type.value === newProduct.tipo
+          ).label;
+          setProdutos((prev) => [...prev, response.data]);
+        } 
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-
     } else {
       console.log(images);
-      
+
       const updateProduct = {
         nome,
         preco: parseFormattedPrice(preco),
@@ -158,39 +193,51 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       };
 
       try {
-        if(status === 'Vendido') {
+        if (status === "Vendido") {
           await api.post(`/vendas?idUsuario=${sessionStorage.ID_USER}`, {
             produtosId: [editar.id],
-            idVendedor: sessionStorage.ID_USER
-          })
+            idVendedor: sessionStorage.ID_USER,
+          });
         }
 
-        const formData = new FormData()
-        formData.append('produto', new Blob([JSON.stringify(updateProduct)], {
-          type: 'application/json'
-        }))
+        const formData = new FormData();
+        formData.append(
+          "produto",
+          new Blob([JSON.stringify(updateProduct)], {
+            type: "application/json",
+          })
+        );
         // formData.append('arquivo', images)
 
-        const response = await api.put(`/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+        const response = await api.put(
+          `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        })
-  
-        const productsUpdated = produtos.map(eventProps => {
+        );
+
+        const productsUpdated = produtos.map((eventProps) => {
           if (eventProps.id === response.data.id) {
-            response.data.tipo = opcoesTipo.find((opcao) => opcao.value === response.data.tipo).label
-            response.data.categoria = opcoesCategoria.find((opcao) => opcao.value === response.data.categoria).label
+            response.data.tipo = opcoesTipo.find(
+              (opcao) => opcao.value === response.data.tipo
+            ).label;
+            response.data.categoria = opcoesCategoria.find(
+              (opcao) => opcao.value === response.data.categoria
+            ).label;
+            response.data.status = opcoesStatus.find(
+              (opcao) => opcao.value === response.data.categoria
+            ).label;
             return response.data;
           } else return eventProps;
         });
-  
-        setProdutos(productsUpdated);
-      } catch(e) {
-        console.log(e);
-        
-      }
 
+        setProdutos(productsUpdated);
+      } catch (e) {
+        console.log(e);
+      }
     }
     setIsSubmitting(false);
     onClose(); // Fecha o modal após salvar
@@ -206,9 +253,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
     setPreco(formattedValue);
   };
 
-  const Image = () => {     
+  const Image = () => {
     return (
-
       <div className={modalProduto["image-container"]}>
         <img
           src={images}
@@ -219,15 +265,15 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
           X
         </button>
       </div>
-    )
-  }
+    );
+  };
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Cadastrar Produto"
       className={modalProduto["modal"]}
-      overlayClassName={modalProduto['modal-overlay']}
+      overlayClassName={modalProduto["modal-overlay"]}
       shouldCloseOnOverlayClick={false}
     >
       <div className="hidden md:flex">
@@ -244,24 +290,19 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
         </div>
         <div className={modalProduto["select-options"]}>
           <div className="w-full md:w-[66%] flex gap-1">
-
-          <div className={modalProduto["select-tipo"]}>
-            <label>Tipo:</label>
-            <PickList
-              options={opcoesTipo}
-              onChange={setTipo}
-              value={tipo}
-              />
-          </div>
-          <div className={modalProduto["select-categoria"]}>
-            <label>Categoria:</label>
-            <PickList
-              options={opcoesCategoria}
-              onChange={setCategoria}
-              value={categoria}
-              />
-          </div>
+            <div className={modalProduto["select-tipo"]}>
+              <label>Tipo:</label>
+              <PickList options={opcoesTipo} onChange={setTipo} value={tipo} />
             </div>
+            <div className={modalProduto["select-categoria"]}>
+              <label>Categoria:</label>
+              <PickList
+                options={opcoesCategoria}
+                onChange={setCategoria}
+                value={categoria}
+              />
+            </div>
+          </div>
           <div className={modalProduto["select-status"]}>
             <label>Status:</label>
             <PickList
@@ -322,21 +363,21 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
               required
             />
           </div>
-        <div className={modalProduto["form-group"]}>
-          <label>Anexar Imagem:</label>
-          <input
-            type="file"
-            onChange={handleImageUpload}
-          />
-        </div>
+          <div className={modalProduto["form-group"]}>
+            <label>Anexar Imagem:</label>
+            <input type="file" onChange={handleImageUpload} />
+          </div>
         </div>
         <div className={modalProduto["image-preview"]}>
-
           {images && <Image />}
-
         </div>
         <div className={modalProduto["form-actions"]}>
-          <Button text={"Cancelar"} onClick={onClose} secondary style={{ textAlign: "center" }} />
+          <Button
+            text={"Cancelar"}
+            onClick={onClose}
+            secondary
+            style={{ textAlign: "center" }}
+          />
           <Button text={"Salvar"} onClick={handleSubmit} />
         </div>
       </form>
