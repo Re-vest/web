@@ -45,6 +45,8 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   const [images, setImages] = useState(editar.imagem ? editar.imagem.urlImagem : null);
   const [condicaoProduto, setCondicaoProduto] = useState(editar.condicao ? editar.condicao : '');
   const [preco, setPreco] = useState(editar.preco ? String(editar.preco) : '0');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
@@ -80,6 +82,10 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
   
   async function handleSubmit(event) {
     event.preventDefault(); // Evitar o recarregamento da página
+
+    if (isSubmitting) return; // Impede múltiplos cliques
+
+    setIsSubmitting(true);
 
     // Verifica se todos os campos obrigatórios estão preenchidos
     if (!nome || !descricao || !tipo || !categoria || !status || !cor || !tamanho || !condicaoProduto || !preco) {
@@ -186,7 +192,7 @@ const CadastroProdutoModal = ({ isOpen, onClose, setProdutos, editar, produtos }
       }
 
     }
-
+    setIsSubmitting(false);
     onClose(); // Fecha o modal após salvar
   }
 
