@@ -2,7 +2,13 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
 import api from "../../api";
 
-function Modal({ volunteer, editar, modalEditar, setVoluntarios, voluntarios }) {
+function Modal({
+  volunteer,
+  editar,
+  modalEditar,
+  setVoluntarios,
+  voluntarios,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -32,9 +38,13 @@ function Modal({ volunteer, editar, modalEditar, setVoluntarios, voluntarios }) 
   };
 
   async function deletarVoluntario() {
-    await api.delete(`/usuarios/${volunteer.id}`)
-
-    setVoluntarios(voluntarios.filter((pr) => pr.id !== volunteer.id));
+    if (Number (sessionStorage.ID_USER) === volunteer.id) {
+      alert("Você não pode excluir seu próprio usuário");
+      return;
+    } else {
+      await api.delete(`/usuarios/${volunteer.id}`);
+      setVoluntarios(voluntarios.filter((pr) => pr.id !== volunteer.id));
+    }
     setIsOpen(false);
   }
 
@@ -53,19 +63,26 @@ function Modal({ volunteer, editar, modalEditar, setVoluntarios, voluntarios }) 
             left: `${modalPosition.left}px`,
           }}
         >
-          <button 
-          className="absolute top-2.5 right-2.5 bg-none border-none text-lg cursor-pointer" 
-          onClick={toggleModal}>
+          <button
+            className="absolute top-2.5 right-2.5 bg-none border-none text-lg cursor-pointer"
+            onClick={toggleModal}
+          >
             X
           </button>
           <ul className="list-none p-0 m-0">
-            <li onClick={editarVoluntario} className="flex items-center py-2 cursor-pointer">
+            <li
+              onClick={editarVoluntario}
+              className="flex items-center py-2 cursor-pointer"
+            >
               <span className="mr-2.5">
                 <Pencil size={18} />
               </span>{" "}
               Editar
             </li>
-            <li onClick={deletarVoluntario} className="flex items-center py-2 cursor-pointer">
+            <li
+              onClick={deletarVoluntario}
+              className="flex items-center py-2 cursor-pointer"
+            >
               <span className="mr-2.5">
                 <Trash2 size={18} />
               </span>
