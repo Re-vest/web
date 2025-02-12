@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Input } from "../Input";
-import { Plus, RotateCcw, Search } from "lucide-react";
+import { Plus, RotateCcw, Search, ShoppingCart } from "lucide-react";
 import { Button } from "../Button";
 import Filter from "./Filter";
 import estoque from "../../styles/estoque.module.css";
@@ -13,7 +13,8 @@ export const Acoes = ({
   onClick,
   desfazer,
   setDesfazer,
-  setProdutos
+  setProdutos,
+  setOpenCarrinho
 }) => {
   const opcoesTipo = [
     { label: "Calçados", value: "CALCADO" },
@@ -82,6 +83,8 @@ const opcoesCategoria = [
           icon={<Plus size={24} />}
           onClick={onClick}
         />
+
+        <Button icon={<ShoppingCart size={24} />} secondary onClick={() => setOpenCarrinho(prev => !prev)} />
 
         </div>
       </div>

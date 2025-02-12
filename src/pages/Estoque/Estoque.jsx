@@ -16,6 +16,7 @@ export const Estoque = () => {
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([]);
   const [desfazer, setDesfazer] = useState([]);
+  const [openCarrinho, setOpenCarrinho] = useState(false);
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -148,8 +149,11 @@ export const Estoque = () => {
     setSelectedFilters(newSelectedFilters);
   };
 
+  console.log(openCarrinho);
+  
+
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex overflow-hidden">
       <div className="hidden md:flex">
         <Navbar />
       </div>
@@ -173,6 +177,7 @@ export const Estoque = () => {
           }}
           desfazer={desfazer}
           setDesfazer={setDesfazer}
+          setOpenCarrinho={setOpenCarrinho}
         />
 
         <div className="w-full overflow-x-scroll md:overflow-x-visible">
@@ -219,6 +224,14 @@ export const Estoque = () => {
           <Plus size={16} />
         </div>
       </div>
+
+      {openCarrinho && (
+
+      <div className={estoque['carrinho']}>
+        asdasdasd
+      </div>
+      )}
+
     </div>
 
   );
