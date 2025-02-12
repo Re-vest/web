@@ -227,7 +227,10 @@ export const Estoque = () => {
 
       {openCarrinho && (
 
-      <div className={estoque['carrinho']}>
+      <div className={estoque['carrinho']} style={{
+        width: '35%',
+        backgroundColor: '#e4e4e4'
+      }}>
         asdasdasd
       </div>
       )}
