@@ -155,11 +155,11 @@
 }
 
 .carrinho {
+  width: 35%;
   display: flex;
   position: relative;
   animation: openCarrinho;
   animation-duration: 0.5s;
-  width: 35%;
   background-color: #e4e4e4;
   border-radius: 15px;
   margin: 25px;
@@ -175,6 +175,8 @@
 }
 
 .produtosCarrinho{
+  height: 100%;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -216,7 +218,7 @@
   .inventory-container {
     width: 85%;
   padding: 0;
-    margin: 20px 96px;
+    margin: 20px 0 0 96px;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
