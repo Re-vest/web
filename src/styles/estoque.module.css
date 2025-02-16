@@ -179,7 +179,6 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 5px;
   padding: 10px;
 }
