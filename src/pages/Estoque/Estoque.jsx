@@ -13,6 +13,7 @@ import { Button } from "../../components/Button";
 import { NavbarMobile } from "../../components/NavbarMobile";
 import { CardProduto } from "../../components/CardProduto";
 import Select from "react-select";
+import notFound from "../../assets/notFound.png";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -253,7 +254,7 @@ export const Estoque = () => {
             {produtosSelecionados.map((product) => (
               <CardProduto
                 key={product.id}
-                image={product.imagem.urlImagem}
+                image={product.imagem ? product.imagem.urlImagem : notFound}
                 nome={product.nome}
                 preco={product.preco.toFixed(2)}
               />

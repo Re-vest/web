@@ -41,8 +41,7 @@ const CadastroProdutoModal = ({
 
   const opcoesStatus = [
     { label: "Disponível", value: "DISPONIVEL" },
-    { label: "Oculto", value: "OCULTO" },
-    { label: "Vendido", value: "VENDIDO" },
+    { label: "Oculto", value: "OCULTO" }
   ];
 
   const [nome, setNome] = useState(editar.nome);
@@ -64,6 +63,7 @@ const CadastroProdutoModal = ({
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const removeImage = () => {
@@ -139,7 +139,7 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         tipo: valorTipo,
         status: valorStatus,
-        tamanho,
+        tamanho
       };
 
       console.log(newProduct);
@@ -192,14 +192,7 @@ const CadastroProdutoModal = ({
         categoria: valorCategoria,
       };
 
-      try {
-        if (status === "Vendido") {
-          await api.post(`/vendas?idUsuario=${sessionStorage.ID_USER}`, {
-            produtosId: [editar.id],
-            idVendedor: sessionStorage.ID_USER,
-          });
-        }
-
+      try{
         const formData = new FormData();
         formData.append(
           "produto",
@@ -207,7 +200,7 @@ const CadastroProdutoModal = ({
             type: "application/json",
           })
         );
-        // formData.append('arquivo', images)
+        formData.append('arquivo', images)
 
         const response = await api.put(
           `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
@@ -257,7 +250,7 @@ const CadastroProdutoModal = ({
     return (
       <div className={modalProduto["image-container"]}>
         <img
-          src={images}
+          src={images.size ? URL.createObjectURL(images) : images}
           alt={`Preview`}
           className={modalProduto["preview-img"]}
         />
