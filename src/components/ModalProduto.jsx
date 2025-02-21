@@ -212,21 +212,23 @@ const CadastroProdutoModal = ({
           }
         );
 
-        const productsUpdated = produtos.map((eventProps) => {
-          if (eventProps.id === response.data.id) {
-            response.data.tipo = opcoesTipo.find(
-              (opcao) => opcao.value === response.data.tipo
-            ).label;
-            response.data.categoria = opcoesCategoria.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            response.data.status = opcoesStatus.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            return response.data;
-          } else return eventProps;
-        });
-
+        setProdutos((prevProdutos) =>
+          prevProdutos.map((produto) =>
+            produto.id === response.data.id
+              ? {
+                  ...response.data,
+                  tipo: opcoesTipo.find((opcao) => opcao.value === response.data.tipo)
+                    ?.label,
+                  categoria: opcoesCategoria.find(
+                    (opcao) => opcao.value === response.data.categoria
+                  )?.label,
+                  status: opcoesStatus.find((opcao) => opcao.value === response.data.status)
+                    ?.value,
+                }
+              : produto
+          )
+        );  
+        
         setProdutos(productsUpdated);
       } catch (e) {
         console.log(e);
