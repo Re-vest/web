@@ -108,8 +108,8 @@ const CadastroProdutoModal = ({
       !condicaoProduto ||
       !preco
     ) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
-      return; // Retorna imediatamente se os campos não estiverem preenchidos
+      swal("Erro", "Preencha todos os campos obrigatórios", "error");
+      return;
     }
 
     var valorTipo = opcoesTipo.find(
@@ -141,6 +141,8 @@ const CadastroProdutoModal = ({
         status: valorStatus,
         tamanho
       };
+      swal("Sucesso", "Produto cadastrado com sucesso", "success");
+
 
       console.log(newProduct);
 
@@ -191,6 +193,8 @@ const CadastroProdutoModal = ({
         status: valorStatus,
         categoria: valorCategoria,
       };
+
+      swal("Sucesso", "Produto atualizado com sucesso", "success");
 
       try{
         const formData = new FormData();
