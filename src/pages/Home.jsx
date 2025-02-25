@@ -21,10 +21,15 @@ export function Home() {
           </p>
         </h1>
 
-        <span className="w-1/4 text-center text-lg z-30">
-          O Re-Vest é um projeto onde você pode pedir roupas doadas online. Ele
+        <span className="w-2/4 text-center text-lg z-30">
+          {/* O Re-Vest é um projeto onde você pode pedir roupas doadas online. Ele
           conecta quem precisa com quem quer ajudar, promovendo a reutilização
-          de roupas e oferecendo conforto a todos.
+          de roupas e oferecendo conforto a todos. */}
+
+          O Revest é um sistema de gestão feito especialmente para o projeto social que
+          é conduzido pelo Instituto Batista Betel, onde, através de vendas em um bazar,
+          é capaz de custear diversos serviços, como cursos e doação de cestas básicas
+          para a comunidade.
         </span>
         <div className="absolute w-full h-full bg-gradient-to-br from-black to-transparent z-20" />
       </div>
@@ -53,13 +58,12 @@ export function Home() {
         <div data-aos="fade-right" className="h-full w-1/2 bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] left-0 border-yellow-600 border-r-2 border-b-2 border-t-2 rounded-tr-full rounded-br-full"></div>
           <div className="w-1/2 flex flex-col gap-2">
-            <p className="">Bem vindo a nossa</p>
-            <h2 className="text-4xl font-bold">Rede de doações</h2>
+            <p className="">Bem vindo ao nosso</p>
+            <h2 className="text-4xl font-bold">Bazar Solidário</h2>
             <span>
-              No coração do Re-Vest, encontramos a verdadeira essência da
-              solidariedade e da comunidade. Cada doação é mais do que um
-              simples gesto; é uma expressão de compaixão e um passo em direção
-              a um mundo mais sustentável.{" "}
+            No coração do bazar, encontramos a verdadeira essência da solidariedade e da comunidade.  
+            Cada peça vendida ou doada não é apenas um item, mas uma nova oportunidade para quem precisa.  
+            Juntos, damos um novo propósito aos produtos e contribuímos para um mundo mais sustentável.{" "}
             </span>
           </div>
         </div>
@@ -82,8 +86,8 @@ export function Home() {
       </div>
 
       <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24 pb-52">
-        <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
-        <Feedback name="Alexandra" responsability="Responsável pelas doações" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
+        <Feedback name="Maria de Lurdes" responsability="Cliente do bazar" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
+        <Feedback name="Alexandra" responsability="Responsável pelo projeto" message="Fazer parte desse projeto é muito importante pra mim e ver a diferença que ele faz na vida de tanta gente faz tudo valer ainda mais a pena." />
       </div>
 
       <div className="flex justify-center -mt-[72px] z-30">

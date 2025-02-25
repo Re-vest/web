@@ -15,18 +15,18 @@ export function Footer() {
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Endereço</span>
-          <p className='text-lg'>Rua Haddock Lobo, 595 São Paulo - SP</p>
+          <p className='text-lg'>Avenida Souza Ramos, 513 - Guaianases, São Paulo, 08490490</p>
         </div>
       </div>
 
-      <div className='flex gap-8 items-center'>
+      {/* <div className='flex gap-8 items-center'>
         <img src={endereco} alt="asd" />
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Contato</span>
           <p className='text-lg'>(11) xxxxx-xxxx</p>
         </div>
-      </div>
+      </div> */}
 
       <div className='flex gap-8 items-center'>
 
@@ -34,9 +34,12 @@ export function Footer() {
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Email</span>
-          <p className='text-lg'>support@revest.com</p>
+          <p className='text-lg'>deaninialexandra@gmail.com</p>
         </div>
       </div>
+      
+
+
 
       </div>
 
