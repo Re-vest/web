@@ -41,12 +41,11 @@ const CadastroProdutoModal = ({
 
   const opcoesStatus = [
     { label: "Disponível", value: "DISPONIVEL" },
-    { label: "Oculto", value: "OCULTO" },
-    { label: "Vendido", value: "VENDIDO" },
+    { label: "Oculto", value: "OCULTO" }
   ];
 
   const [nome, setNome] = useState(editar.nome);
-  const [descricao, setDescricao] = useState(editar.descricao);
+  const [descricao, setDescricao] = useState(editar.descricao ? editar.descricao : "");
   const [tipo, setTipo] = useState(editar.tipo);
   const [categoria, setCategoria] = useState(editar.categoria);
   const [status, setStatus] = useState(editar.status ? opcoesStatus.find(status => status.value === editar.status).label : "");
@@ -64,6 +63,7 @@ const CadastroProdutoModal = ({
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const removeImage = () => {
@@ -99,7 +99,6 @@ const CadastroProdutoModal = ({
     // Verifica se todos os campos obrigatórios estão preenchidos
     if (
       !nome ||
-      !descricao ||
       !tipo ||
       !categoria ||
       !status ||
@@ -108,8 +107,8 @@ const CadastroProdutoModal = ({
       !condicaoProduto ||
       !preco
     ) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
-      return; // Retorna imediatamente se os campos não estiverem preenchidos
+      swal("Erro", "Preencha todos os campos obrigatórios", "error");
+      return;
     }
 
     var valorTipo = opcoesTipo.find(
@@ -139,8 +138,10 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         tipo: valorTipo,
         status: valorStatus,
-        tamanho,
+        tamanho
       };
+      swal("Sucesso", "Produto cadastrado com sucesso", "success");
+
 
       console.log(newProduct);
 
@@ -192,14 +193,9 @@ const CadastroProdutoModal = ({
         categoria: valorCategoria,
       };
 
-      try {
-        if (status === "Vendido") {
-          await api.post(`/vendas?idUsuario=${sessionStorage.ID_USER}`, {
-            produtosId: [editar.id],
-            idVendedor: sessionStorage.ID_USER,
-          });
-        }
+      swal("Sucesso", "Produto atualizado com sucesso", "success");
 
+      try{
         const formData = new FormData();
         formData.append(
           "produto",
@@ -207,7 +203,7 @@ const CadastroProdutoModal = ({
             type: "application/json",
           })
         );
-        // formData.append('arquivo', images)
+        formData.append('arquivo', images)
 
         const response = await api.put(
           `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
@@ -219,21 +215,23 @@ const CadastroProdutoModal = ({
           }
         );
 
-        const productsUpdated = produtos.map((eventProps) => {
-          if (eventProps.id === response.data.id) {
-            response.data.tipo = opcoesTipo.find(
-              (opcao) => opcao.value === response.data.tipo
-            ).label;
-            response.data.categoria = opcoesCategoria.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            response.data.status = opcoesStatus.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            return response.data;
-          } else return eventProps;
-        });
-
+        setProdutos((prevProdutos) =>
+          prevProdutos.map((produto) =>
+            produto.id === response.data.id
+              ? {
+                  ...response.data,
+                  tipo: opcoesTipo.find((opcao) => opcao.value === response.data.tipo)
+                    ?.label,
+                  categoria: opcoesCategoria.find(
+                    (opcao) => opcao.value === response.data.categoria
+                  )?.label,
+                  status: opcoesStatus.find((opcao) => opcao.value === response.data.status)
+                    ?.value,
+                }
+              : produto
+          )
+        );  
+        
         setProdutos(productsUpdated);
       } catch (e) {
         console.log(e);
@@ -257,7 +255,7 @@ const CadastroProdutoModal = ({
     return (
       <div className={modalProduto["image-container"]}>
         <img
-          src={images}
+          src={images.size ? URL.createObjectURL(images) : images}
           alt={`Preview`}
           className={modalProduto["preview-img"]}
         />

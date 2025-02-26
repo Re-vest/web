@@ -48,6 +48,7 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos, desfazer, 
       await api.delete(`/produtos/${product.id}?idUsuario=${sessionStorage.ID_USER}`)
 
       setProdutos(produtos.filter((pr) => pr.id !== product.id));
+      swal("Produto excluído com sucesso!", "", "success");
     } catch(e) {
       console.log(e);
     }
