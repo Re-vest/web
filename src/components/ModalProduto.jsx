@@ -45,7 +45,7 @@ const CadastroProdutoModal = ({
   ];
 
   const [nome, setNome] = useState(editar.nome);
-  const [descricao, setDescricao] = useState(editar.descricao);
+  const [descricao, setDescricao] = useState(editar.descricao ? editar.descricao : "");
   const [tipo, setTipo] = useState(editar.tipo);
   const [categoria, setCategoria] = useState(editar.categoria);
   const [status, setStatus] = useState(editar.status ? opcoesStatus.find(status => status.value === editar.status).label : "");
@@ -99,7 +99,6 @@ const CadastroProdutoModal = ({
     // Verifica se todos os campos obrigatórios estão preenchidos
     if (
       !nome ||
-      !descricao ||
       !tipo ||
       !categoria ||
       !status ||
