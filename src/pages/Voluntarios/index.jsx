@@ -214,8 +214,12 @@ export const Voluntarios = () => {
             editar={editar}
             isOpen={modalOpen}
             setVoluntarios={setVoluntarios}
-            onClose={() => setModalOpen(false)}
+            /*onClose={() => setModalOpen(false)}*/
+            onClose={() => {
+              setModalOpen(false);
+            }}                     
           />
+          
         )}
 
           <div className={dash["recentActivities"]}>

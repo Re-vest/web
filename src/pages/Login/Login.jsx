@@ -30,7 +30,7 @@ const Login = () => {
         email: data.email,
         senha: data.senha,
       });
-
+      
       console.log(response.data);
 
       sessionStorage.ID_USER = response.data.userId;
@@ -45,6 +45,12 @@ const Login = () => {
 
       navigate("/dashboard");
     } catch (e) {
+      swal("Erro", "Usuário ou senha inválidos", "error", {
+        timer: 1000,
+        button: {
+          visible: false,
+        },
+      });
       console.log(e);
     }
   }

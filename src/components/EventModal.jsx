@@ -54,6 +54,12 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         }
   
         setEvents(prev => [...prev, newEvents])
+        swal("Sucesso", "Evento criado com sucesso", "success", {
+          timer: 1000,
+          button: {
+            visible: false,
+          },
+        });
 
       } catch (e) {
         console.log(e);
@@ -97,7 +103,12 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
       })
 
       setEvents(eventsUpdated)
-    }
+      swal("Sucesso", "Evento atualizado com sucesso", "success", {
+        timer: 1000,
+        button: {
+          visible: false,
+        },
+    })}
 
     exit()
   }
@@ -112,6 +123,11 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
     setEvents(
       events.filter(ev => ev.id !== event.id)
     )
+    swal("Sucesso", "Evento excluído com sucesso", "success", {
+      timer: 1000,
+      button: {
+        visible: false,
+      }}) ,
     exit()
   }
 
