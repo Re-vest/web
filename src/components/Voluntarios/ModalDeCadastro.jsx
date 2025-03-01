@@ -48,7 +48,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
           perfil: permissao
         };
 
-        const response = await api.post("usuarios", addVoluntario)
+        const response = await api.post("/usuarios", addVoluntario)
 
         setVoluntarios(prev => [...prev, response.data]);
       } catch(e) {

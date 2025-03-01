@@ -116,8 +116,8 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   return (
-    <div className="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-[999]">
-      <div className="relative bg-white w-1/2 flex flex-col gap-8 py-8 px-8 items-center rounded-2xl">
+    <div className="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-[1000]">
+      <div className="relative bg-white w-11/12 md:w-1/2 flex flex-col gap-8 py-8 px-8 items-center rounded-2xl">
         <X className="absolute right-3 top-3" size={32} cursor={'pointer'} onClick={exit} />
         <p className="text-4xl">Criar evento</p>
         <div className="w-full flex flex-col gap-2">

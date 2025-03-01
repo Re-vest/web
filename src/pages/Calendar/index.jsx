@@ -4,6 +4,7 @@ import { EventModal } from "../../components/EventModal";
 import { useEffect, useState } from "react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import { NavbarMobile } from "../../components/NavbarMobile";
 
 export function CalendarPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,8 +66,14 @@ export function CalendarPage() {
   }
 
   return (
-    <div className="h-full w-full flex">
-      <Navbar />
+    <div className="h-full w-full flex flex-col lg:flex-row">
+      <div className="hidden md:flex">
+              <Navbar />
+            </div>
+      
+            <div className="flex md:hidden">
+              <NavbarMobile />
+            </div>
 
       {isModalOpen && (
         <EventModal
@@ -78,13 +85,13 @@ export function CalendarPage() {
         />
       )}
 
-      <div className="w-full flex justify-between pt-10 pl-16 ml-10">
-        <div className="w-60 flex flex-col gap-5 overflow-y-scroll"
+      <div className="w-full h-full flex flex-col lg:flex-row md:justify-between pt-10 pl-0 md:pl-16 md:ml-10 ">
+        <div className="w-full md:w-60 text-center flex flex-col gap-5 overflow-y-scroll"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}>
-          <h2 className="font-semibold text-2xl">Gerenciar Eventos</h2>
+          <h2 className="font-semibold text-2xl">Eventos</h2>
           {events.map((event, index) => {
             const date = `${String(event.dataInicio.getDate()).padStart(
               2,
