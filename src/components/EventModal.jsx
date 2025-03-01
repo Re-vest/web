@@ -46,6 +46,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         dataFim.setDate(dataFim.getDate() + 1)
   
         const newEvents = {
+          id: response.data.id,
           titulo: response.data.titulo,
           dataInicio: dataInicio,
           dataFim: dataFim,
