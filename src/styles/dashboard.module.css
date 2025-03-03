@@ -78,13 +78,15 @@
 
 .vendas {
   display: flex;
-  width: 100%;
-  height: 130px;
-  border-radius: 5px;
-  background-color: #d9d9d9;
+  width: 85%;
+  height: 150px;
+  border-radius: 10px;
+  background-color: white;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-left: 50px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .vendas h2, .categoria h2, .monitoramento h2 {
@@ -96,13 +98,15 @@
 .categoria{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 170px;
-  border-radius: 5px;
-  background-color: #d9d9d9;
+  width: 85%;
+  height: 150px;
+  border-radius: 10px;
+  background-color: white;
   align-items: center;
   text-align: center;
   justify-content: center;
+  margin-left: 50px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .monitoramento{
@@ -147,6 +151,11 @@
 
   .direito {
     width: 30%;
+  }
+
+  .card-informacoes{
+    display: flex;
+    gap: 25px;
   }
 
 }

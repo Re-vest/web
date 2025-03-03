@@ -1,162 +1,157 @@
 import { useEffect, useState, use, useCallback } from "react";
-import { CalendarDays, CloudSunRain, Sun } from "lucide-react";
+import { CalendarDays, CloudSunRain, Sun, User } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Grafico } from "../../components/Dashboard/Grafico";
 import { Atividade } from "../../components/Dashboard/Atividade";
 import dash from "../../styles/dashboard.module.css";
 import { useNavigate } from "react-router-dom";
-import api from '../../api'
+import api from "../../api";
 import { CarrouselEvents } from "../../components/Dashboard/CarrouselEvents";
 import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
 import { NavbarMobile } from "../../components/NavbarMobile";
+import { CardDash } from "../../components/Dashboard/CardDash";
+import { ShoppingBasket } from "lucide-react";
+import { CircleDollarSign } from "lucide-react";
+import { Shirt } from "lucide-react";
+import { Users } from "lucide-react";
+import { SunDim } from "lucide-react";
+import { Bell } from "lucide-react";
+import DashCategoria from "../../components/Dashboard/DashCategoria";
 
 export function Dashboard() {
-  const navigate = useNavigate()
-  const [climaPorDia, setClimaPorDia] = useState([])
-  const [events, setEvents] = useState([])
-  const [city, setCity] = useState('')
-  const [categoriaMaisVendida, setCategoriaMaisVendida] = useState()
-  const [semana, setSemana] = useState([])
-  const [totalVendido, setTotalVendido] = useState(0.0)
+  const navigate = useNavigate();
+  const [climaPorDia, setClimaPorDia] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [city, setCity] = useState("");
+  const [categoriaMaisVendida, setCategoriaMaisVendida] = useState();
+  const [semana, setSemana] = useState([]);
+  const [totalVendido, setTotalVendido] = useState(0.0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [atividades, setAtividade] = useState([]);
+  const [mostrarAtividades, setMostrarAtividades] = useState(false);
 
   // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
-
     try {
-      api.get("/api").then(response => {
-        response.data.results.forecast.splice(-2)
-        setClimaPorDia(response.data.results.forecast)
-        setCity(response.data.results.city)
-        response.data.results.forecast.map(clima => {
-          setSemana(prev => [...prev, clima.weekday])
-        })
-      })
+      api.get("/api").then((response) => {
+        response.data.results.forecast.splice(-2);
+        setClimaPorDia(response.data.results.forecast);
+        setCity(response.data.results.city);
+        response.data.results.forecast.map((clima) => {
+          setSemana((prev) => [...prev, clima.weekday]);
+        });
+      });
     } catch (e) {
       console.log(e);
-
     }
-  }, [])
-
+  }, []);
 
   const getCategoria = useCallback(async () => {
     try {
-      const response = await api.get('/produtos/tipo-mais-vendido')
-      if(response.status === 200) setCategoriaMaisVendida(Object.keys(response.data)[0])
-      
+      const response = await api.get("/produtos/tipo-mais-vendido");
+      if (response.status === 200)
+        setCategoriaMaisVendida(Object.keys(response.data)[0]);
     } catch (e) {
       console.log(e);
     }
-  }, [])
+  }, []);
 
   function formatStringToDate(string) {
-    let date = new Date(string)
-    date.setDate(date.getDate() + 1)
-    date.setHours(0)
-    return date
+    let date = new Date(string);
+    date.setDate(date.getDate() + 1);
+    date.setHours(0);
+    return date;
   }
 
   const getHistorico = useCallback(async () => {
     try {
-      const response = await api.get("/historico")
-      let histories = []
-      
-      if(response.status !== 204) {
-        histories = response.data
+      const response = await api.get("/historico");
+      let histories = [];
+
+      if (response.status !== 204) {
+        histories = response.data;
 
         histories.map(async (history) => {
           try {
-            const user = await api.get(`/usuarios/${history.idUsuario}`)
-            
-            history.nomeUsuario = user.data.nome
+            const user = await api.get(`/usuarios/${history.idUsuario}`);
+
+            history.nomeUsuario = user.data.nome;
           } catch (e) {
             console.log(e);
           }
-        })  
+        });
 
         setTimeout(() => {
-          setAtividade(histories.reverse())
-        }, 100)
-
+          setAtividade(histories.reverse());
+        }, 100);
       }
     } catch (e) {
       console.log(e);
     }
-  }, [])
+  }, []);
 
   const getVendas = useCallback(async () => {
-    
-    let valorTotal = 0
+    let valorTotal = 0;
     try {
-      const response = await api.get("/vendas")
+      const response = await api.get("/vendas");
 
-      
-      response.data.map(venda => {
-        valorTotal += venda.valorTotal
-      })
-
-    } catch(e) {
+      response.data.map((venda) => {
+        valorTotal += venda.valorTotal;
+      });
+    } catch (e) {
       console.log(e);
-      
     }
     setTimeout(() => {
-
-      setTotalVendido(valorTotal)
-    }, 100)
-  }, [])
+      setTotalVendido(valorTotal);
+    }, 100);
+  }, []);
 
   const getVendasPorEvento = useCallback(async (id) => {
-    
-    let valorTotal = 0
+    let valorTotal = 0;
     try {
-      const response = await api.get(`/produtos/vendidos-evento?eventoId=${id}`)
+      const response = await api.get(
+        `/produtos/vendidos-evento?eventoId=${id}`
+      );
 
-      if(response.data) setTotalVendido(response.data)
-      else setTotalVendido(0)
-
-    } catch(e) {
+      if (response.data) setTotalVendido(response.data);
+      else setTotalVendido(0);
+    } catch (e) {
       console.log(e);
-      
     }
-  }, [])
+  }, []);
 
   const getEvents = useCallback(async () => {
     try {
+      const response = await api.get("/eventos");
 
-      const response = await api.get("/eventos")
+      let events = response.data.map((event) => {
+        event.dataInicio = formatStringToDate(event.dataInicio);
+        event.dataFim = new formatStringToDate(event.dataFim);
+        return event;
+      });
 
-      let events = response.data.map(event => {
-        event.dataInicio = formatStringToDate(event.dataInicio)
-        event.dataFim = new formatStringToDate(event.dataFim)
-        return event
-      })
-
-      setEvents(events)
+      setEvents(events);
     } catch (e) {
       console.log(e);
-
     }
-
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (events.length > 0) getVendasPorEvento(events[currentIndex].id)
-  }, [events, currentIndex])
+    if (events.length > 0) getVendasPorEvento(events[currentIndex].id);
+  }, [events, currentIndex]);
 
   useEffect(() => {
     /*if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
-      navigate('/login')
-    }*/
+        navigate('/login')
+      }*/
 
-    getWeather()
-    getEvents()
-    getCategoria()
-    getHistorico()
-    
-  }, [])
+    getWeather();
+    getEvents();
+    getCategoria();
+    getHistorico();
+  }, []);
 
-  const urlSvg = 'https://assets.hgbrasil.com/weather/icons/conditions/'
+  const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
   const WeatherDay = ({ semana, condition, temp }) => {
     return (
       <div className="w-full border-l-2 border-[#DDD] px-3 flex flex-col gap-3 items-center">
@@ -164,8 +159,8 @@ export function Dashboard() {
         <img src={`${urlSvg}${condition}.svg`} alt="" />
         <p>{temp}º</p>
       </div>
-    )
-  }
+    );
+  };
 
   console.log(events);
 
@@ -178,86 +173,169 @@ export function Dashboard() {
       <div className="flex md:hidden">
         <NavbarMobile />
       </div>
-      <div className="flex flex-col gap-6">
-        <header className="gap-4 flex justify-between mx-[8%] font-bold text-2xl mt-12 flex-col-reverse sm:flex-row">
+
+      {mostrarAtividades && (
+        <div className="absolute right-[7.05vw] top-2 bg-[#D0E0E9] shadow-lg rounded-xl p-4 w-[45vh] max-h-[16vw] overflow-y-auto border border-gray-200">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-lg font-semibold">Movimentações recentes</h3>
+            <Bell
+              onClick={() => setMostrarAtividades(false)}
+              className="cursor-pointer"
+            />
+            <button
+              onClick={() => setMostrarAtividades(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <i className="fas fa-bell text-xl"></i> {/* Ícone de sino */}
+            </button>
+          </div>
+          {atividades.map((atividade) => (
+            <AtividadesRecentes key={atividade.id} atividade={atividade} />
+          ))}
+        </div>
+      )}
+      <div className="flex flex-col gap-2">
+        <header className="flex justify-between items-center mx-[8%] font-bold text-2xl mt-12">
           <h1 className="text-center sm:text-left">Dashboard</h1>
-          <h1 className="text-nowrap">Olá, {sessionStorage.NAME}</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-nowrap">Olá, {sessionStorage.NAME}</h1>
+            <Bell
+              size={30}
+              onClick={() => setMostrarAtividades(!mostrarAtividades)}
+              className="cursor-pointer"
+            />
+          </div>
         </header>
 
-      <div className={dash["container"]}>
-        <div className={dash["esquerdo"]}>
-          <CarrouselEvents events={events} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+        <div className={dash["container"]}>
+          <div className={dash["esquerdo"]}>
+            <CarrouselEvents
+              events={events}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+            />
+            <span>
+              Performance de <strong>Bazar - Instituto Betel</strong> Hoje
+            </span>
+            <div className={dash["card-informacoes"]}>
+              <CardDash
+                icon={<ShoppingBasket />}
+                title={"Total de Vendas"}
+                value={"R$ 36,00"}
+              />
+              <CardDash
+                icon={<CircleDollarSign />}
+                title={"Valor arrecadado"}
+                value={"R$ 578,00"}
+              />
+              <CardDash
+                icon={<Shirt />}
+                title={"Top 1 categoria"}
+                value={"Calça"}
+              />
+              <CardDash
+                icon={<Users />}
+                title={"Voluntários Ativos"}
+                value={"15"}
+              />
+              <CardDash icon={<SunDim />} title={"Api Clima"} value={"25° C"} />
+            </div>
             {events.length ? (
-          <div className={dash["grafico"]}>
-              <Grafico currentIndex={currentIndex} events={events} />
+              <div className={dash["grafico"]}>
+                <Grafico currentIndex={currentIndex} events={events} />
+              </div>
+            ) : (
+              <></>
+            )}
 
+            {/*<div className="flex flex-col items-center p-8 md:p-16 border-2 border-[#DDD]  rounded-lg">
+                <div className="w-full flex justify-between">
+                  <h2>
+                    {climaPorDia.length ? climaPorDia[0].weekday : "Carregando"}
+                  </h2>
+                  <p className="text-sm">{city}</p>
+                </div>
+
+                <div className="flex gap-4 items-center">
+                  <h2 className="text-3xl">
+                    {climaPorDia.length
+                      ? `${climaPorDia[0].max} º`
+                      : "carregando"}
+                  </h2>
+
+                  <img
+                    src={
+                      climaPorDia.length
+                        ? `${urlSvg}${climaPorDia[0].condition}.svg`
+                        : `${urlSvg}cloud.svg`
+                    }
+                    alt=""
+                  />
+                </div>
+
+                <div className="w-full flex flex-col gap-8">
+                  <p className="flex gap-4">
+                    <Sun size={24} /> Clima
+                  </p>
+                  <div className="w-full flex justify-between overflow-auto ">
+                    {climaPorDia.map((day, index) =>
+                      index !== 0 ? (
+                        <WeatherDay
+                          key={day.id}
+                          semana={day.weekday}
+                          condition={day.condition}
+                          temp={day.max}
+                        />
+                      ) : (
+                        <div></div>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>*/}
           </div>
-            ) : <></>}
-          <div className="flex flex-col items-center p-8 md:p-16 border-2 border-[#DDD]  rounded-lg">
-            <div className="w-full flex justify-between">
-              <h2>{climaPorDia.length ? climaPorDia[0].weekday : ('Carregando')}</h2>
-              <p className="text-sm">{city}</p>
-            </div>
+          <div className={dash["direito"]}>
+            <div className={dash["cards"]}>
+              <div className={dash["vendas"]}>
+                <p>Valor arrecadado no evento</p>
+                <h2>R$ {totalVendido.toFixed(2)}</h2>
+                {/* <p>1,7% a mais que na última edição</p> */}
+              </div>
 
-            <div className="flex gap-4 items-center">
-              <h2 className="text-3xl">
-                {climaPorDia.length ? `${climaPorDia[0].max} º` : 'carregando'}
-              </h2>
-
-              <img src={climaPorDia.length ? `${urlSvg}${climaPorDia[0].condition}.svg` : `${urlSvg}cloud.svg`} alt="" />
-            </div>
-
-            <div className="w-full flex flex-col gap-8">
-              <p className="flex gap-4"><Sun size={24} /> Clima</p>
-              <div className="w-full flex justify-between overflow-auto ">
-                {
-                  climaPorDia.map((day, index) =>
-                    index !== 0 ? (
-                      <WeatherDay key={day.id} semana={day.weekday} condition={day.condition} temp={day.max} />
-
-                    ) : <div></div>
-                  )}
+              <div className={dash["categoria"]}>
+                <p>
+                  Categoria de peça mais <br />
+                  vendida em relação ao clima
+                </p>
+                <h2>{categoriaMaisVendida}</h2>
+              </div>
+              {/* <div className={dash["monitoramento"]}>
+                <h2>
+                  Monitoramento <br />
+                  de equipe
+                </h2>
+                <p>Admins Ativos: 2</p>
+                <p>Voluntários Ativos: 7</p>
+                <p>Equipe total: 9 pessoas</p>
+              </div> */}
+              {/*<div className="flex flex-col max-h-96 overflow-y-auto">
+                  {atividades.map((atividade) => (
+                    <AtividadesRecentes
+                      key={atividade.id}
+                      atividade={atividade}
+                    />
+                  ))}
+                </div>*/}
+              <div className={dash["grafico-barra"]}>
+                <DashCategoria
+                  categories={events.map((event) => event.nome)} // Exemplo de categorias vindo dos eventos
+                  data={events.map((event) => event.totalVendido)} // Exemplo de dados vindo dos eventos
+                />
               </div>
             </div>
           </div>
-
-        </div>
-        <div className={dash["direito"]}>
-          <div className={dash["cards"]}>
-            <div className={dash["vendas"]}>
-              <p>Total de vendas</p>
-              <h2>R$ {totalVendido.toFixed(2)}</h2>
-              {/* <p>1,7% a mais que na última edição</p> */}
-            </div>
-
-            <div className={dash["categoria"]}>
-              <p>
-                Tipo de peça mais vendida
-              </p>
-              <h2>{categoriaMaisVendida}</h2>
-            </div>
-            {/* <div className={dash["monitoramento"]}>
-              <h2>
-                Monitoramento <br />
-                de equipe
-              </h2>
-              <p>Admins Ativos: 2</p>
-              <p>Voluntários Ativos: 7</p>
-              <p>Equipe total: 9 pessoas</p>
-            </div> */}
-              <div className="flex flex-col max-h-96 overflow-y-auto">
-            {atividades.map((atividade) => (
-
-                <AtividadesRecentes
-                  key={atividade.id}
-                  atividade={atividade} />
-                ))}
-                </div>
-          </div>
         </div>
       </div>
-      </div>
-
     </div>
   );
 }
