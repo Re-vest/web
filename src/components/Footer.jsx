@@ -39,9 +39,9 @@ export function Footer() {
           <div className='flex flex-col gap-2'>
             <span>Nos siga!</span>
             <div className='flex items-center gap-4'>
-            <img src={Whats} alt="" className='w-10 lg:w-20'/>
-            <img src={Facebook} alt="" className='w-10 lg:w-20'/>
-            <img src={Instagram} alt="" className='w-10 lg:w-20'/>
+            <img src={Whats} alt="" className='w-10 lg:w-[60px]'/>
+            <img src={Facebook} alt="" className='w-10 lg:w-[60px]'/>
+            <img src={Instagram} alt="" className='w-10 lg:w-[60px]'/>
 
           </div>
         </div>

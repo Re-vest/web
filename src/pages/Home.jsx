@@ -33,7 +33,7 @@ export function Home() {
       </div>
 
     {/* MARK: Cards LG [DESKTOP]*/}
-      <div className="lg:flex justify-center items-center mb-24 -mt-28 hidden ">
+      <div className="md:flex justify-center items-center mb-24 -mt-28 hidden ">
         <div data-aos="flip-left" className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -mr-16">
           <img src={data} alt="icone" className="w-9" />
           <span className="text-4xl text-blue-500">Contribua</span>
@@ -54,7 +54,7 @@ export function Home() {
       </div>
 
       {/* MARK: Cards SM [RESPONSIVO]*/}
-      <div className="flex justify-between items-center mb-15 -mt-28 ml-5 mr-5 flex-col sm:p-10 sm:gap-4 lg:hidden">
+      <div className="flex justify-between items-center mb-15 -mt-28 ml-5 mr-5 flex-col sm:p-10 sm:gap-4 md:hidden">
       <div 
         data-aos="flip-left" 
         className="w-70 h-40 flex flex-col text-center items-center p-5 shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-2 bg-white z-50 sm:w-3/4 sm:h-auto sm:mb-4">
@@ -112,9 +112,12 @@ export function Home() {
         </div>
       </div>
 
-      <div className="bg-[#F1FFFE] flex gap-5 justify-center items-center pt-24 pb-52">
-        <Feedback name="Maria de Lurdes" responsability="Cliente do bazar" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
+      <div className="bg-[#F1FFFE] flex gap-5 md:flex-row flex-col justify-center items-center lg:pt-24 pt-10 pb-52">
+
+        <Feedback name="Lurdes" responsability="Cliente do bazar" message="O Re-Vest mudou minha vida. Consegui roupas para meus filhos quando mais precisei. É um projeto que realmente faz a diferença." />
+
         <Feedback name="Alexandra" responsability="Responsável pelo projeto" message="Fazer parte desse projeto é muito importante pra mim e ver a diferença que ele faz na vida de tanta gente faz tudo valer ainda mais a pena." />
+
       </div>
 
       <div className="flex justify-center -mt-[72px] z-30">
