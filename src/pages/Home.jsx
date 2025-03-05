@@ -9,7 +9,6 @@ import { AtSign } from "lucide-react";
 export function Home() {
   return (
     <>
-    {/* MARK: Header */}
       <div className="h-[600px] sm:h-[700px] lg:h-[785px] flex items-center flex-col sm:gap-16 lg:gap-24 gap-10 bg-home bg-cover text-white relative z-10">
         <Header />
 
@@ -32,7 +31,7 @@ export function Home() {
         <div className="absolute w-full h-full bg-gradient-to-br from-black to-transparent z-20"/>
       </div>
 
-    {/* MARK: Cards LG [DESKTOP]*/}
+    {/*Cards [DESKTOP]*/}
       <div className="md:flex justify-center items-center mb-24 -mt-28 hidden ">
         <div data-aos="flip-left" className="w-96 h-56 flex flex-col text-center items-center justify-center shadow-2xl drop-shadow-2xl shadow-blue-500 rounded-3xl gap-3 bg-white z-50 -mr-16">
           <img src={data} alt="icone" className="w-9" />
@@ -53,7 +52,7 @@ export function Home() {
         </div>
       </div>
 
-      {/* MARK: Cards SM [RESPONSIVO]*/}
+      {/*Cards [RESPONSIVO]*/}
       <div className="flex justify-between items-center mb-15 -mt-28 ml-5 mr-5 flex-col sm:p-10 sm:gap-4 md:hidden">
       <div 
         data-aos="flip-left" 
@@ -81,7 +80,8 @@ export function Home() {
     </div>
 
 
-      <div className="h-[552px] bg-bazar bg-cover text-white" id="about">
+      {/*About [DESKTOP]*/}
+      <div className="h-[552px] bg-bazar bg-cover text-white hidden md:flex" id="about">
         <div data-aos="fade-right" className="h-full w-1/2 bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] left-0 border-yellow-600 border-r-2 border-b-2 border-t-2 rounded-tr-full rounded-br-full"></div>
           <div className="w-1/2 flex flex-col gap-2">
@@ -96,12 +96,46 @@ export function Home() {
         </div>
       </div>
 
-      <div className="h-[552px] bg-doacao bg-cover flex justify-end text-white">
+      {/*About [RESPONSIVO]*/}
+      <div className="h-[382px] bg-bazar text-white mt-10 md:hidden flex" id="about">
+        <div data-aos="fade-right" className="h-full md:w-1/2 w-full bg-blue-950 rounded-tr-full rounded-br-full flex flex-col items-center justify-center relative">
+        <div className="absolute h-[368px] w-[98%] left-0 border-yellow-600 border-r-2 border-b-2 border-t-2 rounded-tr-full rounded-br-full"></div>
+          <div className="w-3/4 flex flex-col gap-2 md:text-2xl text-sm">
+            <p className="">Bem vindo ao nosso</p>
+            <h2 className=" text-2xl font-bold">Bazar Solidário</h2>
+            <span className="md:text-2xl text-sm">
+            No coração do bazar, encontramos a verdadeira essência da solidariedade e da comunidade.  
+            Cada peça vendida ou doada não é apenas um item, mas uma nova oportunidade para quem precisa.  
+            Juntos, damos um novo propósito aos produtos e contribuímos para um mundo mais sustentável.{" "}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/*About 2 [Desktop] */}
+      <div className="h-[552px] bg-doacao bg-cover flex justify-end text-white hidden md:flex">
         <div data-aos="fade-left" className="h-full w-1/2 bg-blue-950 rounded-tl-full rounded-bl-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] right-0 border-yellow-600 border-l-2 border-b-2 border-t-2 rounded-tl-full rounded-bl-full"></div>
           <div className="w-1/2 flex flex-col gap-2 ">
             <h2 className="text-4xl font-bold">Transforme vidas</h2>
             <span>
+              Doar roupas é uma maneira poderosa de impactar positivamente a
+              vida das pessoas. Cada peça de roupa que você oferece pode trazer
+              conforto e dignidade a alguém que está passando por dificuldades.
+              Seu gesto generoso ajuda a construir comunidades mais solidárias e
+              a promover a igualdade.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/*About 2 [RESPONSIVO]*/}
+      <div className="h-[382px] bg-doacao text-white md:hidden flex">
+        <div data-aos="fade-left" className="h-full md:w-1/2 w-full bg-blue-950 rounded-tl-full rounded-bl-full flex flex-col items-center justify-center relative">
+        <div className="absolute h-[368px] w-[98%] right-0 border-yellow-600 border-l-2 border-b-2 border-t-2 rounded-tl-full rounded-bl-full"></div>
+          <div className="w-3/4 flex flex-col gap-2 md:text-2xl text-sm">
+            <h2 className=" text-2xl font-bold text-right">Transforme vidas</h2>
+            <span className="md:text-2xl text-sm text-right">
               Doar roupas é uma maneira poderosa de impactar positivamente a
               vida das pessoas. Cada peça de roupa que você oferece pode trazer
               conforto e dignidade a alguém que está passando por dificuldades.
