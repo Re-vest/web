@@ -20,7 +20,7 @@ export const LinhaProduto = ({
   return (
     <>
       <tr>
-        <td>{id}</td>
+        <td className="hidden">{id}</td>
         <td>{nome}</td>
         <td>{descricao}</td>
         <td>
