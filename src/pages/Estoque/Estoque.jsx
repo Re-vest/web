@@ -1,6 +1,6 @@
 // src/pages/Estoque.js
 import swal from 'sweetalert';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import estoque from "../../styles/estoque.module.css";
 import { Header } from "../../components/Estoque/Header";
 import { LinhaProduto } from "../../components/Estoque/LinhaProduto";
@@ -15,8 +15,11 @@ import { NavbarMobile } from "../../components/NavbarMobile";
 import { CardProduto } from "../../components/CardProduto";
 import Select from "react-select";
 import notFound from "../../assets/notFound.png";
+import { UserContext } from '../../Contexts/UserContext';
 
 export const Estoque = () => {
+  const { user } = useContext(UserContext)
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([]);
@@ -82,7 +85,7 @@ export const Estoque = () => {
   ];
 
   useEffect(() => {
-    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === "CLIENTE") {
+    if (!sessionStorage.TOKEN || user.perfil === "CLIENTE") {
       navigate("/login");
     } else {
       try {
@@ -185,11 +188,11 @@ export const Estoque = () => {
 
     try {
       const response = await api.post(
-        `/vendas?idUsuario=${sessionStorage.ID_USER}`,
+        `/vendas?idUsuario=${user.id}`,
         {
           produtosId: produtosSelecionados.map((produto) => produto.id),
           idEvento: eventoSelecionado.value,
-          idVendedor: sessionStorage.ID_USER,
+          idVendedor: user.id,
         }
       );
 

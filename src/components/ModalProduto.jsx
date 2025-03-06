@@ -157,7 +157,6 @@ const CadastroProdutoModal = ({
       formData.append("arquivo", images);
 
       try {
-        // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
         const response = await api.post(
           `/produtos?idUsuario=${user.id}`,
           formData,

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useEffect } from 'react';
 import dash from "../../styles/voluntarios.module.css";
 
@@ -13,8 +13,10 @@ import CadastroVoluntario from "../../components/Voluntarios/ModalDeCadastro";
 
 import ErrorBoundary from "../../components/ErrorBoundary" // pra depurar erro
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
 
 export const Voluntarios = () => {
+  const { user } = useContext(UserContext)
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [voluntarios, setVoluntarios] = useState([]);
@@ -97,7 +99,7 @@ export const Voluntarios = () => {
   // filtra
   useEffect(() => {
 
-    if(sessionStorage.PERFIL !== 'ADMINISTRADOR' || !sessionStorage.PERFIL) {
+    if(user.id !== 'ADMINISTRADOR' || !user.id) {
       navigate('/dashboard')
     }
 
