@@ -1,12 +1,17 @@
 import { AlignEndHorizontal, Calendar, CircleDollarSign, LogOut, Shirt, UsersRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
+import { useContext } from "react";
 
   export function Navbar() {
 
     const navigate = useNavigate()
+    const { user, setUser } = useContext(UserContext)
 
     function handleExit () {
       sessionStorage.clear()
+      localStorage.clear()
+      setUser({})
       navigate('/login')
     }
 
@@ -26,7 +31,7 @@ import { useNavigate } from "react-router-dom";
 
         </a>
 
-        {sessionStorage.PERFIL !== 'ADMINISTRADOR' ? (<></>) : (
+        {user.perfil !== 'ADMINISTRADOR' ? (<></>) : (
 
         <a href="equipe" className="w-full flex justify-center py-5 cursor-pointer hover:bg-[#ffc600] text-white hover:text-black">
           <UsersRound size={24} />

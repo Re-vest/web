@@ -1,10 +1,11 @@
 import { Navbar } from "../../components/Navbar";
 import { ContinuousCalendar } from "../../components/ContinuousCalendar";
 import { EventModal } from "../../components/EventModal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { NavbarMobile } from "../../components/NavbarMobile";
+import { UserContext } from "../../Contexts/UserContext";
 
 export function CalendarPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,9 +14,10 @@ export function CalendarPage() {
   const [events, setEvents] = useState([]);
 
   const navigate = useNavigate()
+  const { user } = useContext(UserContext)
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+    if(!sessionStorage.TOKEN || user.perfil === 'CLIENTE') {
       navigate('/login')
     } else {
       try {

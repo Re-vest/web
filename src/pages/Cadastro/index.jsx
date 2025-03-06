@@ -38,7 +38,6 @@ const Cadastro = () => {
       sessionStorage.PERFIL = response.data.perfilUsuario
       sessionStorage.NAME = response.data.nome
       alert("Cliente cadastrado com sucesso")
-      
 
       navigate('/login')
 

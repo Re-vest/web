@@ -1,6 +1,7 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import api from "../../api";
+import { UserContext } from '../../Contexts/UserContext'
 
 function Modal({
   volunteer,
@@ -12,6 +13,7 @@ function Modal({
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
+  const { user } = useContext(UserContext)
 
   const toggleModal = () => {
     if (!isOpen) {
@@ -38,7 +40,7 @@ function Modal({
   };
 
   async function deletarVoluntario() {
-    if (Number (sessionStorage.ID_USER) === volunteer.id) {
+    if (Number (user.id) === volunteer.id) {
       alert("Você não pode excluir seu próprio usuário");
       return;
     } else {

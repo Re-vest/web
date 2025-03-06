@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import modalProduto from "../styles/ModalProduto.module.css";
 import PickList from "./picklist";
@@ -6,6 +6,7 @@ import { Input } from "./Input";
 import { Button } from "./Button";
 import api from "../api";
 import FormData from "form-data";
+import { UserContext } from "../Contexts/UserContext";
 
 Modal.setAppElement("#root");
 
@@ -43,6 +44,8 @@ const CadastroProdutoModal = ({
     { label: "Disponível", value: "DISPONIVEL" },
     { label: "Oculto", value: "OCULTO" }
   ];
+
+  const { user, setUser } = useContext(UserContext)
 
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao ? editar.descricao : "");
@@ -142,7 +145,6 @@ const CadastroProdutoModal = ({
       };
       swal("Sucesso", "Produto cadastrado com sucesso", "success");
 
-
       console.log(newProduct);
 
       const formData = new FormData();
@@ -155,9 +157,8 @@ const CadastroProdutoModal = ({
       formData.append("arquivo", images);
 
       try {
-        // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
         const response = await api.post(
-          `/produtos?idUsuario=${sessionStorage.ID_USER}`,
+          `/produtos?idUsuario=${user.id}`,
           formData,
           {
             headers: {
@@ -206,7 +207,7 @@ const CadastroProdutoModal = ({
         formData.append('arquivo', images)
 
         const response = await api.put(
-          `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
+          `/produtos/${editar.id}?idUsuario=${user.id}`,
           formData,
           {
             headers: {
