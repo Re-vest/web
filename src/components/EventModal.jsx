@@ -1,10 +1,13 @@
 import { X } from "lucide-react";
 import { Input } from "./Input";
 import { Button } from "./Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from '../api'
+import { UserContext } from '../Contexts/UserContext'
 
 export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
+
+  const { user } = useContext(UserContext)
   function formatDateToString(date) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
   }
@@ -27,7 +30,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
     if (!event.id) {
 
       try {
-        const response = await api.post(`/eventos?idUsuario=${sessionStorage.ID_USER}`,
+        const response = await api.post(`/eventos?idUsuario=${user.id}`,
           {
             titulo,
             descricao,
@@ -65,7 +68,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
 
     } else {
 
-      const response = await api.put(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`, {
+      const response = await api.put(`/eventos/${event.id}?idUsuario=${user.id}`, {
         titulo,
         descricao,
         dataInicio: startEvent,
@@ -108,7 +111,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   async function deleteEvent() {
-    await api.delete(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`)
+    await api.delete(`/eventos/${event.id}?idUsuario=${user.id}`)
 
     setEvents(
       events.filter(ev => ev.id !== event.id)

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Input } from "../Input";
 import { Plus, RotateCcw, Search, ShoppingCart } from "lucide-react";
 import { Button } from "../Button";
 import Filter from "./Filter";
 import estoque from "../../styles/estoque.module.css";
 import api from "../../api";
+import { UserContext } from "../../Contexts/UserContext";
 
 export const Acoes = ({
   setSearchTerm,
@@ -16,6 +17,7 @@ export const Acoes = ({
   setProdutos,
   setOpenCarrinho
 }) => {
+  const { user } = useContext(UserContext)
   const opcoesTipo = [
     { label: "Calçados", value: "CALCADO" },
     { label: "Camisas", value: "CAMISETA" },
@@ -46,7 +48,7 @@ const opcoesCategoria = [
         type: 'application/json'
       }));
 
-      const response = await api.post(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData, {
+      const response = await api.post(`/produtos?idUsuario=${user.id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

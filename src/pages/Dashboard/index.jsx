@@ -1,4 +1,4 @@
-import { useEffect, useState, use, useCallback } from "react";
+import { useEffect, useState, use, useCallback, useContext } from "react";
 import { CalendarDays, CloudSunRain, Sun } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Grafico } from "../../components/Dashboard/Grafico";
@@ -9,9 +9,12 @@ import api from '../../api'
 import { CarrouselEvents } from "../../components/Dashboard/CarrouselEvents";
 import { AtividadesRecentes } from "../../components/Voluntarios/AtividadesRecentes";
 import { NavbarMobile } from "../../components/NavbarMobile";
+import { UserContext } from "../../Contexts/UserContext";
 
 export function Dashboard() {
   const navigate = useNavigate()
+  const {user, setUser} = useContext(UserContext)
+  
   const [climaPorDia, setClimaPorDia] = useState([])
   const [events, setEvents] = useState([])
   const [city, setCity] = useState('')
@@ -181,7 +184,7 @@ export function Dashboard() {
       <div className="flex flex-col gap-6">
         <header className="gap-4 flex justify-between mx-[8%] font-bold text-2xl mt-12 flex-col-reverse sm:flex-row">
           <h1 className="text-center sm:text-left">Dashboard</h1>
-          <h1 className="text-nowrap">Olá, {sessionStorage.NAME}</h1>
+          <h1 className="text-nowrap">Olá, {user.nome}</h1>
         </header>
 
       <div className={dash["container"]}>
