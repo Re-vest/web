@@ -99,7 +99,7 @@ export const Voluntarios = () => {
   // filtra
   useEffect(() => {
 
-    if(user.id !== 'ADMINISTRADOR' || !user.id) {
+    if(user.perfil !== 'ADMINISTRADOR' || !user.id) {
       navigate('/dashboard')
     }
 
