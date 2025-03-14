@@ -9,6 +9,7 @@ import { Dashboard } from "./pages/Dashboard"
 import Cadastro from './pages/Cadastro'
 import { UserContext } from "./Contexts/UserContext.jsx";
 import { useState } from "react";
+import 'rsuite/dist/rsuite.min.css';
 
 const getInitialValue = () => {
   const user = localStorage.getItem("user")
