@@ -167,7 +167,7 @@ export function Carrinho({
         <div className={estoque["eventoCarrinho"]}>
           <span>Data:</span>
           <DatePicker value={date} placeholder="Selecionar data" size='lg' onChange={(e) => {
-            setDate(e)
+            setDate(e ? e : new Date())
           }} />
         </div>
 
