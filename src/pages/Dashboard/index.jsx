@@ -25,17 +25,20 @@ export function Dashboard() {
   const [city, setCity] = useState("");
   const [categoriaMaisVendida, setCategoriaMaisVendida] = useState();
   const [semana, setSemana] = useState([]);
-  const [totalVendido, setTotalVendido] = useState(0.0);
+  const [totalArrecadado, setTotalArrecadado] = useState(0.0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [atividades, setAtividade] = useState([]);
   const [mostrarAtividades, setMostrarAtividades] = useState(false);
+  const [totalVendido, setTotalVendido] = useState(0);
 
   // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
     try {
       api.get("/api").then((response) => {
         response.data.results.forecast.splice(-2);
-        setClimaPorDia(response.data.results.forecast);
+        setTimeout(() => {
+          setClimaPorDia(response.data.results.forecast);
+        }, 300);
         setCity(response.data.results.city);
         response.data.results.forecast.map((clima) => {
           setSemana((prev) => [...prev, clima.weekday]);
@@ -45,6 +48,8 @@ export function Dashboard() {
       console.log(e);
     }
   }, []);
+
+  console.log(climaPorDia);
 
   const getCategoria = useCallback(async () => {
     try {
@@ -92,19 +97,35 @@ export function Dashboard() {
 
   const getVendas = useCallback(async () => {
     let valorTotal = 0;
+    let valorVendido = 0;
     try {
       const response = await api.get("/vendas");
+      const dataAtual = new Date();
 
       response.data.map((venda) => {
-        valorTotal += venda.valorTotal;
+        valorTotal +=
+          new Date(venda.dataVenda + "T00:00:00").toLocaleDateString(
+            "pt-BR"
+          ) === dataAtual.toLocaleDateString("pt-BR")
+            ? venda.valorTotal
+            : 0;
+        valorVendido +=
+          new Date(venda.dataVenda + "T00:00:00").toLocaleDateString(
+            "pt-BR"
+          ) === dataAtual.toLocaleDateString("pt-BR")
+            ? 1
+            : 0;
       });
     } catch (e) {
       console.log(e);
     }
     setTimeout(() => {
-      setTotalVendido(valorTotal);
+      setTotalArrecadado(valorTotal);
+      setTotalVendido(valorVendido);
     }, 100);
   }, []);
+
+  console.log(totalVendido);
 
   const getVendasPorEvento = useCallback(async (id) => {
     let valorTotal = 0;
@@ -113,8 +134,8 @@ export function Dashboard() {
         `/produtos/vendidos-evento?eventoId=${id}`
       );
 
-      if (response.data) setTotalVendido(response.data);
-      else setTotalVendido(0);
+      if (response.data) setTotalArrecadado(response.data);
+      else setTotalArrecadado(0);
     } catch (e) {
       console.log(e);
     }
@@ -145,6 +166,7 @@ export function Dashboard() {
         navigate('/login')
       }*/
 
+    getVendas();
     getWeather();
     getEvents();
     getCategoria();
@@ -221,24 +243,39 @@ export function Dashboard() {
               <CardDash
                 icon={<ShoppingBasket />}
                 title={"Total de Vendas"}
-                value={"R$ 36,00"}
+                value={totalVendido}
               />
               <CardDash
                 icon={<CircleDollarSign />}
                 title={"Valor arrecadado"}
-                value={"R$ 578,00"}
+                value={totalArrecadado.toFixed(2)}
               />
               <CardDash
                 icon={<Shirt />}
                 title={"Top 1 categoria"}
-                value={"Calça"}
+                value={categoriaMaisVendida}
               />
               <CardDash
                 icon={<Users />}
                 title={"Voluntários Ativos"}
                 value={"15"}
               />
-              <CardDash icon={<SunDim />} title={"Api Clima"} value={"25° C"} />
+              <CardDash
+                icon={
+                  <img
+                    src={
+                      climaPorDia.length
+                        ? `${urlSvg}${climaPorDia[0].condition}.svg`
+                        : `${urlSvg}cloud.svg`
+                    }
+                    alt=""
+                  />
+                }
+                title={"Api Clima"}
+                value={
+                  climaPorDia.length ? climaPorDia[0].max + "° C" : "Carregando"
+                }
+              />
             </div>
             {events.length ? (
               <div className={dash["grafico"]}>
@@ -298,7 +335,7 @@ export function Dashboard() {
             <div className={dash["cards"]}>
               <div className={dash["vendas"]}>
                 <p>Valor arrecadado no evento</p>
-                <h2>R$ {totalVendido.toFixed(2)}</h2>
+                <h2>R$ {totalArrecadado.toFixed(2)}</h2>
                 {/* <p>1,7% a mais que na última edição</p> */}
               </div>
 
