@@ -52,6 +52,8 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
 
         setVoluntarios(prev => [...prev, response.data]);
       } catch(e) {
+        swal("Erro ao cadastrar", e.response.data, "error");
+
         console.log(e);
         
       }
