@@ -155,7 +155,8 @@
 
   .card-informacoes{
     display: flex;
-    gap: 25px;
+    gap: 20px;
+    justify-content: space-between;
   }
 
 }

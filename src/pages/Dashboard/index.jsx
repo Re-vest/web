@@ -30,6 +30,7 @@ export function Dashboard() {
   const [atividades, setAtividade] = useState([]);
   const [mostrarAtividades, setMostrarAtividades] = useState(false);
   const [totalVendido, setTotalVendido] = useState(0);
+  const [valorTotalEvento, setValorTotalEvento] = useState(0.0);
 
   // const [semana, setTotal] = useState([])
   const getWeather = useCallback(async () => {
@@ -98,6 +99,7 @@ export function Dashboard() {
   const getVendas = useCallback(async () => {
     let valorTotal = 0;
     let valorVendido = 0;
+    let valorTotalEvento = 0;
     try {
       const response = await api.get("/vendas");
       const dataAtual = new Date();
@@ -256,11 +258,6 @@ export function Dashboard() {
                 value={categoriaMaisVendida}
               />
               <CardDash
-                icon={<Users />}
-                title={"Voluntários Ativos"}
-                value={"15"}
-              />
-              <CardDash
                 icon={
                   <img
                     src={
@@ -335,16 +332,15 @@ export function Dashboard() {
             <div className={dash["cards"]}>
               <div className={dash["vendas"]}>
                 <p>Valor arrecadado no evento</p>
-                <h2>R$ {totalArrecadado.toFixed(2)}</h2>
+                <h2>R$ {valorTotalEvento.toFixed(2)}</h2>
                 {/* <p>1,7% a mais que na última edição</p> */}
               </div>
 
               <div className={dash["categoria"]}>
-                <p>
-                  Categoria de peça mais <br />
-                  vendida em relação ao clima
+                <p>   
+                  Ticket Médio
                 </p>
-                <h2>{categoriaMaisVendida}</h2>
+                <h2>{"R$ "+ (totalArrecadado / totalVendido).toFixed(2)}</h2>
               </div>
               {/* <div className={dash["monitoramento"]}>
                 <h2>
