@@ -32,35 +32,70 @@ export function Dashboard() {
   const [totalVendido, setTotalVendido] = useState(0);
   const [valorTotalEvento, setValorTotalEvento] = useState(0.0);
 
-  // const [semana, setTotal] = useState([])
-  const getWeather = useCallback(async () => {
+  const getQuantidadeVendaDia = async () => {
+
+    const response = await api.get(`vendas/quantidade-vendas-dia?eventoId=${events[currentIndex].id}`)
+
+    if(response.status === 200) {
+      setTotalVendido(response.data)
+    } else {
+      setTotalVendido(0)
+    }
+
+
+  }
+
+  const getValorVendaDia = async () => {
+
+    const response = await api.get(`vendas/valor-vendas-dia?eventoId=${events[currentIndex].id}`)
+
+    if(response.status === 200) {
+      setTotalArrecadado(response.data)
+    } else {
+
+      setTotalArrecadado(0.0)
+    }
+  }
+
+  const getValorVendaNoEvento = async () => {
+
+    const response = await api.get(`vendas/valor-vendas-evento?eventoId=${events[currentIndex].id}`)
+
+    if(response.status === 200) {
+      setValorTotalEvento(response.data)
+    } else {
+
+      setValorTotalEvento(0.0)
+    }
+
+
+  }
+
+  const getWeather = async () => {
     try {
       api.get("/api").then((response) => {
         response.data.results.forecast.splice(-2);
         setTimeout(() => {
           setClimaPorDia(response.data.results.forecast);
         }, 300);
-        setCity(response.data.results.city);
-        response.data.results.forecast.map((clima) => {
-          setSemana((prev) => [...prev, clima.weekday]);
-        });
+        // setCity(response.data.results.city);
+        // response.data.results.forecast.map((clima) => {
+        //   setSemana((prev) => [...prev, clima.weekday]);
+        // });
       });
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }
 
-  console.log(climaPorDia);
-
-  const getCategoria = useCallback(async () => {
+  const getCategoria = async () => {
     try {
       const response = await api.get("/produtos/tipo-mais-vendido");
-      if (response.status === 200)
-        setCategoriaMaisVendida(Object.keys(response.data)[0]);
+      if (response.status === 200) setCategoriaMaisVendida(Object.keys(response.data)[0]);
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }
 
   function formatStringToDate(string) {
     let date = new Date(string);
@@ -69,7 +104,7 @@ export function Dashboard() {
     return date;
   }
 
-  const getHistorico = useCallback(async () => {
+  const getHistorico = async () => {
     try {
       const response = await api.get("/historico");
       let histories = [];
@@ -94,56 +129,10 @@ export function Dashboard() {
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }
 
-  const getVendas = useCallback(async () => {
-    let valorTotal = 0;
-    let valorVendido = 0;
-    let valorTotalEvento = 0;
-    try {
-      const response = await api.get("/vendas");
-      const dataAtual = new Date();
 
-      response.data.map((venda) => {
-        valorTotal +=
-          new Date(venda.dataVenda + "T00:00:00").toLocaleDateString(
-            "pt-BR"
-          ) === dataAtual.toLocaleDateString("pt-BR")
-            ? venda.valorTotal
-            : 0;
-        valorVendido +=
-          new Date(venda.dataVenda + "T00:00:00").toLocaleDateString(
-            "pt-BR"
-          ) === dataAtual.toLocaleDateString("pt-BR")
-            ? 1
-            : 0;
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    setTimeout(() => {
-      setTotalArrecadado(valorTotal);
-      setTotalVendido(valorVendido);
-    }, 100);
-  }, []);
-
-  console.log(totalVendido);
-
-  const getVendasPorEvento = useCallback(async (id) => {
-    let valorTotal = 0;
-    try {
-      const response = await api.get(
-        `/produtos/vendidos-evento?eventoId=${id}`
-      );
-
-      if (response.data) setTotalArrecadado(response.data);
-      else setTotalArrecadado(0);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  const getEvents = useCallback(async () => {
+  const getEvents = async () => {
     try {
       const response = await api.get("/eventos");
 
@@ -157,23 +146,28 @@ export function Dashboard() {
     } catch (e) {
       console.log(e);
     }
-  }, []);
-
-  useEffect(() => {
-    if (events.length > 0) getVendasPorEvento(events[currentIndex].id);
-  }, [events, currentIndex]);
+  }
 
   useEffect(() => {
     /*if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
         navigate('/login')
       }*/
 
-    getVendas();
     getWeather();
     getEvents();
     getCategoria();
     getHistorico();
   }, []);
+
+  useEffect(() => {
+
+    if (events.length > 0) {
+      getQuantidadeVendaDia()
+      getValorVendaDia()
+      getValorVendaNoEvento()
+    }
+
+  }, [currentIndex]);
 
   const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
   const WeatherDay = ({ semana, condition, temp }) => {
@@ -186,7 +180,7 @@ export function Dashboard() {
     );
   };
 
-  console.log(events);
+  let ticketMedio = isNaN(totalArrecadado / totalVendido) ? (0).toFixed(2) : (totalArrecadado / totalVendido).toFixed(2)
 
   return (
     <div>
@@ -281,52 +275,6 @@ export function Dashboard() {
             ) : (
               <></>
             )}
-
-            {/*<div className="flex flex-col items-center p-8 md:p-16 border-2 border-[#DDD]  rounded-lg">
-                <div className="w-full flex justify-between">
-                  <h2>
-                    {climaPorDia.length ? climaPorDia[0].weekday : "Carregando"}
-                  </h2>
-                  <p className="text-sm">{city}</p>
-                </div>
-
-                <div className="flex gap-4 items-center">
-                  <h2 className="text-3xl">
-                    {climaPorDia.length
-                      ? `${climaPorDia[0].max} º`
-                      : "carregando"}
-                  </h2>
-
-                  <img
-                    src={
-                      climaPorDia.length
-                        ? `${urlSvg}${climaPorDia[0].condition}.svg`
-                        : `${urlSvg}cloud.svg`
-                    }
-                    alt=""
-                  />
-                </div>
-
-                <div className="w-full flex flex-col gap-8">
-                  <p className="flex gap-4">
-                    <Sun size={24} /> Clima
-                  </p>
-                  <div className="w-full flex justify-between overflow-auto ">
-                    {climaPorDia.map((day, index) =>
-                      index !== 0 ? (
-                        <WeatherDay
-                          key={day.id}
-                          semana={day.weekday}
-                          condition={day.condition}
-                          temp={day.max}
-                        />
-                      ) : (
-                        <div></div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>*/}
           </div>
           <div className={dash["direito"]}>
             <div className={dash["cards"]}>
@@ -340,30 +288,18 @@ export function Dashboard() {
                 <p>   
                   Ticket Médio
                 </p>
-                <h2>{"R$ "+ (totalArrecadado / totalVendido).toFixed(2)}</h2>
+                <h2>R$  {ticketMedio}</h2>
               </div>
-              {/* <div className={dash["monitoramento"]}>
-                <h2>
-                  Monitoramento <br />
-                  de equipe
-                </h2>
-                <p>Admins Ativos: 2</p>
-                <p>Voluntários Ativos: 7</p>
-                <p>Equipe total: 9 pessoas</p>
-              </div> */}
-              {/*<div className="flex flex-col max-h-96 overflow-y-auto">
-                  {atividades.map((atividade) => (
-                    <AtividadesRecentes
-                      key={atividade.id}
-                      atividade={atividade}
-                    />
-                  ))}
-                </div>*/}
               <div className={dash["grafico-barra"]}>
-                <DashCategoria
-                  categories={events.map((event) => event.nome)} // Exemplo de categorias vindo dos eventos
-                  data={events.map((event) => event.totalVendido)} // Exemplo de dados vindo dos eventos
-                />
+                {
+                  events.length > 0 && (
+
+                    <DashCategoria
+                      events={events}
+                      currentIndex={currentIndex}
+                    />
+                  )
+                }
               </div>
             </div>
           </div>

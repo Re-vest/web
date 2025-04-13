@@ -31,8 +31,6 @@ const Login = () => {
         senha: data.senha,
       });
 
-      console.log(response.data);
-
       sessionStorage.ID_USER = response.data.userId;
       sessionStorage.TOKEN = response.data.token;
       sessionStorage.PERFIL = response.data.perfilUsuario;

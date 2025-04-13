@@ -107,7 +107,6 @@ export const Estoque = () => {
             setEventos(opcoesCarrinhos);
             setEventoSelecionado(opcoesCarrinhos[0]);
           }
-          //console.log(eventos);
         });
       } catch (e) {
         console.log(e);

@@ -18,7 +18,6 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
   const [telefone, setTelefone] = useState(editar.telefone);
   const [status, setStatus] = useState(editar.status);
   const [permissao, setPermissao] = useState(editar.perfil);
-  console.log(editar)
   
 
   const [mensagemErro, setMensagemErro] = useState("");

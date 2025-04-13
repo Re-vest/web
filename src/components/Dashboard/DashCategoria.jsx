@@ -1,21 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import api from "../../api";
 
-const DashCategoria = () => {
-  const [chartData, setChartData] = useState({ categories: [], data: [] });
+const DashCategoria = ({
+  events = [],
+  currentIndex = 0
+}) => {
 
-  // Dados ajustados
-  const exampleCategories = ["Camisas", "Calça", "Blusas", "Shorts", "Calçados"];
-  const exampleData = [20, 18, 18, 15, 11];
+  const [chartData, setChartData] = useState({ categories: [], data: [] }); 
+
+  const getRankingTipo = async () => {
+
+    const response = await api.get(`vendas/categorias-mais-vendidas?eventoId=${events[currentIndex].id}`)
+
+    if(response.status === 200) {
+      let categories = []
+      let data = []
+  
+      response.data.map(tipo => {
+        categories.push(tipo.categoria)
+        data.push(tipo.quantidade)
+      })
+  
+      setChartData({
+        categories,
+        data: data
+      })
+
+    } else {
+      setChartData({ categories: [], data: [] })
+    }
+
+  }
 
   useEffect(() => {
-    setTimeout(() => {
-      setChartData({
-        categories: exampleCategories,
-        data: exampleData,
-      });
-    }, 1000);
-  }, []);
+    getRankingTipo()
+  }, [events, currentIndex])
+  
 
   const options = {
     chart: {
@@ -25,9 +46,9 @@ const DashCategoria = () => {
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: "20%", // Ajuste fino da altura das barras
+        barHeight: "10px", // Ajuste fino da altura das barras
         dataLabels: {
-          position: "right", // Posiciona os valores ao final da barra
+          position: "top", // Posiciona os valores ao final da barra
         },
       },
     },
@@ -76,7 +97,7 @@ const DashCategoria = () => {
       {chartData.categories.length > 0 ? (
         <Chart options={options} series={series} type="bar" height={250} />
       ) : (
-        <p>Carregando dados...</p>
+        <p>Nenhum produto vendido</p>
       )}
     </div>
   );
