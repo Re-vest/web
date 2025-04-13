@@ -66,7 +66,6 @@ const CadastroProdutoModal = ({
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
-    console.log(event.target.files[0]);
   };
 
   const removeImage = () => {
@@ -124,12 +123,6 @@ const CadastroProdutoModal = ({
       (opcao) => opcao.label === categoria || opcao.value === categoria
     ).value;
 
-    console.log(`
-      valorTipo: ${valorTipo}
-      valorStatus: ${valorStatus}
-      valorCategoria: ${valorCategoria}
-    `);
-
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
@@ -144,9 +137,7 @@ const CadastroProdutoModal = ({
         tamanho
       };
       swal("Sucesso", "Produto cadastrado com sucesso", "success");
-
-      console.log(newProduct);
-
+      
       const formData = new FormData();
       formData.append(
         "produto",
@@ -180,7 +171,6 @@ const CadastroProdutoModal = ({
         console.log(e);
       }
     } else {
-      console.log(images);
 
       const updateProduct = {
         nome,

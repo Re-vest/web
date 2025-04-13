@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MoveLeft } from "lucide-react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "../../Contexts/UserContext";
 
 const schema = z.object({
   email: z.string().email("Email inválido"),
@@ -16,7 +14,6 @@ const schema = z.object({
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext)
 
   const {
     register,
@@ -34,18 +31,12 @@ const Login = () => {
         senha: data.senha,
       });
 
+      sessionStorage.ID_USER = response.data.userId;
       sessionStorage.TOKEN = response.data.token;
+      sessionStorage.PERFIL = response.data.perfilUsuario;
+      sessionStorage.NAME = response.data.nome;
 
-      const newUser = {
-        id: response.data.userId,
-        nome: response.data.nome,
-        perfil: response.data.perfilUsuario
-      }
-      
-      setUser(newUser)
-      localStorage.setItem('user', JSON.stringify(newUser))
-
-      if (user.perfil === "CLIENTE") {
+      if (sessionStorage.PERFIL === "CLIENTE") {
         alert("Usuário não possui privilégios suficientes");
         return;
       }

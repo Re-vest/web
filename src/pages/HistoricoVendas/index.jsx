@@ -31,8 +31,6 @@ export const HistoricoVendas = () => {
     try {
       const response = await api.get("/vendas")
 
-      console.log(response.data);
-
       if (response.status !== 204) setVendas(response.data)
 
     } catch (e) {
