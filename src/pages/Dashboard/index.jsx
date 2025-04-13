@@ -1,8 +1,6 @@
-import { useEffect, useState, use, useCallback } from "react";
-import { CalendarDays, CloudSunRain, Sun, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import { Grafico } from "../../components/Dashboard/Grafico";
-import { Atividade } from "../../components/Dashboard/Atividade";
 import dash from "../../styles/dashboard.module.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
@@ -13,8 +11,6 @@ import { CardDash } from "../../components/Dashboard/CardDash";
 import { ShoppingBasket } from "lucide-react";
 import { CircleDollarSign } from "lucide-react";
 import { Shirt } from "lucide-react";
-import { Users } from "lucide-react";
-import { SunDim } from "lucide-react";
 import { Bell } from "lucide-react";
 import DashCategoria from "../../components/Dashboard/DashCategoria";
 

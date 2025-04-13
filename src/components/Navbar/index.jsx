@@ -31,7 +31,7 @@ import { useContext } from "react";
 
         </a>
 
-        {user.perfil !== 'ADMINISTRADOR' ? (<></>) : (
+        {sessionStorage.PERFIL !== 'ADMINISTRADOR' ? (<></>) : (
 
         <a href="equipe" className="w-full flex justify-center py-5 cursor-pointer hover:bg-[#ffc600] text-white hover:text-black">
           <UsersRound size={24} />
