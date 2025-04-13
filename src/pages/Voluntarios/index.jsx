@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useEffect } from 'react';
 import dash from "../../styles/voluntarios.module.css";
 
@@ -13,8 +13,12 @@ import CadastroVoluntario from "../../components/Voluntarios/ModalDeCadastro";
 
 import ErrorBoundary from "../../components/ErrorBoundary" // pra depurar erro
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
+import { NavbarMobile } from "../../components/NavbarMobile";
+import { Plus } from "lucide-react";
 
 export const Voluntarios = () => {
+  const { user } = useContext(UserContext)
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [voluntarios, setVoluntarios] = useState([]);
@@ -97,7 +101,7 @@ export const Voluntarios = () => {
   // filtra
   useEffect(() => {
 
-    if(sessionStorage.PERFIL !== 'ADMINISTRADOR' || !sessionStorage.PERFIL) {
+    if(user.perfil !== 'ADMINISTRADOR' || !user.id) {
       navigate('/dashboard')
     }
 
@@ -157,8 +161,14 @@ export const Voluntarios = () => {
   return (
     //pra reinderizar tudo na tela
     <div className="h-full w-full flex">
-      <Navbar style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }} />
-      <div className="w-11/12 my-5 mx-28 font-sans flex flex-col gap-2.5">
+      <div className="hidden md:flex">
+              <Navbar />
+            </div>
+      
+            <div className="flex md:hidden">
+              <NavbarMobile />
+            </div>
+      <div className="w-11/12 my-5 mx-auto md:mx-28 font-sans flex flex-col gap-2.5">
         <div className={dash["header"]}>
           <h2>Gerenciar Equipe</h2>
         </div>
@@ -174,18 +184,20 @@ export const Voluntarios = () => {
           />
     </ErrorBoundary>
 
-        <div className={dash["container_tudo"]}>
+        <div className='w-full flex justify-between gap-5'>
 
-          {/* <table className="h-600 overflow-y-auto w-[68%] border-collapse"> */}
-          <table className={dash["volunteer-list"]}>
-          {/* <table className="volunteer-list"> */}
-            <HeaderTable 
-            //   selecionaTodos={(e) =>
-            //     setvoluntarios((prev) =>
-            //     prev.map((v) => ({ ...v, selecionado: e.target.checked }))
-            //   )
-            // }
-             />
+        {modalOpen && (
+          <CadastroVoluntario
+            voluntarios={voluntarios}
+            editar={editar}
+            isOpen={modalOpen}
+            setVoluntarios={setVoluntarios}
+            onClose={() => setModalOpen(false)}
+          />
+        )}
+
+          <table className='w-full overflow-y-auto'>
+            <HeaderTable />
             <tbody>
 
               {filtredOptions.map((volunteer) => (
@@ -208,16 +220,6 @@ export const Voluntarios = () => {
             </tbody>
           </table>
 
-          {modalOpen && (
-          <CadastroVoluntario
-            voluntarios={voluntarios}
-            editar={editar}
-            isOpen={modalOpen}
-            setVoluntarios={setVoluntarios}
-            onClose={() => setModalOpen(false)}
-          />
-        )}
-
           <div className={dash["recentActivities"]}>
 
               {/* <h1>Atividades Recentes</h1> */}
@@ -232,6 +234,14 @@ export const Voluntarios = () => {
 
             </div>
           </div>
+          <div
+          className="absolute bottom-16 right-2 p-5 bg-yellow-500 rounded-full md:hidden"
+          onClick={() => {
+            setModalOpen(true)
+          }}
+        >
+          <Plus size={16} />
+        </div>
         </div>
       </div>
     </div>

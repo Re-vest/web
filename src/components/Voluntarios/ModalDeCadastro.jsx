@@ -47,10 +47,12 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
           perfil: permissao
         };
 
-        const response = await api.post("usuarios", addVoluntario)
+        const response = await api.post("/usuarios", addVoluntario)
 
         setVoluntarios(prev => [...prev, response.data]);
       } catch(e) {
+        swal("Erro ao cadastrar", e.response.data, "error");
+
         console.log(e);
         
       }
@@ -101,10 +103,10 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
       onRequestClose={onClose}
       contentLabel="Cadastrar Voluntario"
       className="w-auto bg-white p-5 rounded-lg"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[999]"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[1000]"
       shouldCloseOnOverlayClick={false}
     >
-      <form className={modal["form"]} onSubmit={salvar}>
+      <form className='flex justify-center flex-col w-full p-8 rounded-2xl gap-4' onSubmit={salvar}>
         
         <div className="flex flex-col w-full gap-1.5">
           <label>Nome:</label>
@@ -116,27 +118,10 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
           <Input value={email} placeholder={""} onChange={setEmail} type="phone" />
         </div>
 
-        {/* <div className="flex w-full gap-1.5">
-          <label>Telefone:</label>
-          <Input value={telefone} placeholder={""} onChange={setTelefone} />
-        </div> */}
-
         <div className="flex flex-col w-full gap-1.5">
           <label>Senha:</label>
           <Input value={senha} placeholder={""} onChange={setSenha}/>
         </div>
-
-        {/* <div className="flex w-full flex-col gap-1.5">
-            <label>Status:</label>
-            <PickList
-              options={[
-                { label: "Ativo", value: "ATIVO" },
-                { label: "Inativo", value: "INATIVO" },
-              ]}
-              onChange={setStatus}
-              value={status}
-            />
-          </div> */}
 
         <div className="flex w-full flex-col gap-1.5">
           <label>Definir Permissão:</label>
@@ -155,22 +140,6 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
                 <p className="text-[13px] pl-6 text-gray-500">Pode adicionar e remover usuários;</p>
                 <p className="text-[13px] pl-6 text-gray-500">Pode editar usuários (alterar senha, perrmissões, ...).</p>
               </span>
-
-              {/* <span>
-                <label className="flex items-center gap-1.5">
-                  <input
-                    className="w-5 h-5 mr-1.5"
-                    type="checkbox"
-                    checked={permissao === "SUPERVISOR" || editar.permissao === 'SUPERVISOR'}
-                    onChange={() => permissaoSelecionada("SUPERVISOR")}
-                  />
-                  Supervisor
-                </label>
-                <p className="text-[13px] pl-6 text-gray-500">Pode promover e rebaixar usuários;</p>
-                <p className="text-[13px] pl-6 text-gray-500">Pode editar produtos (alterar valores, status, estado, ...);</p>
-                <p className="text-[13px] pl-6 text-gray-500">Pode baixar relatórios.</p>
-              </span> */}
-
 
               <span>
                 <label className="flex items-center gap-1.5">

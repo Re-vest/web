@@ -1,10 +1,13 @@
 import { X } from "lucide-react";
 import { Input } from "./Input";
 import { Button } from "./Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from '../api'
+import { UserContext } from '../Contexts/UserContext'
 
 export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
+
+  const { user } = useContext(UserContext)
   function formatDateToString(date) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
   }
@@ -27,7 +30,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
     if (!event.id) {
 
       try {
-        const response = await api.post(`/eventos?idUsuario=${sessionStorage.ID_USER}`,
+        const response = await api.post(`/eventos?idUsuario=${user.id}`,
           {
             titulo,
             descricao,
@@ -46,6 +49,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         dataFim.setDate(dataFim.getDate() + 1)
   
         const newEvents = {
+          id: response.data.id,
           titulo: response.data.titulo,
           dataInicio: dataInicio,
           dataFim: dataFim,
@@ -64,7 +68,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
 
     } else {
 
-      const response = await api.put(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`, {
+      const response = await api.put(`/eventos/${event.id}?idUsuario=${user.id}`, {
         titulo,
         descricao,
         dataInicio: startEvent,
@@ -107,7 +111,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   async function deleteEvent() {
-    await api.delete(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`)
+    await api.delete(`/eventos/${event.id}?idUsuario=${user.id}`)
 
     setEvents(
       events.filter(ev => ev.id !== event.id)
@@ -116,8 +120,8 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   return (
-    <div className="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-[999]">
-      <div className="relative bg-white w-1/2 flex flex-col gap-8 py-8 px-8 items-center rounded-2xl">
+    <div className="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-[1000]">
+      <div className="relative bg-white w-11/12 md:w-1/2 flex flex-col gap-8 py-8 px-8 items-center rounded-2xl">
         <X className="absolute right-3 top-3" size={32} cursor={'pointer'} onClick={exit} />
         <p className="text-4xl">Criar evento</p>
         <div className="w-full flex flex-col gap-2">

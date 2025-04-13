@@ -37,12 +37,13 @@ const Cadastro = () => {
       sessionStorage.TOKEN = response.data.token
       sessionStorage.PERFIL = response.data.perfilUsuario
       sessionStorage.NAME = response.data.nome
-      alert("Cliente cadastrado com sucesso")
+
+      swal("Sucesso", "Usuário cadastrado com sucesso", "success");
       
-
       navigate('/login')
-
+      
     } catch(e) {
+      swal("Erro ao cadastrar", e.response.data, "error");
       console.log(e)
     }
   }

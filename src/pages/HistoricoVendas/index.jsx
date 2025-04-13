@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import historico from "../../styles/historicoVenda.module.css";
 
 import { Navbar } from "../../components/Navbar";
@@ -11,9 +11,11 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { Download } from "lucide-react/dist/cjs/lucide-react";
 import { NavbarMobile } from "../../components/NavbarMobile";
+import { UserContext } from "../../Contexts/UserContext";
 
 export const HistoricoVendas = () => {
   const [vendas, setVendas] = useState([]);
+  const { user } = useContext(UserContext)
 
   const gerarRelatorio = async () => {
     await api.get("/relatorio")
@@ -38,7 +40,7 @@ export const HistoricoVendas = () => {
   })
 
   useEffect(() => {
-    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
+    if (!sessionStorage.TOKEN || user.perfil === 'CLIENTE') {
       navigate('/login')
     }
 

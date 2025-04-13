@@ -2,14 +2,14 @@ import React from "react";
 import { Input } from "../Input";
 import { Plus, Search } from "lucide-react";
 import { Button } from "../Button";
-import  Filtro from "./Filtros";
+import Filtro from "./Filtros";
 import table from '../../styles/voluntarios.module.css'
 
-export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, options, atualizandoFiltros, onClick}) => {
+export const FerramentasHeader = ({ pesquisaVoluntario, setPesquisaVoluntario, options, atualizandoFiltros, onClick }) => {
 
   return (
 
-    
+
     <div className={table["header"]}>
       <div className={table["search"]}>
         <Input
@@ -19,14 +19,18 @@ export const FerramentasHeader = ({pesquisaVoluntario, setPesquisaVoluntario, op
         />
       </div>
       <div className={table["acoes"]}>
-        <Filtro 
-        options={options} 
-        atualizandoFiltros={atualizandoFiltros}/>
-        <Button 
-          text={"Novo Voluntário"} 
-          icon={<Plus size={24} />}
-          onClick={onClick} 
+        <Filtro
+          options={options}
+          atualizandoFiltros={atualizandoFiltros}
         />
+        <div className="hidden md:flex gap-3">
+          <Button
+            text={"Novo Voluntário"}
+            icon={<Plus size={24} />}
+            onClick={onClick}
+          />
+
+        </div>
       </div>
     </div>
   );
