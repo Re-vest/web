@@ -13,9 +13,9 @@
         },
       },
       xaxis: {
-        categories: vendas.map(venda => {return venda[0]}),
+        categories: vendas.map(venda => new Date(venda[0] + 'T00:00:00').toLocaleDateString('pt-BR')),
       },
-      colors: ['#1F2A44'],
+      colors: ['#0D35FE'],
       plotOptions: {
         bar: {
           columnWidth: '50',  
@@ -25,8 +25,8 @@
 
     const series = [
       {
-        name: "series-1",
-        data: vendas.map(venda => {return venda[1]})
+        name: "Quantidade de Vendas",
+        data: vendas.map(venda => venda[1])
       },
     ]
 
@@ -36,16 +36,14 @@
           const response = await api.get(`/produtos/vendidos-por-dia?eventoId=${id}`)
 
           if(response.status !== 204) {
-            setVendas(response.data)
+            setVendas(response.data.slice(-7))
             
           }
-          else setVendas([[]])
-          
+          else setVendas([['', 0]])
 
       } catch (e) {
         console.log(e);
       }
-
     }
 
     useEffect(() => {

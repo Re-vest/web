@@ -17,7 +17,7 @@ export function Carrinho({
   setOpenCarrinho
 }) {
   const [eventos, setEventos] = useState([]);
-  const [eventoSelecionado, setEventoSelecionado] = useState(0);
+  const [eventoSelecionado, setEventoSelecionado] = useState({});
   const [totalCarrinho, setTotalCarrinho] = useState(0);
   const [date, setDate] = useState(new Date());
   const { user } = useContext(UserContext)
@@ -52,6 +52,11 @@ export function Carrinho({
       return;
     }
 
+    if(eventoSelecionado.value === null || eventoSelecionado.value === undefined) {
+      swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error");
+      return
+    }
+
     if (date == null) {
       swal("Erro", "Selecione uma data", "error");
       return;
@@ -72,14 +77,21 @@ export function Carrinho({
       return
     }
 
+    console.log(date);
+
     try {
       const response = await api.post(
-        `/vendas?idUsuario=${user.id}`,
+        `/vendas?idUsuario=${sessionStorage.ID_USER}`,
         {
           produtosId: produtosSelecionados.map((produto) => produto.id),
           idEvento: eventoSelecionado.value,
-          idVendedor: user.id,
-          date: date
+          idVendedor: sessionStorage.ID_USER,
+          date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2, '0')}`
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
         }
       );
 
