@@ -149,7 +149,7 @@ const CadastroProdutoModal = ({
 
       try {
         const response = await api.post(
-          `/produtos?idUsuario=${user.id}`,
+          `/produtos?idUsuario=${sessionStorage.ID_USER}`,
           formData,
           {
             headers: {
@@ -197,7 +197,7 @@ const CadastroProdutoModal = ({
         formData.append('arquivo', images)
 
         const response = await api.put(
-          `/produtos/${editar.id}?idUsuario=${user.id}`,
+          `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
           formData,
           {
             headers: {

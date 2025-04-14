@@ -81,7 +81,7 @@ const DashCategoria = ({
     grid: {
       show: false, // Remove linhas de grade
     },
-    colors: ["#1F2A44"], // Cor das barras
+    colors: ["#facc15"], // Cor das barras
   };
 
   const series = [
@@ -97,7 +97,7 @@ const DashCategoria = ({
       {chartData.categories.length > 0 ? (
         <Chart options={options} series={series} type="bar" height={250} />
       ) : (
-        <p>Nenhum produto vendido</p>
+        <p>Nenhum produto vendido no evento</p>
       )}
     </div>
   );

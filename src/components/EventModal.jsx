@@ -30,7 +30,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
     if (!event.id) {
 
       try {
-        const response = await api.post(`/eventos?idUsuario=${user.id}`,
+        const response = await api.post(`/eventos?idUsuario=${sessionStorage.ID_USER}`,
           {
             titulo,
             descricao,
@@ -68,7 +68,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
 
     } else {
 
-      const response = await api.put(`/eventos/${event.id}?idUsuario=${user.id}`, {
+      const response = await api.put(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`, {
         titulo,
         descricao,
         dataInicio: startEvent,
@@ -111,7 +111,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   async function deleteEvent() {
-    await api.delete(`/eventos/${event.id}?idUsuario=${user.id}`)
+    await api.delete(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`)
 
     setEvents(
       events.filter(ev => ev.id !== event.id)

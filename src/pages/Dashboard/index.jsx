@@ -37,8 +37,6 @@ export function Dashboard() {
     } else {
       setTotalVendido(0)
     }
-
-
   }
 
   const getValorVendaDia = async () => {
@@ -86,8 +84,11 @@ export function Dashboard() {
 
   const getCategoria = async () => {
     try {
-      const response = await api.get("/produtos/tipo-mais-vendido");
-      if (response.status === 200) setCategoriaMaisVendida(Object.keys(response.data)[0]);
+      const response = await api.get(`/vendas/categoria-mais-vendida?eventoId=${events[currentIndex].id}`);
+      console.log(response.data);
+      
+      if (response.status === 200) setCategoriaMaisVendida(response.data[0].categoria);
+      else setCategoriaMaisVendida('')
     } catch (e) {
       console.log(e);
     }
@@ -151,13 +152,13 @@ export function Dashboard() {
 
     getWeather();
     getEvents();
-    getCategoria();
     getHistorico();
   }, []);
 
   useEffect(() => {
 
     if (events.length > 0) {
+      getCategoria()
       getQuantidadeVendaDia()
       getValorVendaDia()
       getValorVendaNoEvento()
