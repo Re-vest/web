@@ -241,7 +241,7 @@ export function Dashboard() {
               <CardDash
                 icon={<CircleDollarSign />}
                 title={"Valor arrecadado"}
-                value={totalArrecadado.toFixed(2)}
+                value={'R$ ' + totalArrecadado.toFixed(2)}
               />
               <CardDash
                 icon={<Shirt />}
