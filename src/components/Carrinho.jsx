@@ -34,7 +34,7 @@ export function Carrinho({
   let opcoesCarrinhos = [];
 
   useEffect(() => {
-    api.get("/eventos").then((response) => {
+    api.get("/eventos/eventos-ativos").then((response) => {
       response.data.map((event) => {
         opcoesCarrinhos.push({ label: event.titulo, value: event.id, dataInicio: event.dataInicio, dataFim: event.dataFim });
       });
@@ -76,8 +76,6 @@ export function Carrinho({
       swal("Erro", "Evento já passou", "error");
       return
     }
-
-    console.log(date);
 
     try {
       const response = await api.post(

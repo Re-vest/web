@@ -26,6 +26,7 @@ export function Dashboard() {
   const [atividades, setAtividade] = useState([]);
   const [mostrarAtividades, setMostrarAtividades] = useState(false);
   const [totalVendido, setTotalVendido] = useState(0);
+  const [totalVendidoEvento, setTotalVendidoEvento] = useState(0);
   const [valorTotalEvento, setValorTotalEvento] = useState(0.0);
 
   const getQuantidadeVendaDia = async () => {
@@ -36,6 +37,17 @@ export function Dashboard() {
       setTotalVendido(response.data)
     } else {
       setTotalVendido(0)
+    }
+  }
+
+  const getQuantidadeVendaEvento = async () => {
+
+    const response = await api.get(`vendas/quantidade-vendas-evento?eventoId=${events[currentIndex].id}`)
+
+    if(response.status === 200) {
+      setTotalVendidoEvento(response.data)
+    } else {
+      setTotalVendidoEvento(0)
     }
   }
 
@@ -61,8 +73,6 @@ export function Dashboard() {
 
       setValorTotalEvento(0.0)
     }
-
-
   }
 
   const getWeather = async () => {
@@ -131,7 +141,7 @@ export function Dashboard() {
 
   const getEvents = async () => {
     try {
-      const response = await api.get("/eventos");
+      const response = await api.get("/eventos/eventos-ativos");
 
       let events = response.data.map((event) => {
         event.dataInicio = formatStringToDate(event.dataInicio);
@@ -162,22 +172,14 @@ export function Dashboard() {
       getQuantidadeVendaDia()
       getValorVendaDia()
       getValorVendaNoEvento()
+      getQuantidadeVendaEvento()
     }
 
   }, [currentIndex]);
 
   const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
-  const WeatherDay = ({ semana, condition, temp }) => {
-    return (
-      <div className="w-full border-l-2 border-[#DDD] px-3 flex flex-col gap-3 items-center">
-        <p>{semana}</p>
-        <img src={`${urlSvg}${condition}.svg`} alt="" />
-        <p>{temp}º</p>
-      </div>
-    );
-  };
 
-  let ticketMedio = isNaN(totalArrecadado / totalVendido) ? (0).toFixed(2) : (totalArrecadado / totalVendido).toFixed(2)
+  let ticketMedio = isNaN(valorTotalEvento / totalVendidoEvento) ? (0).toFixed(2) : (valorTotalEvento / totalVendidoEvento).toFixed(2)
 
   return (
     <div>
@@ -290,7 +292,6 @@ export function Dashboard() {
               <div className={dash["grafico-barra"]}>
                 {
                   events.length > 0 && (
-
                     <DashCategoria
                       events={events}
                       currentIndex={currentIndex}

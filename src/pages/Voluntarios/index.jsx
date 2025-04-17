@@ -15,13 +15,15 @@
   import { useNavigate } from "react-router-dom";
   import { UserContext } from "../../Contexts/UserContext";
   import { NavbarMobile } from "../../components/NavbarMobile";
-  import { Plus } from "lucide-react";
+  import { Bell, Plus } from "lucide-react";
 
   export const Voluntarios = () => {
     const { user } = useContext(UserContext)
     const [modalOpen, setModalOpen] = useState(false);
     const [editar, setEditar] = useState("");
     const [voluntarios, setVoluntarios] = useState([]);
+  const [mostrarAtividades, setMostrarAtividades] = useState(false);
+
 
     const [atividades, setAtividade] = useState([]);
 
@@ -171,6 +173,33 @@
         <div className="w-11/12 my-5 mx-auto md:mx-28 font-sans flex flex-col gap-2.5">
           <div className={dash["header"]}>
             <h2>Gerenciar Equipe</h2>
+
+            <Bell
+              size={30}
+              onClick={() => setMostrarAtividades(!mostrarAtividades)}
+              className="cursor-pointer"
+            />
+
+            {mostrarAtividades && (
+        <div className="absolute right-[7.05vw] top-2 bg-[#D0E0E9] shadow-lg rounded-xl p-4 w-[45vh] max-h-[16vw] overflow-y-auto border border-gray-200 z-[1000]">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-lg font-semibold">Movimentações recentes</h3>
+            <Bell
+              onClick={() => setMostrarAtividades(false)}
+              className="cursor-pointer"
+            />
+            <button
+              onClick={() => setMostrarAtividades(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <i className="fas fa-bell text-xl"></i> {/* Ícone de sino */}
+            </button>
+          </div>
+          {atividades.map((atividade) => (
+            <AtividadesRecentes key={atividade.id} atividade={atividade} />
+          ))}
+        </div>
+      )}
           </div>
 
       <ErrorBoundary>
@@ -192,7 +221,10 @@
               editar={editar}
               isOpen={modalOpen}
               setVoluntarios={setVoluntarios}
-              onClose={() => setModalOpen(false)}
+              onClose={() => {
+                setEditar({})
+                setModalOpen(false)
+              }}
             />
           )}
 
@@ -219,21 +251,6 @@
                 ))}
               </tbody>
             </table>
-
-            <div className={dash["recentActivities"]}>
-
-                {/* <h1>Atividades Recentes</h1> */}
-              <div className={dash["atividades-container"]}>
-                <div className={dash["atividades-lista"]}>
-                  {atividades.map((atividade) => (
-                    <AtividadesRecentes 
-                      key={atividade.id}
-                      atividade={atividade} /> // card atividade | smp colocar key = id;
-                  ))}
-                </div>
-
-              </div>
-            </div>
             <div
             className="absolute bottom-16 right-2 p-5 bg-yellow-500 rounded-full md:hidden"
             onClick={() => {

@@ -26,7 +26,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   const [descricao, setDescricao] = useState(event.descricao ? event.descricao : '');
 
 
-  async function handleChangeEvent() {
+  async function handleSubmitEvent() {
     if (!event.id) {
 
       if(titulo === '' || titulo === null || titulo === undefined) {
@@ -34,10 +34,13 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         return
       }
 
-        if(startEvent > endEvent) {
-          swal("Erro", "Data início não pode ser sucessora da data fim", "error");
-          return
-        }
+      console.log(startEvent);
+      console.log(endEvent);
+
+      if(startEvent > endEvent) {
+        swal("Erro", "Data início não pode ser sucessora da data fim", "error");
+        return
+      }
 
       try {
         const response = await api.post(`/eventos?idUsuario=${sessionStorage.ID_USER}`,
@@ -49,31 +52,33 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
             dataFim: endEvent
           }
         )
-  
-        const dataInicio = new Date(response.data.dataInicio)
-        dataInicio.setHours(0)
-        dataInicio.setDate(dataInicio.getDate() + 1)
-  
-        const dataFim = new Date(response.data.dataFim)
-        dataFim.setHours(0)
-        dataFim.setDate(dataFim.getDate() + 1)
-  
-        const newEvents = {
-          id: response.data.id,
-          titulo: response.data.titulo,
-          dataInicio: dataInicio,
-          dataFim: dataFim,
-          descricao: response.data.descricao,
-          cor: response.data.cor
+
+        if(response.status === 201) {
+          const dataInicio = new Date(response.data.dataInicio)
+          dataInicio.setHours(0)
+          dataInicio.setDate(dataInicio.getDate() + 1)
+    
+          const dataFim = new Date(response.data.dataFim)
+          dataFim.setHours(0)
+          dataFim.setDate(dataFim.getDate() + 1)
+    
+          const newEvents = {
+            id: response.data.id,
+            titulo: response.data.titulo,
+            dataInicio: dataInicio,
+            dataFim: dataFim,
+            descricao: response.data.descricao,
+            cor: response.data.cor
+          }
+    
+          setEvents(prev => [...prev, newEvents])
+          swal("Sucesso", "Evento criado com sucesso", "success", {
+            timer: 1000,
+            button: {
+              visible: false,
+            },
+          });
         }
-  
-        setEvents(prev => [...prev, newEvents])
-        swal("Sucesso", "Evento criado com sucesso", "success", {
-          timer: 1000,
-          button: {
-            visible: false,
-          },
-        });
 
       } catch (e) {
         console.log(e);
@@ -84,6 +89,19 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
 
     } else {
 
+      if(titulo === '' || titulo === null || titulo === undefined) {
+        swal("Erro", "Preencha um título", "error");
+        return
+      }
+
+      console.log(startEvent);
+      console.log(endEvent);
+
+      if(startEvent > endEvent) {
+        swal("Erro", "Data início não pode ser sucessora da data fim", "error");
+        return
+      }
+
       const response = await api.put(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`, {
         titulo,
         descricao,
@@ -92,7 +110,8 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         cor
       })
 
-      const dataInicio = new Date(response.data.dataInicio)
+      if(response.status === 201) {
+        const dataInicio = new Date(response.data.dataInicio)
       dataInicio.setHours(0)
       dataInicio.setDate(dataInicio.getDate() + 1)
 
@@ -123,6 +142,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
           visible: false,
         },
     })}
+      }
 
     exit()
   }
@@ -152,13 +172,13 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         <p className="text-4xl">Criar evento</p>
         <div className="w-full flex flex-col gap-2">
           <label htmlFor="">Título</label>
-          <Input maxLength={100} placeholder={"Adicionar título"} value={titulo} onChange={setTitulo} />
+          <Input maxLength={60} placeholder={"Adicionar título"} value={titulo} onChange={setTitulo} />
 
         </div>
 
         <div className="w-full flex flex-col gap-2">
           <label htmlFor="">Descrição</label>
-          <textarea maxLength={300} className="bg-[#F3F4F6] px-6 py-2" name="" id="descricao" value={descricao} onChange={e => setDescricao(e.target.value)}></textarea>
+          <textarea maxLength={100} className="bg-[#F3F4F6] px-6 py-2" name="" id="descricao" value={descricao} onChange={e => setDescricao(e.target.value)}></textarea>
         </div>
 
 
@@ -188,7 +208,7 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
             <Button text={"Excluir"} onClick={deleteEvent} />
 
           )}
-          <Button text={"Salvar"} secondary onClick={handleChangeEvent} />
+          <Button text={"Salvar"} secondary onClick={handleSubmitEvent} />
         </div>
       </div>
     </div>

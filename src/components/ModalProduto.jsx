@@ -136,8 +136,7 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         tipo: valorTipo,
         status: valorStatus,
-        tamanho,
-        imagem: images
+        tamanho
       };
       swal("Sucesso", "Produto cadastrado com sucesso", "success");
       
@@ -187,10 +186,9 @@ const CadastroProdutoModal = ({
         status: valorStatus,
         categoria: valorCategoria,
         imagem: images
-      };
+      }
 
       console.log(updateProduct);
-      
 
       try{
         const formData = new FormData();
@@ -278,11 +276,11 @@ const CadastroProdutoModal = ({
       <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
         <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
-          <Input value={nome} placeholder={""} onChange={setNome} />
+          <Input maxLength={100} value={nome} placeholder={""} onChange={setNome} />
         </div>
         <div className={modalProduto["textarea-descricao"]}>
           <label>Descrição:</label>
-          <Input value={descricao} placeholder={""} onChange={setDescricao} />
+          <Input maxLength={300} value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className={modalProduto["select-options"]}>
           <div className="w-full md:w-[66%] flex gap-1">
@@ -341,11 +339,11 @@ const CadastroProdutoModal = ({
         <div className={modalProduto["caracteristicas"]}>
           <div className={modalProduto["input-cor"]}>
             <label>Cor:</label>
-            <Input value={cor} onChange={setCor} />
+            <Input maxLength={20} value={cor} onChange={setCor} />
           </div>
           <div className={modalProduto["input-tamanho"]}>
             <label>Tamanho:</label>
-            <Input value={tamanho} onChange={setTamanho} />
+            <Input maxLength={3} value={tamanho} onChange={setTamanho} />
           </div>
         </div>
         <div className={modalProduto["atributos"]}>
