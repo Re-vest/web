@@ -36,7 +36,6 @@ const opcoesCategoria = [
   return (
     <thead>
       <tr>
-        <th></th>
         <th>Código ID</th>
         <th>Nome</th>
         <th>Descrição</th>
