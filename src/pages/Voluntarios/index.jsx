@@ -101,7 +101,7 @@
     // filtra
     useEffect(() => {
 
-      if(user.perfil !== 'ADMINISTRADOR' || !user.id) {
+      if(sessionStorage.PERFIL !== 'ADMINISTRADOR' || !sessionStorage.ID_USER) {
         navigate('/dashboard')
       }
 

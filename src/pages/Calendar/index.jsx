@@ -17,7 +17,7 @@ export function CalendarPage() {
   const { user } = useContext(UserContext)
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN || user.perfil === 'CLIENTE') {
+    if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     } else {
       try {

@@ -6,7 +6,7 @@ export const RegistroVenda = ({ venda }) => {
   return (
     <>
       <tr>
-        <td>{venda.id}</td>
+        <td>{new Date(venda.dataVenda + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
         <td>{venda.carrinho[0].nome}</td>
         <td>{venda.usuario.email}</td>
         <td>{venda.carrinho.length}</td>

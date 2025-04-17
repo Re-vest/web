@@ -29,6 +29,16 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   async function handleChangeEvent() {
     if (!event.id) {
 
+      if(titulo === '' || titulo === null || titulo === undefined) {
+        swal("Erro", "Preencha um título", "error");
+        return
+      }
+
+        if(startEvent > endEvent) {
+          swal("Erro", "Data início não pode ser sucessora da data fim", "error");
+          return
+        }
+
       try {
         const response = await api.post(`/eventos?idUsuario=${sessionStorage.ID_USER}`,
           {
@@ -142,13 +152,13 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
         <p className="text-4xl">Criar evento</p>
         <div className="w-full flex flex-col gap-2">
           <label htmlFor="">Título</label>
-          <Input placeholder={"Adicionar título"} value={titulo} onChange={setTitulo} />
+          <Input maxLength={100} placeholder={"Adicionar título"} value={titulo} onChange={setTitulo} />
 
         </div>
 
         <div className="w-full flex flex-col gap-2">
           <label htmlFor="">Descrição</label>
-          <textarea className="bg-[#F3F4F6] px-6 py-2" name="" id="descricao" value={descricao} onChange={e => setDescricao(e.target.value)}></textarea>
+          <textarea maxLength={300} className="bg-[#F3F4F6] px-6 py-2" name="" id="descricao" value={descricao} onChange={e => setDescricao(e.target.value)}></textarea>
         </div>
 
 

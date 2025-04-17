@@ -266,7 +266,7 @@ export const Estoque = () => {
           setOpenCarrinho={setOpenCarrinho}
         />
 
-        <div className="w-full overflow-x-scroll md:overflow-x-visible">
+        <div className="w-full overflow-x-scroll md:overflow-x-visible overflow-y-scroll">
           <table className={estoque["inventory-table"]}>
             <Header setProdutos={setProdutos} />
             <tbody>
