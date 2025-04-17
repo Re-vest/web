@@ -5,7 +5,7 @@ export function Event({ event, handleClickEvent, titulo }) {
   }
   
   return(
-    <div style={{ backgroundColor: event.cor }} onClick={handleClick} data-titulo={event.titulo} className=" w-full min-w-5 min-h-5 truncate border-[1px] rounded-lg hover:brightness-110 text-sm">
+    <div style={{ backgroundColor: event.cor }} onClick={handleClick} data-titulo={event.titulo} className="w-2 h-2 md:w-full md:min-w-5 md:min-h-5 truncate border-[1px] rounded-lg hover:brightness-110 text-sm ">
       {titulo}
     </div>
   )

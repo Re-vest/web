@@ -24,6 +24,8 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.2",
     "react-select": "^5.8.1",
+    "rsuite": "^5.78.0",
+    "sweetalert": "^2.1.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

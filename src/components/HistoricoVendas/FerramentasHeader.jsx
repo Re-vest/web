@@ -1,27 +1,20 @@
 import React from "react";
 import { Input } from "../Input";
-import { Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import { Button } from "../Button";
-import api from "../../api";
 
-export const FerramentasHeader = ({ setBusca }) => {
-
-  const gerarRelatorio = async () => {
-    await api.get("/relatorio")
-    alert("Relatório gerado na pasta Downloads")
-  }
+export const FerramentasHeader = ({ setBusca, gerarRelatorio }) => {
 
   return (
-    <div className="header">
-      <div className="search">
+    <div className='flex gap-10'>
         <Input 
           placeholder="Pesquisa..."
           icon={<Search w-full/>}
           onChange={setBusca}
         />
-      </div>
-      <div className="acoes"> 
-        <Button text={"Exportar Relatório"} onClick={gerarRelatorio} />
+      <div className="hidden md:flex gap-3">
+
+        <Button text={"Exportar Relatório"} onClick={gerarRelatorio} icon={<Download size={24} />} />
       </div>
     </div>
   );

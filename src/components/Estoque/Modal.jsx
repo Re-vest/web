@@ -1,12 +1,15 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import modal from "../../styles/Modal.module.css";
 import api from '../../api'
+import { UserContext } from "../../Contexts/UserContext";
 
 function Modal({ product, editar, modalEditar, setProdutos, produtos, desfazer, setDesfazer }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
+
+  const { user } = useContext(UserContext)
 
   const toggleModal = () => {
     if (!isOpen) {
@@ -45,9 +48,10 @@ function Modal({ product, editar, modalEditar, setProdutos, produtos, desfazer, 
     setDesfazer(desfazerAux)
 
     try {
-      await api.delete(`/produtos/${product.id}?idUsuario=${sessionStorage.ID_USER}`)
+      await api.delete(`/produtos/${product.id}?idUsuario=${user.id}`)
 
       setProdutos(produtos.filter((pr) => pr.id !== product.id));
+      swal("Produto excluído com sucesso!", "", "success");
     } catch(e) {
       console.log(e);
     }

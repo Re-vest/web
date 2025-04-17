@@ -1,5 +1,4 @@
 .inventory-container {
-  width: 100%;
   font-family: Arial, sans-serif;
   padding: 10px 15px;
   display: flex;
@@ -140,6 +139,76 @@
   text-align: center;
   display: flex;
   justify-content: center;
+}
+
+
+@keyframes openCarrinho {
+  from {
+    opacity: 0;
+    left: 300px;
+  }
+  
+  to {
+    opacity: 1;
+    left: 0;
+  }
+}
+
+.carrinho {
+  width: 35%;
+  display: flex;
+  position: relative;
+  animation: openCarrinho;
+  animation-duration: 0.5s;
+  background-color: #e4e4e4;
+  border-radius: 15px;
+  margin: 25px;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.finalCarrinho{
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.produtosCarrinho{
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+
+.informacaoCarrinho{
+  display: flex;
+  gap: 7px;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.eventoCarrinho{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+.eventoCarrinho{
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  
+}
+
+.valorCarrinho{
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
 }
 
 
@@ -296,6 +365,10 @@
 }
 
 @media (min-width: 768px) {
+  .inventory-container {
+    margin: 20px 100px;
+  }
+
   .header {
     flex-direction: row;
   }

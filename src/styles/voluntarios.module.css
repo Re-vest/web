@@ -1,16 +1,3 @@
-/* .Navbar{
-  position: fixed;
-} */
-
-.container_tudo{
-    display: flex;
-    justify-content: space-between;
-    align-self: center;
-    width: 100%;
-    /* flex-wrap: wrap; */
-}
-
-  
   .header {
     display: flex;
     justify-content: space-between;
@@ -51,23 +38,6 @@
     padding: 10px;
     text-align: center;
   }
-  
-  .volunteer-list {
-    width: 68%;
-    /* border-collapse: collapse; */
-
-    max-height: 400px;
-    overflow-y: auto;
-
-    /* max-height: 400px; */
-    /* height: auto; */
-    /* background-color: #d9534f; */
-    /* margin-right: 2%; */
-  }
-  
-  /* .nomeVoluntario{
-    text-align: start;
-  } */
   
   .volunteer-list th,
   .volunteer-list td {
@@ -180,13 +150,14 @@
     box-shadow: #e3e3e3 0 0 5px 0;
   }
 
-  /* MARK: Form cadastro produto */
-  .form{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 500px;
-    padding: 30px;
-    border-radius: 15px;
-    gap: 1rem;
+  @media (min-width: 360px) {
+    .recentActivities {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .recentActivities {
+      display: flex;
+    }
   }

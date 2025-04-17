@@ -1,0 +1,38 @@
+.info-card {
+    background-color: #E5F5FE;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 160px;  /* Reduzindo a largura */
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .info-card-icon {
+    width: 55px; /* Ajustando tamanho do ícone */
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+  }
+  
+  .info-card-icon svg {
+    width: 50px; /* Reduzindo o tamanho do ícone */
+    height: 38px;
+  }
+  
+  .info-card-title {
+    color: #4b5563;
+    font-weight: 600;
+    font-size: 12px; /* Reduzindo tamanho */
+  }
+  
+  .info-card-value {
+    font-size: 1.2rem; /* Reduzindo fonte */
+    font-weight: bold;
+  }
+  

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import modalProduto from "../styles/ModalProduto.module.css";
 import PickList from "./picklist";
@@ -6,6 +6,7 @@ import { Input } from "./Input";
 import { Button } from "./Button";
 import api from "../api";
 import FormData from "form-data";
+import { UserContext } from "../Contexts/UserContext";
 
 Modal.setAppElement("#root");
 
@@ -41,12 +42,13 @@ const CadastroProdutoModal = ({
 
   const opcoesStatus = [
     { label: "Disponível", value: "DISPONIVEL" },
-    { label: "Oculto", value: "OCULTO" },
-    { label: "Vendido", value: "VENDIDO" },
+    { label: "Oculto", value: "OCULTO" }
   ];
 
+  const { user, setUser } = useContext(UserContext)
+
   const [nome, setNome] = useState(editar.nome);
-  const [descricao, setDescricao] = useState(editar.descricao);
+  const [descricao, setDescricao] = useState(editar.descricao ? editar.descricao : "");
   const [tipo, setTipo] = useState(editar.tipo);
   const [categoria, setCategoria] = useState(editar.categoria);
   const [status, setStatus] = useState(editar.status ? opcoesStatus.find(status => status.value === editar.status).label : "");
@@ -99,7 +101,6 @@ const CadastroProdutoModal = ({
     // Verifica se todos os campos obrigatórios estão preenchidos
     if (
       !nome ||
-      !descricao ||
       !tipo ||
       !categoria ||
       !status ||
@@ -108,8 +109,8 @@ const CadastroProdutoModal = ({
       !condicaoProduto ||
       !preco
     ) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
-      return; // Retorna imediatamente se os campos não estiverem preenchidos
+      swal("Erro", "Preencha todos os campos obrigatórios", "error");
+      return;
     }
 
     var valorTipo = opcoesTipo.find(
@@ -122,12 +123,6 @@ const CadastroProdutoModal = ({
       (opcao) => opcao.label === categoria || opcao.value === categoria
     ).value;
 
-    console.log(`
-      valorTipo: ${valorTipo}
-      valorStatus: ${valorStatus}
-      valorCategoria: ${valorCategoria}
-    `);
-
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
@@ -139,11 +134,10 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         tipo: valorTipo,
         status: valorStatus,
-        tamanho,
+        tamanho
       };
-
-      console.log(newProduct);
-
+      swal("Sucesso", "Produto cadastrado com sucesso", "success");
+      
       const formData = new FormData();
       formData.append(
         "produto",
@@ -154,7 +148,6 @@ const CadastroProdutoModal = ({
       formData.append("arquivo", images);
 
       try {
-        // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
         const response = await api.post(
           `/produtos?idUsuario=${sessionStorage.ID_USER}`,
           formData,
@@ -178,7 +171,6 @@ const CadastroProdutoModal = ({
         console.log(e);
       }
     } else {
-      console.log(images);
 
       const updateProduct = {
         nome,
@@ -192,14 +184,9 @@ const CadastroProdutoModal = ({
         categoria: valorCategoria,
       };
 
-      try {
-        if (status === "Vendido") {
-          await api.post(`/vendas?idUsuario=${sessionStorage.ID_USER}`, {
-            produtosId: [editar.id],
-            idVendedor: sessionStorage.ID_USER,
-          });
-        }
+      swal("Sucesso", "Produto atualizado com sucesso", "success");
 
+      try{
         const formData = new FormData();
         formData.append(
           "produto",
@@ -207,7 +194,7 @@ const CadastroProdutoModal = ({
             type: "application/json",
           })
         );
-        // formData.append('arquivo', images)
+        formData.append('arquivo', images)
 
         const response = await api.put(
           `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
@@ -219,21 +206,23 @@ const CadastroProdutoModal = ({
           }
         );
 
-        const productsUpdated = produtos.map((eventProps) => {
-          if (eventProps.id === response.data.id) {
-            response.data.tipo = opcoesTipo.find(
-              (opcao) => opcao.value === response.data.tipo
-            ).label;
-            response.data.categoria = opcoesCategoria.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            response.data.status = opcoesStatus.find(
-              (opcao) => opcao.value === response.data.categoria
-            ).label;
-            return response.data;
-          } else return eventProps;
-        });
-
+        setProdutos((prevProdutos) =>
+          prevProdutos.map((produto) =>
+            produto.id === response.data.id
+              ? {
+                  ...response.data,
+                  tipo: opcoesTipo.find((opcao) => opcao.value === response.data.tipo)
+                    ?.label,
+                  categoria: opcoesCategoria.find(
+                    (opcao) => opcao.value === response.data.categoria
+                  )?.label,
+                  status: opcoesStatus.find((opcao) => opcao.value === response.data.status)
+                    ?.value,
+                }
+              : produto
+          )
+        );  
+        
         setProdutos(productsUpdated);
       } catch (e) {
         console.log(e);
@@ -257,7 +246,7 @@ const CadastroProdutoModal = ({
     return (
       <div className={modalProduto["image-container"]}>
         <img
-          src={images}
+          src={images.size ? URL.createObjectURL(images) : images}
           alt={`Preview`}
           className={modalProduto["preview-img"]}
         />

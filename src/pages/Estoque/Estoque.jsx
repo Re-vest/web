@@ -1,4 +1,5 @@
 // src/pages/Estoque.js
+import swal from 'sweetalert';
 import React, { useEffect, useState } from "react";
 import estoque from "../../styles/estoque.module.css";
 import { Header } from "../../components/Estoque/Header";
@@ -7,17 +8,24 @@ import { Acoes } from "../../components/Estoque/Acoes";
 import { Navbar } from "../../components/Navbar";
 import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
-import api from '../../api'
+import api from "../../api";
 import { Plus } from "lucide-react";
+import { Button } from "../../components/Button";
 import { NavbarMobile } from "../../components/NavbarMobile";
+import { CardProduto } from "../../components/CardProduto";
+import Select from "react-select";
+import notFound from "../../assets/notFound.png";
+import { Carrinho } from '../../components/Carrinho';
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editar, setEditar] = useState("");
   const [produtos, setProdutos] = useState([]);
+  const [produtosSelecionados, setProdutosSelecionados] = useState([]);
   const [desfazer, setDesfazer] = useState([]);
-
-
+  const [openCarrinho, setOpenCarrinho] = useState(false);
+  const [eventos, setEventos] = useState([]);
+  const [eventoSelecionado, setEventoSelecionado] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [filtredOptions, setFiltredOptions] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -52,7 +60,9 @@ export const Estoque = () => {
     },
   ];
 
-  const navigate = useNavigate()
+  let opcoesCarrinhos = [];
+
+  const navigate = useNavigate();
 
   const opcoesTipo = [
     { label: "Calçados", value: "CALCADO" },
@@ -66,31 +76,42 @@ export const Estoque = () => {
     { label: "Relógios", value: "RELOGIO" },
     { label: "Óculos", value: "OCULOS" },
     { label: "Outros", value: "OUTRO" },
-  ]
+  ];
   const opcoesCategoria = [
     { label: "Roupa", value: "ROUPA" },
     { label: "Acessório", value: "ACESSORIO" },
-  ]
-  
+  ];
 
   useEffect(() => {
-    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
-      navigate('/login')
+    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === "CLIENTE") {
+      navigate("/login");
     } else {
       try {
-        api.get("/produtos").then(response => {
-          response.data.map(product => {
-            product.categoria = opcoesCategoria.find(category => category.value === product.categoria).label
-            product.tipo = opcoesTipo.find(type => type.value === product.tipo).label
-          })
+        api.get("/produtos").then((response) => {
+          response.data.map((product) => {
+            product.categoria = opcoesCategoria.find(
+              (category) => category.value === product.categoria
+            ).label;
+            product.tipo = opcoesTipo.find(
+              (type) => type.value === product.tipo
+            ).label;
+          });
 
-          if (response.status !== 204) setProdutos(response.data)
-          console.log(response.data)
-        })
+          if (response.status !== 204) setProdutos(response.data);
+        });
+
+        api.get("/eventos").then((response) => {
+          response.data.map((event) => {
+            opcoesCarrinhos.push({ label: event.titulo, value: event.id });
+          });
+          if (response.status !== 204) {
+            setEventos(opcoesCarrinhos);
+            setEventoSelecionado(opcoesCarrinhos[0]);
+          }
+        });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-
     }
   }, []);
 
@@ -104,7 +125,6 @@ export const Estoque = () => {
         const matchesStatus =
           selectedFilters.status.length === 0 ||
           selectedFilters.status.includes(product.status);
-
 
         const matchesCategoria =
           selectedFilters.categoria.length === 0 ||
@@ -121,14 +141,11 @@ export const Estoque = () => {
             product.preco > 100);
 
         return (
-          matchesSearchTerm &&
-          matchesStatus &&
-          matchesCategoria &&
-          matchesValor
+          matchesSearchTerm && matchesStatus && matchesCategoria && matchesValor
         );
       })
     );
-  }, [searchTerm, selectedFilters, produtos])
+  }, [searchTerm, selectedFilters, produtos]);
 
   const handleFilterChange = (event) => {
     const options = event;
@@ -148,8 +165,81 @@ export const Estoque = () => {
     setSelectedFilters(newSelectedFilters);
   };
 
+  const [totalCarrinho, setTotalCarrinho] = useState(0);
+  console.log(produtosSelecionados);
+
+  useEffect(() => {
+    setTotalCarrinho(
+      produtosSelecionados.reduce(
+        (acc, produtoAtual) => acc + produtoAtual.preco,
+        0
+      )
+    );
+  }, [produtosSelecionados]);
+
+  const realizarVenda = async () => {
+    if (produtosSelecionados.length === 0) {
+      swal("Erro", "Selecione ao menos um produto para realizar a venda", "error", {
+        timer: 1000,
+        button: {
+          visible: false,
+        },
+      });
+      return;
+    }
+
+    try {
+      const response = await api.post(
+        `/vendas?idUsuario=${sessionStorage.ID_USER}`,
+        {
+          produtosId: produtosSelecionados.map((produto) => produto.id),
+          idEvento: eventoSelecionado.value,
+          idVendedor: sessionStorage.ID_USER,
+        }
+      );
+
+      if (response.status === 200) {
+        setProdutos((prevProdutos) =>
+          prevProdutos.map((produto) =>
+            produtosSelecionados.some((p) => p.id === produto.id)
+              ? { ...produto, status: "VENDIDO" }
+              : produto
+          )
+        );
+
+        setProdutosSelecionados([]);
+        setOpenCarrinho(false);
+
+        swal("Venda Confirmada", "Você realizou uma venda com sucesso!", "success", {
+          timer: 1500,
+          button: {
+            visible: false,
+          },
+        });
+      }
+    } catch (error) {
+        swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error", {
+          timer: 1500,
+          button: {
+            visible: false,
+          },
+        });
+    }
+  };
+
+  const cancelarVenda = () => {
+    setProdutosSelecionados([]);
+    setOpenCarrinho(false);
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((produto) => ({
+        ...produto,
+        checked: false,
+      }))
+    );
+  };
+
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex overflow-hidden">
       <div className="hidden md:flex">
         <Navbar />
       </div>
@@ -168,16 +258,15 @@ export const Estoque = () => {
           options={filterOptions}
           handleFilterChange={handleFilterChange}
           onClick={() => {
-            setEditar({})
-            setModalOpen(true)
+            setEditar({});
+            setModalOpen(true);
           }}
           desfazer={desfazer}
           setDesfazer={setDesfazer}
+          setOpenCarrinho={setOpenCarrinho}
         />
 
         <div className="w-full overflow-x-scroll md:overflow-x-visible">
-
-
           <table className={estoque["inventory-table"]}>
             <Header setProdutos={setProdutos} />
             <tbody>
@@ -197,6 +286,8 @@ export const Estoque = () => {
                   produtos={produtos}
                   desfazer={desfazer}
                   setDesfazer={setDesfazer}
+                  produtosSelecionados={produtosSelecionados}
+                  setProdutosSelecionados={setProdutosSelecionados}
                 />
               ))}
             </tbody>
@@ -212,14 +303,25 @@ export const Estoque = () => {
             onClose={() => setModalOpen(false)}
           />
         )}
-        <div className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden" onClick={() => {
-          setEditar({})
-          setModalOpen(true)
-        }}>
+        <div
+          className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden"
+          onClick={() => {
+            setEditar({});
+            setModalOpen(true);
+          }}
+        >
           <Plus size={16} />
         </div>
       </div>
-    </div>
 
+      {openCarrinho && (
+        <Carrinho
+        produtosSelecionados={produtosSelecionados}
+        setProdutos={setProdutos}
+        setProdutosSelecionados={setProdutosSelecionados}
+        setOpenCarrinho={setOpenCarrinho}
+      />
+      )}
+    </div>
   );
 };
