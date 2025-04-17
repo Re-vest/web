@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import modalProduto from "../styles/ModalProduto.module.css";
 import PickList from "./picklist";
@@ -6,6 +6,7 @@ import { Input } from "./Input";
 import { Button } from "./Button";
 import api from "../api";
 import FormData from "form-data";
+import { UserContext } from "../Contexts/UserContext";
 
 Modal.setAppElement("#root");
 
@@ -44,6 +45,8 @@ const CadastroProdutoModal = ({
     { label: "Oculto", value: "OCULTO" }
   ];
 
+  const { user, setUser } = useContext(UserContext)
+
   const [nome, setNome] = useState(editar.nome);
   const [descricao, setDescricao] = useState(editar.descricao ? editar.descricao : "");
   const [tipo, setTipo] = useState(editar.tipo);
@@ -63,7 +66,6 @@ const CadastroProdutoModal = ({
 
   const handleImageUpload = (event) => {
     setImages(event.target.files[0]);
-    console.log(event.target.files[0]);
   };
 
   const removeImage = () => {
@@ -121,12 +123,6 @@ const CadastroProdutoModal = ({
       (opcao) => opcao.label === categoria || opcao.value === categoria
     ).value;
 
-    console.log(`
-      valorTipo: ${valorTipo}
-      valorStatus: ${valorStatus}
-      valorCategoria: ${valorCategoria}
-    `);
-
     // Lógica de criação ou atualização do produto
     if (!editar.id) {
       const newProduct = {
@@ -141,10 +137,7 @@ const CadastroProdutoModal = ({
         tamanho
       };
       swal("Sucesso", "Produto cadastrado com sucesso", "success");
-
-
-      console.log(newProduct);
-
+      
       const formData = new FormData();
       formData.append(
         "produto",
@@ -155,7 +148,6 @@ const CadastroProdutoModal = ({
       formData.append("arquivo", images);
 
       try {
-        // const response = await api.postForm(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData)
         const response = await api.post(
           `/produtos?idUsuario=${sessionStorage.ID_USER}`,
           formData,
@@ -179,7 +171,6 @@ const CadastroProdutoModal = ({
         console.log(e);
       }
     } else {
-      console.log(images);
 
       const updateProduct = {
         nome,

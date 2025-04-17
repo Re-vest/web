@@ -194,6 +194,7 @@
 .eventoCarrinho{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 5px;
 }
 
@@ -217,7 +218,7 @@
   .inventory-container {
     width: 85%;
   padding: 0;
-    margin: 20px 0 0 96px;
+    margin: 20px auto;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
@@ -364,6 +365,10 @@
 }
 
 @media (min-width: 768px) {
+  .inventory-container {
+    margin: 20px 100px;
+  }
+
   .header {
     flex-direction: row;
   }

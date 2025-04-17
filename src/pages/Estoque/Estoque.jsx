@@ -15,6 +15,7 @@ import { NavbarMobile } from "../../components/NavbarMobile";
 import { CardProduto } from "../../components/CardProduto";
 import Select from "react-select";
 import notFound from "../../assets/notFound.png";
+import { Carrinho } from '../../components/Carrinho';
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -107,7 +108,6 @@ export const Estoque = () => {
             setEventos(opcoesCarrinhos);
             setEventoSelecionado(opcoesCarrinhos[0]);
           }
-          //console.log(eventos);
         });
       } catch (e) {
         console.log(e);
@@ -315,44 +315,12 @@ export const Estoque = () => {
       </div>
 
       {openCarrinho && (
-        <div className={estoque["carrinho"]}>
-          <div className={estoque["produtosCarrinho"]}>
-            {produtosSelecionados.map((product) => (
-              <CardProduto
-                key={product.id}
-                image={product.imagem ? product.imagem.urlImagem : notFound}
-                nome={product.nome}
-                preco={product.preco.toFixed(2)}
-              />
-            ))}
-          </div>
-          <div className={estoque["informacaoCarrinho"]}>
-            <div className={estoque["eventoCarrinho"]}>
-              <span>Evento:</span>
-              <div className="w-1/2">
-                <Select
-                  value={eventoSelecionado}
-                  placeholder="Selecionar"
-                  onChange={(e) => setEventoSelecionado(e)}
-                  options={eventos}
-                  styles={{ width: "100%" }}
-                />
-              </div>
-            </div>
-            <div className={estoque["valorCarrinho"]}>
-              <span>Valor Total:</span>
-              <span>R$ {totalCarrinho.toFixed(2)}</span>
-            </div>
-            <div className={estoque["finalCarrinho"]}>
-              <Button
-                text={"Registrar Venda"}
-                onClick={() => realizarVenda(false)}
-                secondary
-              />
-              <Button text={"Cancelar"} onClick={() => cancelarVenda(false)} />
-            </div>
-          </div>
-        </div>
+        <Carrinho
+        produtosSelecionados={produtosSelecionados}
+        setProdutos={setProdutos}
+        setProdutosSelecionados={setProdutosSelecionados}
+        setOpenCarrinho={setOpenCarrinho}
+      />
       )}
     </div>
   );
