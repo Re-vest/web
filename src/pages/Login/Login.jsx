@@ -43,6 +43,12 @@ const Login = () => {
 
       navigate("/dashboard");
     } catch (e) {
+      swal("Erro", "Usuário ou senha inválidos", "error", {
+        timer: 1000,
+        button: {
+          visible: false,
+        },
+      });
       console.log(e);
     }
   }

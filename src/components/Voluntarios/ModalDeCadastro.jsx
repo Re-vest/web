@@ -31,7 +31,7 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
       setMensagemErro("Por favor, preencha todos os campos!");
       return;
     }
-
+      
      // Limpa a mensagem de erro se tudo estiver preenchido
     setMensagemErro("");
   
@@ -50,11 +50,20 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
         const response = await api.post("/usuarios", addVoluntario)
 
         setVoluntarios(prev => [...prev, response.data]);
+        swal("Sucesso", "Voluntário cadastrado com sucesso", "success", {
+          timer: 1000,
+          button: {
+            visible: false,
+          }});
       } catch(e) {
         swal("Erro ao cadastrar", e.response.data, "error");
 
         console.log(e);
-        
+        swal("Erro", "Erro ao cadastra voluntário", "error", {
+          timer: 1000,
+          button: {
+            visible: false,
+          }});
       }
   
     } else {
@@ -80,6 +89,11 @@ const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntario
         });
     
         setVoluntarios(voluntarioEditado);
+        swal("Sucesso", "Voluntário editado com sucesso", "success", {
+          timer: 1000,
+          button: {
+            visible: false,
+          }});
       } catch(e) {
         console.log(e);
         

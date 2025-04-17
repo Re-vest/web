@@ -179,7 +179,12 @@ export const Estoque = () => {
 
   const realizarVenda = async () => {
     if (produtosSelecionados.length === 0) {
-      swal("Erro", "Selecione ao menos um produto para realizar a venda", "error");
+      swal("Erro", "Selecione ao menos um produto para realizar a venda", "error", {
+        timer: 1000,
+        button: {
+          visible: false,
+        },
+      });
       return;
     }
 
@@ -205,10 +210,20 @@ export const Estoque = () => {
         setProdutosSelecionados([]);
         setOpenCarrinho(false);
 
-        swal("Venda Confirmada", "Você realizou uma venda com sucesso!", "success");
+        swal("Venda Confirmada", "Você realizou uma venda com sucesso!", "success", {
+          timer: 1500,
+          button: {
+            visible: false,
+          },
+        });
       }
     } catch (error) {
-        swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error");
+        swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error", {
+          timer: 1500,
+          button: {
+            visible: false,
+          },
+        });
     }
   };
 
