@@ -67,8 +67,20 @@ const CadastroProdutoModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (event) => {
-    setImages(event.target.files[0]);
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const maxSizeInMB = 25;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+  
+    if (file.size > maxSizeInBytes) {
+      swal("Erro", `A imagem deve ter no máximo ${maxSizeInMB}MB`, "error");
+      return;
+    }
+  
+    setImages(file);
   };
+  
 
   const removeImage = () => {
     setImages(null);

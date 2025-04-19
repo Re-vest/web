@@ -1,5 +1,5 @@
 // src/pages/Estoque.js
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import estoque from "../../styles/estoque.module.css";
 import { Header } from "../../components/Estoque/Header";
@@ -15,7 +15,7 @@ import { NavbarMobile } from "../../components/NavbarMobile";
 import { CardProduto } from "../../components/CardProduto";
 import Select from "react-select";
 import notFound from "../../assets/notFound.png";
-import { Carrinho } from '../../components/Carrinho';
+import { Carrinho } from "../../components/Carrinho";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -119,6 +119,7 @@ export const Estoque = () => {
     setFiltredOptions(
       produtos.filter((product) => {
         const matchesSearchTerm =
+          product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
           String(product.id).toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -179,12 +180,17 @@ export const Estoque = () => {
 
   const realizarVenda = async () => {
     if (produtosSelecionados.length === 0) {
-      swal("Erro", "Selecione ao menos um produto para realizar a venda", "error", {
-        timer: 1000,
-        button: {
-          visible: false,
-        },
-      });
+      swal(
+        "Erro",
+        "Selecione ao menos um produto para realizar a venda",
+        "error",
+        {
+          timer: 1000,
+          button: {
+            visible: false,
+          },
+        }
+      );
       return;
     }
 
@@ -210,20 +216,30 @@ export const Estoque = () => {
         setProdutosSelecionados([]);
         setOpenCarrinho(false);
 
-        swal("Venda Confirmada", "Você realizou uma venda com sucesso!", "success", {
-          timer: 1500,
-          button: {
-            visible: false,
-          },
-        });
+        swal(
+          "Venda Confirmada",
+          "Você realizou uma venda com sucesso!",
+          "success",
+          {
+            timer: 1500,
+            button: {
+              visible: false,
+            },
+          }
+        );
       }
     } catch (error) {
-        swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error", {
+      swal(
+        "Erro",
+        "Ocorreu um erro ao realizar a venda, selecione um evento",
+        "error",
+        {
           timer: 1500,
           button: {
             visible: false,
           },
-        });
+        }
+      );
     }
   };
 
@@ -270,26 +286,34 @@ export const Estoque = () => {
           <table className={estoque["inventory-table"]}>
             <Header setProdutos={setProdutos} />
             <tbody>
-              {filtredOptions.map((product) => (
-                <LinhaProduto
-                  product={product}
-                  key={product.id}
-                  id={product.id}
-                  nome={product.nome}
-                  descricao={product.descricao}
-                  preco={product.preco}
-                  categoria={product.categoria}
-                  status={product.status}
-                  editar={setEditar}
-                  modalEditar={setModalOpen}
-                  setProdutos={setProdutos}
-                  produtos={produtos}
-                  desfazer={desfazer}
-                  setDesfazer={setDesfazer}
-                  produtosSelecionados={produtosSelecionados}
-                  setProdutosSelecionados={setProdutosSelecionados}
-                />
-              ))}
+              {[...filtredOptions]
+                .sort((a, b) => {
+                  if (a.status === "VENDIDO" && b.status !== "VENDIDO")
+                    return 1;
+                  if (a.status !== "VENDIDO" && b.status === "VENDIDO")
+                    return -1;
+                  return 0;
+                })
+                .map((product) => (
+                  <LinhaProduto
+                    product={product}
+                    key={product.id}
+                    id={product.id}
+                    nome={product.nome}
+                    descricao={product.descricao}
+                    preco={product.preco}
+                    categoria={product.categoria}
+                    status={product.status}
+                    editar={setEditar}
+                    modalEditar={setModalOpen}
+                    setProdutos={setProdutos}
+                    produtos={produtos}
+                    desfazer={desfazer}
+                    setDesfazer={setDesfazer}
+                    produtosSelecionados={produtosSelecionados}
+                    setProdutosSelecionados={setProdutosSelecionados}
+                  />
+                ))}
             </tbody>
           </table>
         </div>
@@ -316,11 +340,11 @@ export const Estoque = () => {
 
       {openCarrinho && (
         <Carrinho
-        produtosSelecionados={produtosSelecionados}
-        setProdutos={setProdutos}
-        setProdutosSelecionados={setProdutosSelecionados}
-        setOpenCarrinho={setOpenCarrinho}
-      />
+          produtosSelecionados={produtosSelecionados}
+          setProdutos={setProdutos}
+          setProdutosSelecionados={setProdutosSelecionados}
+          setOpenCarrinho={setOpenCarrinho}
+        />
       )}
     </div>
   );

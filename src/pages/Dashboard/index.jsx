@@ -175,7 +175,7 @@ export function Dashboard() {
       getQuantidadeVendaEvento()
     }
 
-  }, [currentIndex]);
+  }, [events, currentIndex]);
 
   const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
 

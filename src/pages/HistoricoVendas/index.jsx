@@ -19,7 +19,11 @@ export const HistoricoVendas = () => {
 
   const gerarRelatorio = async () => {
     await api.get("/relatorio")
-    alert("Relatório gerado na pasta Downloads")
+    swal({
+      title: "Relatório gerado na pasta Downloads",
+      icon: "success",
+      button: "OK",
+    });
   }
 
   const [busca, setBusca] = useState(""); //busca dos registros pelo input
