@@ -56,7 +56,7 @@ export function Dashboard() {
     const response = await api.get(`vendas/valor-vendas-dia?eventoId=${events[currentIndex].id}`)
 
     if(response.status === 200) {
-      setTotalArrecadado(response.data)
+        setTotalArrecadado(response.data)
     } else {
 
       setTotalArrecadado(0.0)
@@ -145,7 +145,7 @@ export function Dashboard() {
 
       let events = response.data.map((event) => {
         event.dataInicio = formatStringToDate(event.dataInicio);
-        event.dataFim = new formatStringToDate(event.dataFim);
+        event.dataFim = formatStringToDate(event.dataFim);
         return event;
       });
 
@@ -175,7 +175,7 @@ export function Dashboard() {
       getQuantidadeVendaEvento()
     }
 
-  }, [currentIndex]);
+  }, [events, currentIndex]);
 
   const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
 

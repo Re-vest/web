@@ -52,28 +52,34 @@ export function Carrinho({
       return;
     }
 
+    let dataSelecionada = date;
+    dataSelecionada.setHours(0,0,0,0)
+    console.log(dataSelecionada);
+
+    let dataAtual = new Date();
+    dataAtual.setHours(0,0,0,0)
+
+    let dateInicioEvento = new Date(eventoSelecionado.dataInicio + "T00:00:00")
+
+    let dateFimEvento = new Date(eventoSelecionado.dataFim + "T00:00:00")
+
     if(eventoSelecionado.value === null || eventoSelecionado.value === undefined) {
       swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error");
       return
     }
 
-    if (date == null) {
+    if (dataSelecionada == null) {
       swal("Erro", "Selecione uma data", "error");
       return;
     }
 
-    if (date > new Date()) {
+    if (dataSelecionada > dataAtual) {
       swal("Erro", "Não pode selecionar uma data futura", "error");
       return
     }
 
-    if (date <= new Date(eventoSelecionado.dataInicio) || date >= new Date(eventoSelecionado.dataFim)) {
+    if (dataSelecionada < dateInicioEvento || dataSelecionada > dateFimEvento) {
       swal("Erro", "A data selecionada está fora do intervalo de tempo do evento", "error");
-      return
-    }
-
-    if (new Date() > new Date(eventoSelecionado.dataFim)) {
-      swal("Erro", "Evento já passou", "error");
       return
     }
 
@@ -126,9 +132,7 @@ export function Carrinho({
   };
 
 
-  let dateFim = new Date(eventoSelecionado.dataFim)
-  dateFim.setDate(dateFim.getDate() + 1)
-  dateFim.setHours(0)
+  
 
   return (
     <div className={estoque["carrinho"]}>
