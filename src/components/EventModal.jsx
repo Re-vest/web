@@ -152,7 +152,9 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
   }
 
   async function deleteEvent() {
+    try{
     await api.delete(`/eventos/${event.id}?idUsuario=${sessionStorage.ID_USER}`)
+
 
     setEvents(
       events.filter(ev => ev.id !== event.id)
@@ -161,9 +163,13 @@ export function EventModal({ setIsModalOpen, date, event, events, setEvents }) {
       timer: 1000,
       button: {
         visible: false,
-      }}) ,
-    exit()
+      }})
+    }
+  catch(e) {
+    swal("Erro", "Esse evento já esta associado a uma venda.", "warning");
   }
+  exit()
+}
 
   return (
     <div className="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-[1000]">
