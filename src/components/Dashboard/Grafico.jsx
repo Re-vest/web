@@ -25,7 +25,7 @@
 
     const series = [
       {
-        name: "Quantidade de Vendas",
+        name: "Quantidade de Produtos Vendidos",
         data: vendas.map(venda => venda[1])
       },
     ]

@@ -15,7 +15,7 @@ export function NavbarMobile() {
   }
 
   return (
-    <div className="z-[1000] fixed w-full bottom-0 h-14 bg-gradient-to-b from-[#0D35FE] to-[#5CC3FF] flex items-center" id="Navbar">
+    <div className="z-[1000] fixed w-full bottom-0 h-14 bg-[#0D35FE] flex items-center" id="Navbar">
       <a href="/dashboard" className="w-full h-full flex justify-center items-center py-5 cursor-pointer hover:bg-white text-white hover:text-black">
         <AlignEndHorizontal className="w-5" />
       </a>

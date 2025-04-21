@@ -35,13 +35,11 @@
   
   .volunteer-list thead th {
     background-color: #f1f1f1; 
-    padding: 10px;
     text-align: center;
   }
   
   .volunteer-list th,
   .volunteer-list td {
-    padding: 10px;
     /* text-align: center; */
     border-bottom: 1px solid #ddd;
   }
@@ -150,7 +148,7 @@
     box-shadow: #e3e3e3 0 0 5px 0;
   }
 
-  @media (min-width: 360px) {
+  @media (min-width: 360px) { 
     .recentActivities {
       display: none;
     }
