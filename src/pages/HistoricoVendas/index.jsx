@@ -50,7 +50,8 @@ export const HistoricoVendas = () => {
   const gerarRelatorio = async () => {
     try {
       await api.get("/relatorio")
-      
+      swal('Sucesso', 'Relatório exportado para a pasta download','success');
+
       
     } catch(e) {
       swal('Erro', 'Houve um erro ao gerar o relatório','error');

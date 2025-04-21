@@ -9,12 +9,12 @@ export const FerramentasHeader = ({ setBusca, gerarRelatorio, eventos, handleFil
   return (
     <div className='flex items-center gap-10 z-[100]'>
         <Input 
-          placeholder="Pesquisa..."
+          placeholder="Pesquisar produto"
           icon={<Search w-full/>}
           onChange={setBusca}
         />
 
-        <Select className="w-full" options={eventos} onChange={e => handleFilterChange(e)} />
+        <Select placeholder="Eventos" className="w-full" options={eventos} onChange={e => handleFilterChange(e)} />
       <div className="hidden md:flex gap-3">
 
         <Button text={"Exportar Relatório"} onClick={gerarRelatorio} icon={<Download size={24} />} />
