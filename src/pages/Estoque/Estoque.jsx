@@ -10,11 +10,7 @@ import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { Plus } from "lucide-react";
-import { Button } from "../../components/Button";
 import { NavbarMobile } from "../../components/NavbarMobile";
-import { CardProduto } from "../../components/CardProduto";
-import Select from "react-select";
-import notFound from "../../assets/notFound.png";
 import { Carrinho } from "../../components/Carrinho";
 
 export const Estoque = () => {
@@ -46,8 +42,8 @@ export const Estoque = () => {
     {
       label: "Categoria",
       options: [
-        { label: "Roupas", value: "ROUPAS" },
-        { label: "Acessórios", value: "ACESSORIOS" },
+        { label: "Roupa", value: "ROUPA" },
+        { label: "Acessório", value: "ACESSORIO" },
       ],
     },
     {
@@ -129,7 +125,7 @@ export const Estoque = () => {
 
         const matchesCategoria =
           selectedFilters.categoria.length === 0 ||
-          selectedFilters.categoria.includes(product.categoria.toLowerCase());
+          selectedFilters.categoria.includes(opcoesCategoria.filter(cat => product.categoria === cat.label)[0].value);
 
         const matchesValor =
           selectedFilters.valor.length === 0 ||

@@ -85,7 +85,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: 50px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -133,6 +132,18 @@
   
   .esquerdo, .direito {
     width: 100%;
+  }
+
+  .vendas {
+    display: flex;
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   }
 
 }

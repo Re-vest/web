@@ -12,18 +12,49 @@ import api from "../../api";
 import { Download } from "lucide-react/dist/cjs/lucide-react";
 import { NavbarMobile } from "../../components/NavbarMobile";
 import { UserContext } from "../../Contexts/UserContext";
+import { ModalHistorico } from "../../components/HistoricoVendas/ModalHistorico";
 
 export const HistoricoVendas = () => {
   const [vendas, setVendas] = useState([]);
-  const { user } = useContext(UserContext)
+  const [eventos, setEventos] = useState([])
+  const [vendaSelecionada, setVendaSelecionada] = useState({})
+  const [modal, setModal] = useState(false)
+  const [optionsEvento, setOptionsEvento] = useState([{
+    label: '',
+    value: ''
+  }])
+  const [eventoSelecionado, setEventoSelecionado] = useState({})
+  const [filtredOptions, setFiltredOptions] = useState([]);
+
+  const handleFilterChange = (event) => {
+    const options = event;
+
+    setEventoSelecionado(event);
+  };
+
+  const getEvents = async () => {
+    const response = await api.get('eventos')
+
+    if(response.status === 200) {
+      response.data.map(event => {
+        setOptionsEvento(prev => [...prev, {
+          value: event.id,
+          label: event.titulo
+        }])
+      })
+
+      setEventos(response.data)
+    }
+  }
 
   const gerarRelatorio = async () => {
-    await api.get("/relatorio")
-    swal({
-      title: "Relatório gerado na pasta Downloads",
-      icon: "success",
-      button: "OK",
-    });
+    try {
+      await api.get("/relatorio")
+      
+      
+    } catch(e) {
+      swal('Erro', 'Houve um erro ao gerar o relatório','error');
+    }
   }
 
   const [busca, setBusca] = useState(""); //busca dos registros pelo input
@@ -35,32 +66,64 @@ export const HistoricoVendas = () => {
     try {
       const response = await api.get("/vendas")
 
-      if (response.status !== 204) setVendas(response.data)
+      
+      if (response.status !== 204) {
+        response.data.map(venda => {
+          venda.nomeEvento = eventos.find(event => event.id === venda.idEvento).titulo
+        })
+
+        setVendas(response.data)
+      }
 
     } catch (e) {
-      console.log(e);
-
     }
   })
 
   useEffect(() => {
-    if (!sessionStorage.TOKEN || user.perfil === 'CLIENTE') {
+    getEvents()
+  }, [])
+
+  useEffect(() => {
+    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
       navigate('/login')
     }
 
     getVendas()
-  }, [])
 
-  let VendasFiltradas = vendas.filter((venda) =>
+  }, [eventos])
 
-    String(venda.id).toLowerCase().includes(busca.toLowerCase()) ||
-    venda.carrinho[0].nome.toLowerCase().includes(busca.toLowerCase()) ||
-    venda.usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
-    venda.usuario.email.toLowerCase().includes(busca.toLowerCase())
+  // useEffect(() => {
+  //   setFiltredOptions(vendas.filter(venda => {
+  //     return 
+  //   }))
+  // }, [eventoSelecionado])
+
+  let VendasFiltradas = vendas.filter((venda) => {
+    const produtoExiste = busca
+      ? venda.carrinho.some(produto =>
+          produto.nome.toLowerCase().includes(busca.toLowerCase())
+        )
+      : true;
+
+    const emailConfere = busca
+      ? venda.usuario.email.toLowerCase() === busca.toLowerCase()
+      : true;
+
+    const eventoConfere = eventoSelecionado.value !== undefined
+      ? venda.idEvento === eventoSelecionado.value
+      : true;
+
+    return (produtoExiste || emailConfere) && eventoConfere;
+  }
   );
 
   return (
     <div className="h-full w-full flex">
+      {
+        modal && (
+          <ModalHistorico setModal={setModal} venda={vendaSelecionada} />
+        )
+      }
       <div className="hidden md:flex">
         <Navbar />
       </div>
@@ -75,6 +138,8 @@ export const HistoricoVendas = () => {
         <FerramentasHeader
           setBusca={setBusca}
           gerarRelatorio={gerarRelatorio}
+          eventos={optionsEvento}
+          handleFilterChange={handleFilterChange}
         />
 
         <div className="w-full overflow-x-scroll">
@@ -83,7 +148,7 @@ export const HistoricoVendas = () => {
           <tbody>
 
             {VendasFiltradas.map((venda) => (
-              <RegistroVenda key={venda.id} venda={venda} />
+              <RegistroVenda key={venda.id} venda={venda} setVendaSelecionada={setVendaSelecionada} setModal={setModal} />
             ))}
 
           </tbody>

@@ -18,9 +18,7 @@ export function Dashboard() {
   const navigate = useNavigate();
   const [climaPorDia, setClimaPorDia] = useState([]);
   const [events, setEvents] = useState([]);
-  const [city, setCity] = useState("");
   const [categoriaMaisVendida, setCategoriaMaisVendida] = useState();
-  const [semana, setSemana] = useState([]);
   const [totalArrecadado, setTotalArrecadado] = useState(0.0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [atividades, setAtividade] = useState([]);
@@ -28,23 +26,41 @@ export function Dashboard() {
   const [totalVendido, setTotalVendido] = useState(0);
   const [totalVendidoEvento, setTotalVendidoEvento] = useState(0);
   const [valorTotalEvento, setValorTotalEvento] = useState(0.0);
+  const [ticketMedio, setTicketMedio] = useState(0.0);
 
   const getQuantidadeVendaDia = async () => {
 
     const response = await api.get(`vendas/quantidade-vendas-dia?eventoId=${events[currentIndex].id}`)
 
-    if(response.status === 200) {
+    if (response.status === 200) {
       setTotalVendido(response.data)
     } else {
       setTotalVendido(0)
     }
   }
 
+  const getTicketMedio = async () => {
+
+    try {
+
+      const response = await api.get(`vendas/ticket-medio-evento?eventoId=${events[currentIndex].id}`)
+
+      if (response.status === 200) {
+        setTicketMedio(response.data.toFixed(2))
+      } else {
+        setTotalVendido(0)
+      }
+    } catch (e) {
+      setTicketMedio(0)
+    }
+
+  }
+
   const getQuantidadeVendaEvento = async () => {
 
     const response = await api.get(`vendas/quantidade-vendas-evento?eventoId=${events[currentIndex].id}`)
 
-    if(response.status === 200) {
+    if (response.status === 200) {
       setTotalVendidoEvento(response.data)
     } else {
       setTotalVendidoEvento(0)
@@ -55,8 +71,8 @@ export function Dashboard() {
 
     const response = await api.get(`vendas/valor-vendas-dia?eventoId=${events[currentIndex].id}`)
 
-    if(response.status === 200) {
-        setTotalArrecadado(response.data)
+    if (response.status === 200) {
+      setTotalArrecadado(response.data)
     } else {
 
       setTotalArrecadado(0.0)
@@ -67,7 +83,7 @@ export function Dashboard() {
 
     const response = await api.get(`vendas/valor-vendas-evento?eventoId=${events[currentIndex].id}`)
 
-    if(response.status === 200) {
+    if (response.status === 200) {
       setValorTotalEvento(response.data)
     } else {
 
@@ -77,6 +93,7 @@ export function Dashboard() {
 
   const getWeather = async () => {
     try {
+
       api.get("/api").then((response) => {
         response.data.results.forecast.splice(-2);
         setTimeout(() => {
@@ -96,7 +113,7 @@ export function Dashboard() {
     try {
       const response = await api.get(`/vendas/categoria-mais-vendida?eventoId=${events[currentIndex].id}`);
       console.log(response.data);
-      
+
       if (response.status === 200) setCategoriaMaisVendida(response.data[0].categoria);
       else setCategoriaMaisVendida('')
     } catch (e) {
@@ -156,13 +173,18 @@ export function Dashboard() {
   }
 
   useEffect(() => {
-    /*if(!sessionStorage.TOKEN || sessionStorage.PERFIL === 'CLIENTE') {
-        navigate('/login')
-      }*/
+
+    if (!sessionStorage.TOKEN) {
+      console.log('token');
+      navigate('/login')
+    }
+
+    console.log(sessionStorage.TOKEN);
 
     getWeather();
     getEvents();
     getHistorico();
+
   }, []);
 
   useEffect(() => {
@@ -173,13 +195,14 @@ export function Dashboard() {
       getValorVendaDia()
       getValorVendaNoEvento()
       getQuantidadeVendaEvento()
+      getTicketMedio()
     }
 
   }, [events, currentIndex]);
 
   const urlSvg = "https://assets.hgbrasil.com/weather/icons/conditions/";
 
-  let ticketMedio = isNaN(valorTotalEvento / totalVendidoEvento) ? (0).toFixed(2) : (valorTotalEvento / totalVendidoEvento).toFixed(2)
+  // let ticketMedio = isNaN(valorTotalEvento / totalVendidoEvento) ? (0).toFixed(2) : (valorTotalEvento / totalVendidoEvento).toFixed(2)
 
   return (
     <div>
@@ -212,9 +235,9 @@ export function Dashboard() {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        <header className="flex justify-between items-center mx-[8%] font-bold text-2xl mt-12">
-          <h1 className="text-center sm:text-left">Dashboard</h1>
-          <div className="flex items-center gap-4">
+        <header className="flex justify-between items-center font-bold text-2xl mt-12 px-4 md:px-28">
+          <h1 className="hidden md:flex text-center sm:text-left">Dashboard</h1>
+          <div className="w-full md:w-auto flex justify-between md:justify-normal items-center gap-4">
             <h1 className="text-nowrap">Olá, {sessionStorage.NAME}</h1>
             <Bell
               size={30}
@@ -224,7 +247,7 @@ export function Dashboard() {
           </div>
         </header>
 
-        <div className={dash["container"]}>
+        <div className='flex flex-col md:flex-row justify-between px-4 gap-12 md:px-28'>
           <div className={dash["esquerdo"]}>
             <CarrouselEvents
               events={events}
@@ -234,7 +257,7 @@ export function Dashboard() {
             <span>
               Performance de <strong>Bazar - Instituto Betel</strong> Hoje
             </span>
-            <div className={dash["card-informacoes"]}>
+            <div className='grid grid-cols-2 gap-5 md:gap-0 md:flex flex-col items-center justify-center md:justify-between md:flex-row'>
               <CardDash
                 icon={<ShoppingBasket />}
                 title={"Total de Vendas"}
@@ -283,8 +306,8 @@ export function Dashboard() {
                 {/* <p>1,7% a mais que na última edição</p> */}
               </div>
 
-              <div className={dash["categoria"]}>
-                <p>   
+              <div className={dash["vendas"]}>
+                <p>
                   Ticket Médio
                 </p>
                 <h2>R$  {ticketMedio}</h2>

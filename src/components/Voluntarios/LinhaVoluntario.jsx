@@ -13,7 +13,7 @@ export const Voluntario = ({
   
 
   return (
-    <tr>
+    <tr className="h-12">
       <td>{id}</td>
       <td>{nome}</td>
       <td>{permissao}</td>
