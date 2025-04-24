@@ -12,7 +12,6 @@ export function Footer() {
       <div className='flex gap-8 items-center'>
       <img src={Email} alt="asd" />
 
-
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Endereço</span>
           <p className='text-lg'>Rua Haddock Lobo, 595 São Paulo - SP</p>
@@ -24,7 +23,7 @@ export function Footer() {
 
         <div className='flex flex-col'>
           <span className='font-bold text-2xl'>Contato</span>
-          <p className='text-lg'>(11) xxxxx-xxxx</p>
+          <p className='text-lg'>(11) 98147-2690</p>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
 // public/config.js
 window.env = {
-  VITE_BACK_END: "http://localhost:8080"
+  VITE_BACK_END: "http://localhost:8080/api"
 }
