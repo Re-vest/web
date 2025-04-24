@@ -54,7 +54,7 @@ export function CalendarPage() {
         console.log(e);
       }
     }
-  }, [events]);
+  }, []);
 
   const exampleEvent = {
     id: null,
