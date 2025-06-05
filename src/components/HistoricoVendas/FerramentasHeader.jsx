@@ -11,6 +11,7 @@ export const FerramentasHeader = ({ setBusca, gerarRelatorio, eventos, handleFil
         <Input 
           placeholder="Pesquisar produto"
           icon={<Search w-full/>}
+          
           onChange={setBusca}
         />
 

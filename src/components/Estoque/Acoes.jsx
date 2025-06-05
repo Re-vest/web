@@ -82,7 +82,7 @@ const opcoesCategoria = [
           )}
         <Button
           text={"Adicionar Produto"}
-          icon={<Plus size={24} />}
+          icon={<Plus size={20} />}
           onClick={onClick}
         />
 
