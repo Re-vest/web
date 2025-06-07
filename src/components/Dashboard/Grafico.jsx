@@ -15,7 +15,7 @@
       xaxis: {
         categories: vendas.map(venda => new Date(venda[0] + 'T00:00:00').toLocaleDateString('pt-BR')),
       },
-      colors: ['#0D35FE'],
+      colors: ['#1F2937'],
       plotOptions: {
         bar: {
           columnWidth: '50',  

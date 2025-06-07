@@ -58,6 +58,17 @@ export const HistoricoVendas = () => {
     }
   }
 
+    const gerarExcel = async () => {
+    try {
+      await api.get("/excel")
+      swal('Sucesso', 'Planilha exportada para a pasta download','success');
+
+      
+    } catch(e) {
+      swal('Erro', 'Houve um erro ao gerar a planilha','error');
+    }
+  }
+
   const [busca, setBusca] = useState(""); //busca dos registros pelo input
 
   const navigate = useNavigate()
@@ -139,6 +150,7 @@ export const HistoricoVendas = () => {
         <FerramentasHeader
           setBusca={setBusca}
           gerarRelatorio={gerarRelatorio}
+          gerarExcel={gerarExcel}
           eventos={optionsEvento}
           handleFilterChange={handleFilterChange}
         />
@@ -162,6 +174,12 @@ export const HistoricoVendas = () => {
           className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden"
           onClick={gerarRelatorio}
         >
+          <div
+          className="absolute bottom-14 right-0 p-5 bg-yellow-500 rounded-full md:hidden"
+          onClick={gerarExcel}
+        ></div>
+
+        
           <Download size={16} />
         </div>
       </div>
