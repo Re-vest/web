@@ -56,14 +56,14 @@ export function CalendarPage() {
     }
   }, []);
 
-  const exampleEvent = {
-    id: null,
-    titulo: "",
-    dataInicio: new Date(),
-    dataFim: new Date(),
-    descricao: "",
-    cor: "#000",
-  };
+  useEffect(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const futureEvents = events.filter((e) => e.dataFim >= today);
+    
+    setEventosFuturos(futureEvents)
+  }, [events])
 
   const [eventOnModal, setEventOnModal] = useState({});
 
