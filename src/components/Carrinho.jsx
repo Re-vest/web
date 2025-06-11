@@ -51,16 +51,16 @@ export function Carrinho({
       swal("Erro", "Selecione ao menos um produto para realizar a venda", "error");
       return;
     }
-
+    
     let dataSelecionada = date;
     dataSelecionada.setHours(0,0,0,0)
     console.log(dataSelecionada);
-
+    
     let dataAtual = new Date();
     dataAtual.setHours(0,0,0,0)
-
+    
     let dateInicioEvento = new Date(eventoSelecionado.dataInicio + "T00:00:00")
-
+    
     let dateFimEvento = new Date(eventoSelecionado.dataFim + "T00:00:00")
 
     if(eventoSelecionado.value === null || eventoSelecionado.value === undefined) {
@@ -89,7 +89,7 @@ export function Carrinho({
         {
           produtosId: produtosSelecionados.map((produto) => produto.id),
           idEvento: eventoSelecionado.value,
-          idVendedor: sessionStorage.ID_USER,
+          idVendedor: Number(sessionStorage.ID_USER),
           date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2, '0')}`
         },
         {
