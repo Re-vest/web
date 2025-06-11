@@ -41,7 +41,11 @@ const Login = () => {
         return;
       }
 
-      navigate("/dashboard");
+      setTimeout(() => {
+        navigate("/dashboard");
+
+      }, 2000)
+
     } catch (e) {
       swal("Erro", "Usuário ou senha inválidos", "error", {
         timer: 1000,

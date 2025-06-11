@@ -12,13 +12,10 @@ import api from "../../api";
 Modal.setAppElement("#root");
 
 const CadastroVoluntario = ({isOpen, onClose, setVoluntarios, editar, voluntarios }) => {
-  const [nome, setNome] = useState(editar.nome);
-  const [email, setEmail] = useState(editar.email);
-  const [senha, setSenha] = useState(editar.senha);
-  const [telefone, setTelefone] = useState(editar.telefone);
-  const [status, setStatus] = useState(editar.status);
-  const [permissao, setPermissao] = useState(editar.perfil);
-  
+  const [nome, setNome] = useState(editar.nome ? editar.nome : '');
+  const [email, setEmail] = useState(editar.email ? editar.email : '');
+  const [senha, setSenha] = useState(editar.senha ? editar.email : '');
+  const [permissao, setPermissao] = useState(editar.perfil ? editar.perfil : '');
 
   const [mensagemErro, setMensagemErro] = useState("");
 

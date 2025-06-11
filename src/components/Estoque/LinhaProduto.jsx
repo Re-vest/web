@@ -57,15 +57,19 @@ export const LinhaProduto = ({
         <td>{preco.toFixed(2)}</td>
         <td>{categoria}</td>
         <td>
-          <Modal
-            desfazer={desfazer}
-            setDesfazer={setDesfazer}
-            product={product}
-            editar={editar}
-            modalEditar={modalEditar}
-            setProdutos={setProdutos}
-            produtos={produtos}
-          />
+          {
+            product.status !== 'VENDIDO' && (
+              <Modal
+                desfazer={desfazer}
+                setDesfazer={setDesfazer}
+                product={product}
+                editar={editar}
+                modalEditar={modalEditar}
+                setProdutos={setProdutos}
+                produtos={produtos}
+              />
+            )
+          }
         </td>
       </tr>
     </>

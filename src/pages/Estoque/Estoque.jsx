@@ -1,5 +1,5 @@
 // src/pages/Estoque.js
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import estoque from "../../styles/estoque.module.css";
 import { Header } from "../../components/Estoque/Header";
@@ -10,12 +10,8 @@ import CadastroProdutoModal from "../../components/ModalProduto";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { Plus } from "lucide-react";
-import { Button } from "../../components/Button";
 import { NavbarMobile } from "../../components/NavbarMobile";
-import { CardProduto } from "../../components/CardProduto";
-import Select from "react-select";
-import notFound from "../../assets/notFound.png";
-import { Carrinho } from '../../components/Carrinho';
+import { Carrinho } from "../../components/Carrinho";
 
 export const Estoque = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,8 +42,8 @@ export const Estoque = () => {
     {
       label: "Categoria",
       options: [
-        { label: "Roupas", value: "ROUPAS" },
-        { label: "Acessórios", value: "ACESSORIOS" },
+        { label: "Roupa", value: "ROUPA" },
+        { label: "Acessório", value: "ACESSORIO" },
       ],
     },
     {
@@ -119,6 +115,7 @@ export const Estoque = () => {
     setFiltredOptions(
       produtos.filter((product) => {
         const matchesSearchTerm =
+          product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
           String(product.id).toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -128,7 +125,7 @@ export const Estoque = () => {
 
         const matchesCategoria =
           selectedFilters.categoria.length === 0 ||
-          selectedFilters.categoria.includes(product.categoria.toLowerCase());
+          selectedFilters.categoria.includes(opcoesCategoria.filter(cat => product.categoria === cat.label)[0].value);
 
         const matchesValor =
           selectedFilters.valor.length === 0 ||
@@ -179,12 +176,17 @@ export const Estoque = () => {
 
   const realizarVenda = async () => {
     if (produtosSelecionados.length === 0) {
-      swal("Erro", "Selecione ao menos um produto para realizar a venda", "error", {
-        timer: 1000,
-        button: {
-          visible: false,
-        },
-      });
+      swal(
+        "Erro",
+        "Selecione ao menos um produto para realizar a venda",
+        "error",
+        {
+          timer: 1000,
+          button: {
+            visible: false,
+          },
+        }
+      );
       return;
     }
 
@@ -210,20 +212,30 @@ export const Estoque = () => {
         setProdutosSelecionados([]);
         setOpenCarrinho(false);
 
-        swal("Venda Confirmada", "Você realizou uma venda com sucesso!", "success", {
-          timer: 1500,
-          button: {
-            visible: false,
-          },
-        });
+        swal(
+          "Venda Confirmada",
+          "Você realizou uma venda com sucesso!",
+          "success",
+          {
+            timer: 1500,
+            button: {
+              visible: false,
+            },
+          }
+        );
       }
     } catch (error) {
-        swal("Erro", "Ocorreu um erro ao realizar a venda, selecione um evento", "error", {
+      swal(
+        "Erro",
+        "Ocorreu um erro ao realizar a venda, selecione um evento",
+        "error",
+        {
           timer: 1500,
           button: {
             visible: false,
           },
-        });
+        }
+      );
     }
   };
 
@@ -266,30 +278,38 @@ export const Estoque = () => {
           setOpenCarrinho={setOpenCarrinho}
         />
 
-        <div className="w-full overflow-x-scroll md:overflow-x-visible">
+        <div className="w-full overflow-x-scroll md:overflow-x-visible overflow-y-scroll">
           <table className={estoque["inventory-table"]}>
             <Header setProdutos={setProdutos} />
             <tbody>
-              {filtredOptions.map((product) => (
-                <LinhaProduto
-                  product={product}
-                  key={product.id}
-                  id={product.id}
-                  nome={product.nome}
-                  descricao={product.descricao}
-                  preco={product.preco}
-                  categoria={product.categoria}
-                  status={product.status}
-                  editar={setEditar}
-                  modalEditar={setModalOpen}
-                  setProdutos={setProdutos}
-                  produtos={produtos}
-                  desfazer={desfazer}
-                  setDesfazer={setDesfazer}
-                  produtosSelecionados={produtosSelecionados}
-                  setProdutosSelecionados={setProdutosSelecionados}
-                />
-              ))}
+              {[...filtredOptions]
+                .sort((a, b) => {
+                  if (a.status === "VENDIDO" && b.status !== "VENDIDO")
+                    return 1;
+                  if (a.status !== "VENDIDO" && b.status === "VENDIDO")
+                    return -1;
+                  return 0;
+                })
+                .map((product) => (
+                  <LinhaProduto
+                    product={product}
+                    key={product.id}
+                    id={product.id}
+                    nome={product.nome}
+                    descricao={product.descricao}
+                    preco={product.preco}
+                    categoria={product.categoria}
+                    status={product.status}
+                    editar={setEditar}
+                    modalEditar={setModalOpen}
+                    setProdutos={setProdutos}
+                    produtos={produtos}
+                    desfazer={desfazer}
+                    setDesfazer={setDesfazer}
+                    produtosSelecionados={produtosSelecionados}
+                    setProdutosSelecionados={setProdutosSelecionados}
+                  />
+                ))}
             </tbody>
           </table>
         </div>
@@ -316,11 +336,11 @@ export const Estoque = () => {
 
       {openCarrinho && (
         <Carrinho
-        produtosSelecionados={produtosSelecionados}
-        setProdutos={setProdutos}
-        setProdutosSelecionados={setProdutosSelecionados}
-        setOpenCarrinho={setOpenCarrinho}
-      />
+          produtosSelecionados={produtosSelecionados}
+          setProdutos={setProdutos}
+          setProdutosSelecionados={setProdutosSelecionados}
+          setOpenCarrinho={setOpenCarrinho}
+        />
       )}
     </div>
   );

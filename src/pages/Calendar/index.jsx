@@ -10,43 +10,48 @@ import { UserContext } from "../../Contexts/UserContext";
 export function CalendarPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [date, setDate] = useState("");
-  3;
   const [events, setEvents] = useState([]);
-
-  const navigate = useNavigate()
-  const { user } = useContext(UserContext)
+  const [eventosFuturos, setEventosFuturos] = useState([]);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if(!sessionStorage.TOKEN || user.perfil === 'CLIENTE') {
-      navigate('/login')
+    if (!sessionStorage.TOKEN || sessionStorage.PERFIL === "CLIENTE") {
+      navigate("/login");
     } else {
       try {
-
         api.get("/eventos", {}).then((response) => {
-          setEvents(
-            response.data.map((event) => {
-              const dataInicio = new Date(event.dataInicio);
-              dataInicio.setHours(0);
-              dataInicio.setDate(dataInicio.getDate() + 1);
-    
-              const dataFim = new Date(event.dataFim);
-              dataFim.setHours(0);
-              dataFim.setDate(dataFim.getDate() + 1);
-    
-              return {
-                id: event.id,
-                titulo: event.titulo,
-                descricao: event.descricao,
-                dataInicio: dataInicio,
-                dataFim: dataFim,
-                cor: event.cor,
-              };
-            })
-          );
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          const allEvents = response.data.map((event) => {
+            const dataInicio = new Date(event.dataInicio);
+            dataInicio.setHours(0);
+            dataInicio.setDate(dataInicio.getDate() + 1);
+
+            const dataFim = new Date(event.dataFim);
+            dataFim.setHours(0);
+            dataFim.setDate(dataFim.getDate() + 1);
+
+            return {
+              id: event.id,
+              titulo: event.titulo,
+              descricao: event.descricao,
+              dataInicio,
+              dataFim,
+              cor: event.cor,
+            };
+          });
+
+          // Divide os eventos
+          const futureEvents = allEvents.filter((e) => e.dataFim >= today);
+
+          // Armazena todos os eventos
+          setEvents(allEvents);
+          setEventosFuturos(futureEvents);  
         });
       } catch (e) {
         console.log(e);
-        
       }
     }
   }, []);
@@ -70,12 +75,12 @@ export function CalendarPage() {
   return (
     <div className="h-full w-full flex flex-col lg:flex-row">
       <div className="hidden md:flex">
-              <Navbar />
-            </div>
-      
-            <div className="flex md:hidden">
-              <NavbarMobile />
-            </div>
+        <Navbar />
+      </div>
+
+      <div className="flex md:hidden">
+        <NavbarMobile />
+      </div>
 
       {isModalOpen && (
         <EventModal
@@ -88,13 +93,15 @@ export function CalendarPage() {
       )}
 
       <div className="w-full h-full flex flex-col lg:flex-row md:justify-between pt-10 pl-0 md:pl-16 md:ml-10 ">
-        <div className="w-full md:w-60 text-center flex flex-col gap-5 overflow-y-scroll"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-        }}>
+        <div
+          className="w-full md:w-60 text-center flex flex-col gap-5 overflow-y-scroll"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+        >
           <h2 className="font-semibold text-2xl">Eventos</h2>
-          {events.map((event, index) => {
+          {eventosFuturos.map((event, index) => {
             const date = `${String(event.dataInicio.getDate()).padStart(
               2,
               "0"
@@ -102,6 +109,7 @@ export function CalendarPage() {
               2,
               "0"
             )}/${event.dataInicio.getFullYear()}`;
+
             return (
               <div
                 onClick={() => handleClickEvent(event)}

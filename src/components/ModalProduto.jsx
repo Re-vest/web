@@ -40,6 +40,8 @@ const CadastroProdutoModal = ({
   produtos,
 }) => {
 
+  
+
   const opcoesStatus = [
     { label: "Disponível", value: "DISPONIVEL" },
     { label: "Oculto", value: "OCULTO" }
@@ -56,7 +58,7 @@ const CadastroProdutoModal = ({
   const [tamanho, setTamanho] = useState(editar.tamanho);
   const [finalidade, setFinalidade] = useState(editar.finalidade);
   const [images, setImages] = useState(
-    editar.imagem ? editar.imagem.urlImagem : null
+    editar.imagem ? editar.imagem : null
   );
   const [condicaoProduto, setCondicaoProduto] = useState(
     editar.condicao ? editar.condicao : ""
@@ -65,8 +67,20 @@ const CadastroProdutoModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (event) => {
-    setImages(event.target.files[0]);
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const maxSizeInMB = 25;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+  
+    if (file.size > maxSizeInBytes) {
+      swal("Erro", `A imagem deve ter no máximo ${maxSizeInMB}MB`, "error");
+      return;
+    }
+  
+    setImages(file);
   };
+  
 
   const removeImage = () => {
     setImages(null);
@@ -172,6 +186,7 @@ const CadastroProdutoModal = ({
       }
     } else {
 
+
       const updateProduct = {
         nome,
         preco: parseFormattedPrice(preco),
@@ -182,9 +197,10 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         status: valorStatus,
         categoria: valorCategoria,
-      };
+        imagem: images
+      }
 
-      swal("Sucesso", "Produto atualizado com sucesso", "success");
+      console.log(updateProduct);
 
       try{
         const formData = new FormData();
@@ -195,7 +211,7 @@ const CadastroProdutoModal = ({
           })
         );
         formData.append('arquivo', images)
-
+        
         const response = await api.put(
           `/produtos/${editar.id}?idUsuario=${sessionStorage.ID_USER}`,
           formData,
@@ -205,25 +221,25 @@ const CadastroProdutoModal = ({
             },
           }
         );
-
+        
         setProdutos((prevProdutos) =>
           prevProdutos.map((produto) =>
             produto.id === response.data.id
               ? {
-                  ...response.data,
-                  tipo: opcoesTipo.find((opcao) => opcao.value === response.data.tipo)
-                    ?.label,
-                  categoria: opcoesCategoria.find(
-                    (opcao) => opcao.value === response.data.categoria
-                  )?.label,
-                  status: opcoesStatus.find((opcao) => opcao.value === response.data.status)
-                    ?.value,
-                }
+                ...response.data,
+                tipo: opcoesTipo.find((opcao) => opcao.value === response.data.tipo)
+                ?.label,
+                categoria: opcoesCategoria.find(
+                  (opcao) => opcao.value === response.data.categoria
+                )?.label,
+                status: opcoesStatus.find((opcao) => opcao.value === response.data.status)
+                ?.value,
+              }
               : produto
-          )
-        );  
-        
-        setProdutos(productsUpdated);
+            )
+          );  
+          
+          swal("Sucesso", "Produto atualizado com sucesso", "success");
       } catch (e) {
         console.log(e);
       }
@@ -246,7 +262,7 @@ const CadastroProdutoModal = ({
     return (
       <div className={modalProduto["image-container"]}>
         <img
-          src={images.size ? URL.createObjectURL(images) : images}
+          src={images.size ? URL.createObjectURL(images) : images.urlImagem}
           alt={`Preview`}
           className={modalProduto["preview-img"]}
         />
@@ -256,6 +272,7 @@ const CadastroProdutoModal = ({
       </div>
     );
   };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -271,11 +288,11 @@ const CadastroProdutoModal = ({
       <form className={modalProduto["formulario"]} onSubmit={handleSubmit}>
         <div className={modalProduto["input-nome"]}>
           <label>Nome:</label>
-          <Input value={nome} placeholder={""} onChange={setNome} />
+          <Input maxLength={100} value={nome} placeholder={""} onChange={setNome} />
         </div>
         <div className={modalProduto["textarea-descricao"]}>
           <label>Descrição:</label>
-          <Input value={descricao} placeholder={""} onChange={setDescricao} />
+          <Input maxLength={300} value={descricao} placeholder={""} onChange={setDescricao} />
         </div>
         <div className={modalProduto["select-options"]}>
           <div className="w-full md:w-[66%] flex gap-1">
@@ -334,11 +351,11 @@ const CadastroProdutoModal = ({
         <div className={modalProduto["caracteristicas"]}>
           <div className={modalProduto["input-cor"]}>
             <label>Cor:</label>
-            <Input value={cor} onChange={setCor} />
+            <Input maxLength={20} value={cor} onChange={setCor} />
           </div>
           <div className={modalProduto["input-tamanho"]}>
             <label>Tamanho:</label>
-            <Input value={tamanho} onChange={setTamanho} />
+            <Input maxLength={3} value={tamanho} onChange={setTamanho} />
           </div>
         </div>
         <div className={modalProduto["atributos"]}>
@@ -354,7 +371,7 @@ const CadastroProdutoModal = ({
           </div>
           <div className={modalProduto["form-group"]}>
             <label>Anexar Imagem:</label>
-            <input type="file" onChange={handleImageUpload} />
+            <input id="imageNuvem" type="file" onChange={handleImageUpload} />
           </div>
         </div>
         <div className={modalProduto["image-preview"]}>

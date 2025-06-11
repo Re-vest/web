@@ -48,7 +48,7 @@ const opcoesCategoria = [
         type: 'application/json'
       }));
 
-      const response = await api.post(`/produtos?idUsuario=${user.id}`, formData, {
+      const response = await api.post(`/produtos?idUsuario=${sessionStorage.ID_USER}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -82,7 +82,7 @@ const opcoesCategoria = [
           )}
         <Button
           text={"Adicionar Produto"}
-          icon={<Plus size={24} />}
+          icon={<Plus size={20} />}
           onClick={onClick}
         />
 
