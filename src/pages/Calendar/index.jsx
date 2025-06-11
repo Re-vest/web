@@ -56,15 +56,6 @@ export function CalendarPage() {
     }
   }, []);
 
-  const exampleEvent = {
-    id: null,
-    titulo: "",
-    dataInicio: new Date(),
-    dataFim: new Date(),
-    descricao: "",
-    cor: "#000",
-  };
-
   const [eventOnModal, setEventOnModal] = useState({});
 
   function handleClickEvent(event) {
