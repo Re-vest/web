@@ -56,6 +56,15 @@ export function CalendarPage() {
     }
   }, []);
 
+  useEffect(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const futureEvents = events.filter((e) => e.dataFim >= today);
+    
+    setEventosFuturos(futureEvents)
+  }, [events])
+
   const [eventOnModal, setEventOnModal] = useState({});
 
   function handleClickEvent(event) {
