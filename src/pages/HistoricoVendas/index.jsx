@@ -49,7 +49,7 @@ export const HistoricoVendas = () => {
 
   const gerarRelatorio = async () => {
     try {
-      await api.get("/relatorio")
+      await api.get("/relatorio/pdf")
       swal('Sucesso', 'Relatório exportado para a pasta download','success');
 
       
@@ -60,7 +60,7 @@ export const HistoricoVendas = () => {
 
     const gerarExcel = async () => {
     try {
-      await api.get("/excel")
+      await api.get("/relatorio/excel")
       swal('Sucesso', 'Planilha exportada para a pasta download','success');
 
       
