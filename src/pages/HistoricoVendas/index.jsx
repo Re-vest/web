@@ -49,7 +49,16 @@ export const HistoricoVendas = () => {
 
   const gerarRelatorio = async () => {
     try {
-      await api.get("/relatorio/pdf")
+      const response = await api.get("/relatorio/pdf", {
+        responseType: 'blob'
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'Relatório.pdf')
+      document.body.appendChild(link)
+      link.click()
       swal('Sucesso', 'Relatório exportado para a pasta download','success');
 
       
@@ -60,7 +69,16 @@ export const HistoricoVendas = () => {
 
     const gerarExcel = async () => {
     try {
-      await api.get("/relatorio/excel")
+      const response = await api.get("/relatorio/excel", {
+        responseType: 'blob'
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/xlsx' }))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'Relatório.xlsx')
+      document.body.appendChild(link)
+      link.click()
       swal('Sucesso', 'Planilha exportada para a pasta download','success');
 
       

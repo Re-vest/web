@@ -197,10 +197,8 @@ const CadastroProdutoModal = ({
         condicao: condicaoProduto,
         status: valorStatus,
         categoria: valorCategoria,
-        imagem: images
+        imagem: images.size ? null : images
       }
-
-      console.log(updateProduct);
 
       try{
         const formData = new FormData();

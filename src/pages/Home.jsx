@@ -113,7 +113,7 @@ export function Home() {
       </div>
 
       {/*About 2 [Desktop] */}
-      <div className="h-[552px] bg-doacao bg-cover flex justify-end text-white hidden md:flex">
+      <div className="h-[552px] bg-doacao bg-cover flex justify-end text-white hidden md:flex overflow-hidden">
         <div data-aos="fade-left" className="h-full w-1/2 bg-blue-950 rounded-tl-full rounded-bl-full flex flex-col items-center justify-center relative">
         <div className="absolute h-[528px] w-[98%] right-0 border-yellow-600 border-l-2 border-b-2 border-t-2 rounded-tl-full rounded-bl-full"></div>
           <div className="w-1/2 flex flex-col gap-2 ">
